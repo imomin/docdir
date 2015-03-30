@@ -1,0 +1,332 @@
+<div class="navbar navbar-default navbar-static-top" style="margin-bottom:0px;">
+  <div class="container-fluid"><!-- container -->
+    <div class="navbar-header" style="padding: 15px 0 15px 0;">
+    	nav bar
+    </div>
+  </div>
+</div>	
+
+<div class="container-fluid" id="" >
+  <div class="row" style="border: 1px solid #dddddd; padding:15px;">
+	header  
+  </div>
+</div>
+
+
+<div class="container-fluid" ng-controller="DoctorsCtrl">
+	<div class="row">
+		<div class="col-lg-12" style="padding-left:0px;padding-right:0px;">
+			<div class="col-lg-3" style="padding-left:0px;padding-right:0px;float:left;min-height:100px;height:100%;overflow:auto;">
+		 		
+		 		<div class="list-group-item" style="border-top-right-radius:0px;border-top-left-radius:0px;border-bottom-right-radius:0px:border-bottom-left-radius:0px;border-top: none;">
+					<div class="form-group" style="margin-bottom:0px;">
+					    <input type="text" class="form-control" style="border-top: none;border-left: none;border-right: none;;border-radius:0px;box-shadow:inset 0 0 0 rgba(0, 0, 0, 0);" placeholder="Search dentist">
+					</div>
+				</div>
+				<div class="row" scroll style="overflow: auto;margin-left:0px;margin-right:0px;background-color:#fff">
+					<ul class="list-group">
+						<li ng-repeat="t in [1,2,3,4,5,6,7,8,9,10]" class="list-group-item" style="border-top-right-radius:0px;border-top-left-radius:0px;border-bottom-right-radius:0px:border-bottom-left-radius:0px;">
+							<div class="col-xs-12 col-sm-3">
+	                            <img src="/assets/images/thumbnail.jpeg" alt="Seth Frazier" class="img-responsive img-circle" />
+	                        </div>
+	                        <div class="col-xs-12 col-sm-9">
+	                            <span class="name">Lisa Mona MD, DDC</span><br/>
+	                            <span>Chiropractors</span><br>
+	                            <span> <i class="fa fa-heart"></i> 23 likes</span>
+	                        </div>
+	                        <div class="clearfix"></div>
+						</li>
+					</ul>
+				</div>
+				  
+			</div>
+			<div class="col-lg-9" scroll style="overflow: auto;padding-left:15px;padding-right:15px;">
+				<div class="card hovercard">
+	                <div class="cardheader">
+	                </div>
+	                <div class="avatar">
+	                    <img alt="" src="/assets/images/thumbnail.jpeg">
+	                </div>
+	                <div class="info">
+	                    <ul class="list-justified text-center">
+	                        <li>
+	                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
+	                            <a href="#" onclick="alert('open social login to like.');"><i class="fa fa-heartbeat fa-3x faa-pulse animated"></i></a>
+	                            <p class="title">23 Likes</p>
+	                        </li>
+	                        <li>
+	                            <p class="title">Lisa Mona MD, DDC</p>
+	                            <p class="desc">Dentist</p>
+	                        </li>
+	                        <!-- <li>
+	                            <p class="desc">Address</p>
+	                            <p class="desc">City State Zip</p>
+	                            <p class="desc">Phone</p>
+	                        </li> -->
+	                        <li>
+	                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
+	                            <i class="fa fa-eye fa-3x"></i>
+	                            <p class="title">23 Views</p>
+	                        </li>
+	                    </ul>
+	                </div>
+                <!-- <div class="bottom">Address Street Name Suite Number, Sugar Land, TX 77478. Ph. 832-232-3232 Fax. 121-121-1212</div> -->
+            	</div>
+            	
+
+            	<div class="row" style="  margin-left:0px;margin-right:0px;">
+            		<section id="cd-timeline" class="cd-container">
+						<div class="cd-timeline-block">
+							<div class="cd-timeline-img cd-bio">
+								<span class="fa fa-2x fa-user-md" style="color:#fff;"></span>
+							</div> <!-- cd-timeline-img -->
+
+							<div class="cd-timeline-content">
+								<h2>About</h2>
+								<p>Dr. XYZ completed her undergraduate degree at Texas A&M University and earned her medical degree from Texas A&M Medical School. She completed her residency at Memorial Hermann Southwest in Houston.</p><p>
+
+								She is board certified in Family Practice. Her medical affiliations are American Academy of Family Physicians, the Texas Academy of Family Physicians and the Texas Medical Association. </p><p>
+
+								Dr. XYZ is married and has three children. She is very involved with her children’s activities and does volunteer work with their schools.</p><p>
+
+								When not at the clinic, she enjoys spending time with her family and their activities, reading, exercising and traveling.</p><p>
+
+								Dr. XYZ provides individual care and attention to her patients through education, treatment and preventive medicine.</p>
+							</div> <!-- cd-timeline-content -->
+						</div> <!-- cd-timeline-block -->
+
+						<div class="cd-timeline-block">
+							<div class="cd-timeline-img cd-education">
+								<span class="fa fa-2x fa-graduation-cap" style="color:#fff;"></span>
+							</div> <!-- cd-timeline-img -->
+
+							<div class="cd-timeline-content col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<h2>Education</h2>
+								<p>Texas A&M Medical School</p>
+								<h2>Residency</h2>
+								<p>Memorial Hermann Southwest in Houston</p>
+								<h2>Board Certifications</h2>
+								<p>Family Medicine</p>
+							</div> <!-- cd-timeline-content -->
+						</div> <!-- cd-timeline-block -->
+
+						<div class="cd-timeline-block">
+							<div class="cd-timeline-img cd-clipboard">
+								<span class="fa fa-2x fa-clipboard" style="color:#fff;"></span>
+							</div> <!-- cd-timeline-img -->
+
+							<div class="cd-timeline-content col-xs-12 col-sm-4 col-md-4 col-lg-4">
+								<h2>Insurance</h2>
+								<ul>
+									<li>English</li>
+									<li>Aetna</li>
+									<li>Blue Cross Blue Shield</li>
+									<li>Cigna</li>
+									<li>Coventry Health Care</li>
+									<li>Humana</li>
+									<li>MultiPlan</li>
+									<li>UnitedHealthcare</li>
+								</ul>
+							</div> <!-- cd-timeline-content -->
+						</div> <!-- cd-timeline-block -->
+
+						<div class="cd-timeline-block">
+							<div class="cd-timeline-img cd-language">
+								<span class="fa fa-2x fa-language" style="color:#fff;"></span>
+							</div> <!-- cd-timeline-img -->
+
+							<div class="cd-timeline-content  col-xs-12 col-sm-3 col-md-3 col-lg-3">
+								<h2>Languages</h2>
+								<ul>
+									<li>English</li>
+								</ul>
+							</div> <!-- cd-timeline-content -->
+						</div> <!-- cd-timeline-block -->
+
+						<div class="cd-timeline-block">
+							<div class="cd-timeline-img cd-location">
+								<span class="fa fa-2x fa-map-marker" style="color:#fff;"></span>
+							</div> <!-- cd-timeline-img -->
+
+							<div class="cd-timeline-content">
+								<h2>Location</h2>
+								<div style="float:left;padding-left:15px;"><p>425 Highway 6, Ste 101 Sugar Land, TX 77478.</p></div>
+								<div style="float:left;padding-left:20px;"><p><i class="fa fa-phone"></i>&nbsp;281-111-1111</p></div>
+								<div style="float:left;padding-left:20px;"><p>&nbsp;<i class="fa fa-fax"></i>&nbsp;713-222-2222</p></div>
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="col-lg-8">
+							          		<!-- <section id="map">
+											  <div ui-map="myMap" ui-options="mapOptions" class="" style="height: 250px;"></div>
+											</section> -->
+											<map zoom="15" 
+												  center="[40.74, -74.18]" 
+												  max-zoom="20"
+												  min-zoom="8"
+												  tilt="45"
+												  map-type-id="ROADMAP">
+											  <marker
+											      position="[40.74, -74.18]"
+											      title="425 Highway 6, Ste 101 Sugar Land, TX 77478"
+											      animation="Animation.DROP"
+											      draggable="false"
+											      visible="true"
+											      icon="/assets/images/mapMarker.png"></marker>
+											</map>
+											<!-- TERRAIN,SATELLITE,ROADMAP,HYBRID -->
+					            		</div>
+							            <div class="col-lg-4">
+							            	<table class="table">
+							            		<tr>
+							            			<td colspan="2" class="text-center"><strong>Hours of Operation</strong></td>
+							            		</tr>
+							            		<tr>
+							            			<td>Monday</td>
+							            			<td>9:00 AM - 6:00 PM</td>
+							            		</tr>
+							            		<tr>
+							            			<td>Tuesday</td>
+							            			<td>9:00 AM - 6:00 PM</td>
+							            		</tr>
+							            		<tr>
+							            			<td>Wednesday</td>
+							            			<td>9:00 AM - 6:00 PM</td>
+							            		</tr>
+							            		<tr>
+							            			<td>Thursday</td>
+							            			<td>9:00 AM - 6:00 PM</td>
+							            		</tr>
+							            		<tr>
+							            			<td>Friday</td>
+							            			<td>9:00 AM - 6:00 PM</td>
+							            		</tr>
+							            		<tr>
+							            			<td>Thursday</td>
+							            			<td>9:00 AM - 6:00 PM</td>
+							            		</tr>
+							            		<tr>
+							            			<td>Friday</td>
+							            			<td>9:00 AM - 6:00 PM</td>
+							            		</tr>
+							            	</table>
+							          	</div>
+						        </div>
+								</div>
+							</div> <!-- cd-timeline-content -->
+						</div> <!-- cd-timeline-block -->
+
+						<div class="cd-timeline-block">
+							<div class="cd-timeline-img cd-camera">
+								<span class="fa fa-2x fa-camera-retro" style="color:#fff;"></span>
+							</div> <!-- cd-timeline-img -->
+
+							<div class="cd-timeline-content" style="width:630px;">
+								<h2>Pictures</h2>
+								<div style="height: 305px;width:600px;">
+								    <carousel interval="2000">
+								      <slide ng-repeat="slide in slides" active="slide.active">
+								        <img ng-src="{{slide.image}}" style="margin:auto;">
+								        <div class="carousel-caption">
+								          <h4>Slide {{$index}}</h4>
+								          <p>{{slide.text}}</p>
+								        </div>
+								      </slide>
+								    </carousel>
+							  	</div>
+							</div> <!-- cd-timeline-content -->
+						</div> <!-- cd-timeline-block -->
+
+					</section> <!-- cd-timeline -->
+            	</div>
+
+
+
+            	<!-- <div class="row">
+			        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+			            <div class="box">
+			                <div class="box-icon">
+			                    <span class="fa fa-4x fa-clock-o"></span>
+			                </div>
+			                <div class="info">
+			                    <h4 class="text-center">Title</h4>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+            	<div class="row">
+			        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			            <div class="box">
+			                <div class="box-icon">
+			                    <span class="fa fa-4x fa-user-md"></span>
+			                </div>
+			                <div class="info">
+			                    <h4 class="text-center">Title</h4>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+			                </div>
+			            </div>
+			        </div>
+			        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			            <div class="box">
+			                <div class="box-icon">
+			                    <span class="fa fa-4x fa-graduation-cap"></span>
+			                </div>
+			                <div class="info">
+			                    <h4 class="text-center">Title</h4>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			            <div class="box">
+			                <div class="box-icon">
+			                    <span class="fa fa-4x fa-clock-o"></span>
+			                </div>
+			                <div class="info">
+			                    <h4 class="text-center">Title</h4>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+			                </div>
+			            </div>
+			        </div>
+			        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			            <div class="box">
+			                <div class="box-icon">
+			                    <span class="fa fa-4x fa-medkit"></span>
+			                </div>
+			                <div class="info">
+			                    <h4 class="text-center">Title</h4>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			            <div class="box">
+			                <div class="box-icon">
+			                    <span class="fa fa-4x fa-language"></span>
+			                </div>
+			                <div class="info">
+			                    <h4 class="text-center">Title</h4>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+			                </div>
+			            </div>
+			        </div>
+			        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			            <div class="box">
+			                <div class="box-icon">
+			                    <span class="fa fa-4x fa-map-marker"></span>
+			                </div>
+			                <div class="info">
+			                    <h4 class="text-center">Title</h4>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti atque, tenetur quam aspernatur corporis at explicabo nulla dolore necessitatibus doloremque exercitationem sequi dolorem architecto perferendis quas aperiam debitis dolor soluta!</p>
+			                </div>
+			            </div>
+			        </div>
+			    </div> -->
+			</div>
+		</div>
+	</div>
+</div>
