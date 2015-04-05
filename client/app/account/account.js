@@ -18,5 +18,30 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/settings/settings.html',
         controller: 'SettingsCtrl',
         authenticate: true
+      })
+      .state('doctor', {
+        url: '/signup/doctor',
+        templateUrl: 'app/account/signup/doctor/index.html',
+        controller:'doctorSignupCtrl'
+      })
+      .state('doctor.bio', {
+        url: '/bio',
+        templateUrl: 'app/account/signup/doctor/bio.html'
+      })
+      .state('doctor.education', {
+        url: '/education',
+        templateUrl: 'app/account/signup/doctor/education.html'
+      })
+      .state('doctor.featuers', {
+        url: '/featuers',
+        templateUrl: 'app/account/signup/doctor/features.html'
+      })
+      .state('doctor.address', {
+        url: '/address',
+        templateUrl: 'app/account/signup/doctor/address.html'
+      })
+      .state('doctor.subscribe', {
+        url: '/subscribe',
+        templateUrl: 'app/account/signup/doctor/subscribe.html'
       });
   });

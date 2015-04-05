@@ -1,0 +1,90 @@
+/* basic styling for entering and leaving */
+/* left and right added to ensure full width */
+#form-views.ng-enter, #form-views.ng-leave { 
+ position:absolute; 
+ /*  left:30px; 
+  right:30px;
+  transition:0.75s all ease; 
+  -moz-transition:0.75s all ease; 
+  -webkit-transition:0.75s all ease;*/ 
+}
+    
+/* enter animation */
+#form-views.rtl.ng-enter            { 
+  -webkit-animation:slideInRight 0.75s both ease;
+  -moz-animation:slideInRight 0.75s both ease;
+  animation:slideInRight 0.75s both ease; 
+}
+
+/* leave animation */
+#form-views.rtl.ng-leave            { 
+  -webkit-animation:slideOutLeft 0.75s both ease;
+  -moz-animation:slideOutLeft 0.75s both ease;
+  animation:slideOutLeft 0.75s both ease;   
+}
+
+#form-views.ltr.ng-enter            { 
+  -webkit-animation:slideInLeft 0.75s both ease;
+  -moz-animation:slideInLeft 0.75s both ease;
+  animation:slideInLeft 0.75s both ease; 
+}
+
+/* leave animation */
+#form-views.ltr.ng-leave            { 
+  -webkit-animation:slideOutRight 0.75s both ease;
+  -moz-animation:slideOutRight 0.75s both ease;
+  animation:slideOutRight 0.75s both ease;   
+}
+
+/* ANIMATIONS
+============================================================================= */
+/* slide out to the left */
+@keyframes slideOutLeft {
+  to    { transform: translateX(-200%); }
+}
+@-moz-keyframes slideOutLeft {  
+  to    { -moz-transform: translateX(-200%); }
+}
+@-webkit-keyframes slideOutLeft {
+  to    { -webkit-transform: translateX(-200%); }
+}
+
+/* slide in from the right */
+@keyframes slideInRight {
+  from  { transform:translateX(200%); }
+  to    { transform: translateX(0); }
+}
+@-moz-keyframes slideInRight {
+  from  { -moz-transform:translateX(200%); }
+  to    { -moz-transform: translateX(0); }
+}
+@-webkit-keyframes slideInRight {
+  from  { -webkit-transform:translateX(200%); }
+  to    { -webkit-transform: translateX(0); }
+}
+
+
+/* slide out to the right */
+@keyframes slideOutRight {
+  to    { transform: translateX(200%); }
+}
+@-moz-keyframes slideOutRight {  
+  to    { -moz-transform: translateX(200%); }
+}
+@-webkit-keyframes slideOutRight {
+  to    { -webkit-transform: translateX(200%); }
+}
+
+/* slide in from the left */
+@keyframes slideInLeft {
+  from  { transform:translateX(-200%); }
+  to    { transform: translateX(0); }
+}
+@-moz-keyframes slideInLeft {
+  from  { -moz-transform:translateX(-200%); }
+  to    { -moz-transform: translateX(0); }
+}
+@-webkit-keyframes slideInLeft {
+  from  { -webkit-transform:translateX(-200%); }
+  to    { -webkit-transform: translateX(0); }
+}

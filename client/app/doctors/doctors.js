@@ -7,6 +7,8 @@ angular.module('sugarlandDoctorsApp')
   	//Todo: make following array dynamically come from API (database).
   	var states = ['dentist','abc','xyz'];
 
+//https://github.com/angular-ui/ui-router/wiki/Multiple-Named-Views 
+
   	angular.forEach(states, function(state) {
 	    $stateProvider
 	      .state(state, {
@@ -18,7 +20,9 @@ angular.module('sugarlandDoctorsApp')
 	        }
 	      })
 	      .state(state + '.detail', {
-			url: '/:doctorId'
+			url: '/:doctorId',
+			parent: state,
+			controller: 'DoctorsDetailsCtrl'
 	     });
 	});
   });
