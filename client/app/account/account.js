@@ -36,6 +36,10 @@ angular.module('sugarlandDoctorsApp')
         url: '/featuers',
         templateUrl: 'app/account/signup/doctor/features.html'
       })
+      .state('doctor.pictures', {
+        url: '/pictures',
+        templateUrl: 'app/account/signup/doctor/pictures.html'
+      })
       .state('doctor.address', {
         url: '/address',
         templateUrl: 'app/account/signup/doctor/address.html'
@@ -43,5 +47,9 @@ angular.module('sugarlandDoctorsApp')
       .state('doctor.subscribe', {
         url: '/subscribe',
         templateUrl: 'app/account/signup/doctor/subscribe.html'
-      });
+      })      
+      .state('doctor.finish', {
+        url: '/finish',
+        templateUrl: 'app/account/signup/doctor/finish.html'
+      });;
   });

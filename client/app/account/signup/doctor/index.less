@@ -1,39 +1,37 @@
 /* basic styling for entering and leaving */
 /* left and right added to ensure full width */
 #form-views.ng-enter, #form-views.ng-leave { 
- position:absolute; 
- /*  left:30px; 
-  right:30px;
-  transition:0.75s all ease; 
-  -moz-transition:0.75s all ease; 
-  -webkit-transition:0.75s all ease;*/ 
+  position:absolute;
+  overflow-x: hidden;
+  transition:1s all ease;
+  -moz-transition:1s all ease;
+  -webkit-transition:1s all ease;
 }
-    
 /* enter animation */
 #form-views.rtl.ng-enter            { 
-  -webkit-animation:slideInRight 0.75s both ease;
-  -moz-animation:slideInRight 0.75s both ease;
-  animation:slideInRight 0.75s both ease; 
+  -webkit-animation:slideInRight 1s both ease;
+  -moz-animation:slideInRight 1s both ease;
+  animation:slideInRight 1s both ease; 
 }
 
 /* leave animation */
 #form-views.rtl.ng-leave            { 
-  -webkit-animation:slideOutLeft 0.75s both ease;
-  -moz-animation:slideOutLeft 0.75s both ease;
-  animation:slideOutLeft 0.75s both ease;   
+  -webkit-animation:slideOutLeft 1s both ease;
+  -moz-animation:slideOutLeft 1s both ease;
+  animation:slideOutLeft 1s both ease;   
 }
 
 #form-views.ltr.ng-enter            { 
-  -webkit-animation:slideInLeft 0.75s both ease;
-  -moz-animation:slideInLeft 0.75s both ease;
-  animation:slideInLeft 0.75s both ease; 
+  -webkit-animation:slideInLeft 1s both ease;
+  -moz-animation:slideInLeft 1s both ease;
+  animation:slideInLeft 1s both ease; 
 }
 
 /* leave animation */
 #form-views.ltr.ng-leave            { 
-  -webkit-animation:slideOutRight 0.75s both ease;
-  -moz-animation:slideOutRight 0.75s both ease;
-  animation:slideOutRight 0.75s both ease;   
+  -webkit-animation:slideOutRight 1s both ease;
+  -moz-animation:slideOutRight 1s both ease;
+  animation:slideOutRight 1s both ease;   
 }
 
 /* ANIMATIONS
@@ -88,3 +86,207 @@
   from  { -webkit-transform:translateX(-200%); }
   to    { -webkit-transform: translateX(0); }
 }
+
+
+/* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/
+.board {
+    width: 75%;
+    margin: 0px auto;
+    height: 600px;
+    background: #fff;
+/*box-shadow: 10px 10px #ccc,-10px 20px #ddd;*/
+}
+.board > div.board-inner{
+    background: #ccc; /*url(http://subtlepatterns.com/patterns/geometry2.png);*/
+    background-size: 30%;
+}
+
+span.round-tabs{
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    border-radius: 100px;
+    background: rgb(219, 219, 219);
+    z-index: 5;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    font-size: 4em;
+}
+
+span.round-tabs.one{
+    color:  #999999;
+    box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+li.active span.round-tabs.one{
+    background: #f0ca45 !important;
+    color: #fff;
+}
+
+span.round-tabs.two{
+    color:#999999;
+    box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+li.active span.round-tabs.two{
+    background: #45AFF0 !important;
+    color: #fff;
+}
+
+span.round-tabs.three{
+    color:#999999;
+    box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+li.active span.round-tabs.three{
+    background: #835656 !important;
+    color: #fff;
+}
+
+span.round-tabs.four{
+    color:#999999;
+    box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+li.active span.round-tabs.four{
+    background: #F04545 !important;
+    color: #fff;
+}
+
+span.round-tabs.five{
+    color:#999999;
+    box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+li.active span.round-tabs.five{
+    background: #9145F0 !important;
+    color: #fff;
+}
+
+span.round-tabs.six{
+    color:#999999;
+    box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+li.active span.round-tabs.six{
+    background: #818181 !important;
+    color: #fff;
+}
+
+span.round-tabs.seven{
+    color:#999999;
+    box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+li.active span.round-tabs.seven{
+    background: #1EC760 !important;
+    color: #fff;
+}
+
+.nav-tabs > li.active > a span.round-tabs{
+    background: #1EC760;
+}
+.nav-tabs > li {
+    width: 14%;
+}
+
+.nav-tabs > li a{
+   width: 50px;
+   height: 50px;
+   margin: 20px auto;
+   border-radius: 100%;
+   padding: 0;
+}
+
+.nav-tabs > li a:hover{
+    background: transparent;
+}
+
+
+.nav-tabs > li.active > a {
+
+}
+
+.board-inner li {
+  list-style-type: none;
+  color: white;
+  text-transform: uppercase;
+  font-size: 9px;
+  float: left;
+  position: relative;
+}
+.board-inner li:before {
+  content: ' ';
+  width:0px;
+  line-height: 20px;
+  display: block;
+  font-size: 10px;
+  color: #333;
+  background: white;
+  margin: 0 auto 5px auto;
+}
+/*progressbar connectors*/
+.board-inner li:after {
+  content: '';
+  width: 100%;
+  height: 3px;
+  background: #ddd;
+  position: absolute;
+  left: -50%;
+  top: 45px;
+  z-index: 0; /*put it behind the numbers*/
+}
+.board-inner li:first-child:after {
+  /*connector not needed before the first step*/
+  content: none; 
+}
+
+.board-inner li.active:before,  .board-inner li.active:after{
+  background: #1EC760;
+}
+
+.board-inner .nav-tabs > li.active > a {
+  border: 0px;
+}
+
+.board-inner .nav-tabs > li.active > a:focus {
+  border: 0px;
+}
+
+.board-inner .nav-tabs > li a span i {
+  padding-top: 5px;
+}
+
+@media( max-width : 585px ) {
+    .board {
+      width: 90%;
+      height:auto !important;
+    }
+    span.round-tabs {
+      font-size:16px;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+    }
+    .tab-content .head{
+        font-size:20px;
+    }
+    .nav-tabs > li a {
+      width: 50px;
+      height: 50px;
+      line-height:50px;
+    }
+
+    /*li.active:after {
+      content: " ";
+      position: absolute;
+      left: 35%;
+    }*/
+
+    .btn-outline-rounded {
+        /*padding:12px 20px;*/
+      }
+}
+
+
