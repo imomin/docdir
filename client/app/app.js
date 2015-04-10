@@ -85,7 +85,12 @@ angular.module('sugarlandDoctorsApp', [
     $rootScope.$on('$stateChangeStart', function (event, next, current) {
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
-          $location.path('/login');
+          if(next.name.split(".")[0] === "doctor"){
+            $location.path('/signup/doctor');
+          }
+          else {
+            $location.path('/login');
+          }
         }
       });
     });

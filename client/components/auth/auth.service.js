@@ -1,12 +1,15 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, Doctor, $cookieStore, $q) {
     var currentUser = {};
+    var currentDoctor = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
     }
-
+    if($cookieStore.get('tokend')) {
+      currentDoctor = Doctor.get();
+    }
     return {
 
       /**
@@ -141,6 +144,28 @@ angular.module('sugarlandDoctorsApp')
        */
       getToken: function() {
         return $cookieStore.get('token');
-      }
+      },
+
+            /**
+       * Create a new doctor
+       *
+       * @param  {Object}   doctor     - doctor info
+       * @param  {Function} callback - optional
+       * @return {Promise}
+       */
+      createDoctor: function(doctor, callback) {
+        var cb = callback || angular.noop;
+
+        return Doctor.save(doctor,
+          function(data) {
+            //$cookieStore.put('tokend', data.token);
+            //currentDoctor = Doctor.get();
+            return cb(doctor);
+          },
+          function(err) {
+            this.logout();
+            return cb(err);
+          }.bind(this)).$promise;
+      },
     };
   });

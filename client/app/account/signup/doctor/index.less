@@ -86,8 +86,70 @@
   from  { -webkit-transform:translateX(-200%); }
   to    { -webkit-transform: translateX(0); }
 }
+/* shake the form */
+@-webkit-keyframes shake {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  12.5% {
+    -webkit-transform: translateX(-6px) rotateY(-5deg);
+    transform: translateX(-6px) rotateY(-5deg);
+  }
+  37.5% {
+    -webkit-transform: translateX(5px) rotateY(4deg);
+    transform: translateX(5px) rotateY(4deg);
+  }
+  62.5% {
+    -webkit-transform: translateX(-3px) rotateY(-2deg);
+    transform: translateX(-3px) rotateY(-2deg);
+  }
+  87.5% {
+    -webkit-transform: translateX(2px) rotateY(1deg);
+    transform: translateX(2px) rotateY(1deg);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+/* shake the form*/
+@keyframes shake {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  12.5% {
+    -webkit-transform: translateX(-6px) rotateY(-5deg);
+    transform: translateX(-6px) rotateY(-5deg);
+  }
+  37.5% {
+    -webkit-transform: translateX(5px) rotateY(4deg);
+    transform: translateX(5px) rotateY(4deg);
+  }
+  62.5% {
+    -webkit-transform: translateX(-3px) rotateY(-2deg);
+    transform: translateX(-3px) rotateY(-2deg);
+  }
+  87.5% {
+    -webkit-transform: translateX(2px) rotateY(1deg);
+    transform: translateX(2px) rotateY(1deg);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
 
+.shake {
+  -webkit-animation: shake 400ms ease-in-out;
+  animation: shake 400ms ease-in-out;
+}
 
+.panel-default {
+  opacity: 0.9;
+  margin-top:30px;
+}
 /* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/
 .board {
     width: 75%;

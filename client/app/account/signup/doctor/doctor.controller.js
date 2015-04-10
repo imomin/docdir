@@ -2,22 +2,33 @@
 
 angular.module('sugarlandDoctorsApp')
 
-  .directive('formWizard',function(){
-    // Runs during compile
+  .directive('shakeThat', ['$animate', function($animate) {
     return {
-      restrict: 'EA',
-      replace: true,
+      require: '^form',
       scope: {
-            title: '@',
-            description: '@'
-        },
-      link: function($scope, iElm, iAttrs, controller) {
-        
+        submit: '&',
+        submitted: '='
+      },
+      link: function(scope, element, attrs, form) {
+        // listen on submit event
+        element.on('submit', function() {
+          // tell angular to update scope
+          scope.$apply(function() {
+            // everything ok -> call submit fn from controller
+            if (form.$valid) return scope.submit();
+            // show error messages on submit
+            scope.submitted = true;
+            // shake that form
+            var promise = $animate.addClass(element, 'shake');
+            promise.then(function() {
+              $animate.removeClass(element, 'shake');
+            });
+          });
+        });
       }
-    };
-  })
+    }}])
 
-  .controller('doctorSignupCtrl', function ($scope, Auth, $location, $animate) {
+  .controller('doctorSignupCtrl', function ($scope, $state, Auth, $location, $animate) {
     $scope.doctor = {};
     $scope.errors = {};
     $scope.currentIndex = 0;
@@ -25,6 +36,10 @@ angular.module('sugarlandDoctorsApp')
     $scope.direction = "rtl";
     $scope.nextIndex = 1 
     $scope.prevIndex = 0
+
+    if($state.current.url === '/signup/doctor'){
+      $state.go('doctor.login');
+    }
 
     $scope.slide = function(index){
       if($scope.currentIndex < index) {
@@ -72,4 +87,48 @@ angular.module('sugarlandDoctorsApp')
         });
       }
     };
-  });
+  })
+  .controller('doctorSignupCtrl', function($scope, Auth, $state, $window) {
+      $scope.doctor = {};
+      $scope.errors = {};
+
+      $scope.submit = function(form) {
+        $scope.submitted = true;
+
+        if(form.$valid) {
+          Auth.createDoctor({
+            firstName: $scope.doctor.firstName,
+            lastName: $scope.doctor.lastName,
+            email: $scope.doctor.email,
+            phone: $scope.doctor.phone,
+            password: $scope.doctor.password
+          })
+          .then( function() {
+            // Account created, redirect to home
+            $state.go('doctor.emailVerification');
+          })
+          .catch( function(err) {
+            err = err.data;
+            $scope.errors = {};
+
+            // Update validity of form fields that match the mongoose errors
+            angular.forEach(err.errors, function(error, field) {
+              form[field].$setValidity('mongoose', false);
+              $scope.errors[field] = error.message;
+            });
+          });
+        }
+      };
+  })
+
+  .controller('doctorLoginCtrl', ['$scope', function($scope) {
+    // hide error messages until 'submit' event
+    $scope.submitted = false;
+    // hide success message
+    $scope.showMessage = false;
+    // method called from shakeThat directive
+    $scope.submit = function() {
+      // show success message
+      $scope.showMessage = true;
+    };
+  }]);
