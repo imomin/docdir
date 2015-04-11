@@ -110,10 +110,9 @@ angular.module('sugarlandDoctorsApp')
           .catch( function(err) {
             err = err.data;
             $scope.errors = {};
-
             // Update validity of form fields that match the mongoose errors
             angular.forEach(err.errors, function(error, field) {
-              form[field].$setValidity('mongoose', false);
+              form[field].$setValidity(error.message, false);
               $scope.errors[field] = error.message;
             });
           });

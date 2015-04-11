@@ -56,14 +56,14 @@ DoctorSchema
   .path('email')
   .validate(function(email) {
     return email.length;
-  }, 'Email cannot be blank');
+  }, 'blankEmail');
 
 // Validate empty password
 DoctorSchema
   .path('hashedPassword')
   .validate(function(hashedPassword) {
     return hashedPassword.length;
-  }, 'Password cannot be blank');
+  }, 'blankPassword');
 
 // Validate email is not taken
 DoctorSchema
@@ -78,7 +78,7 @@ DoctorSchema
       }
       respond(true);
     });
-}, 'The specified email address is already in use.');
+}, 'duplicateEmail');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
@@ -92,7 +92,7 @@ DoctorSchema
     if (!this.isNew) return next();
 
     if (!validatePresenceOf(this.hashedPassword))
-      next(new Error('Invalid password'));
+      next(new Error('invalidPassword'));
     else
       next();
   });

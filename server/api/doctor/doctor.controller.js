@@ -5,7 +5,7 @@ var Doctor = require('./doctor.model');
 
 // Get list of doctors
 exports.index = function(req, res) {
-  Doctor.find(function (err, doctors) {
+  Doctor.find({}, '-salt -hashedPassword', function (err, doctors) {
     if(err) { return handleError(res, err); }
     return res.json(200, doctors);
   });
@@ -13,7 +13,7 @@ exports.index = function(req, res) {
 
 // Get a single doctor
 exports.show = function(req, res) {
-  Doctor.findById(req.params.id, function (err, doctor) {
+  Doctor.findById(req.params.id, '-salt -hashedPassword', function (err, doctor) {
     if(err) { return handleError(res, err); }
     if(!doctor) { return res.send(404); }
     return res.json(doctor);
@@ -31,13 +31,13 @@ exports.create = function(req, res) {
 // Updates an existing doctor in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Doctor.findById(req.params.id, function (err, doctor) {
+  Doctor.findById(req.params.id, function (err, doctor) {/*'-salt -hashedPassword',*/
     if (err) { return handleError(res, err); }
     if(!doctor) { return res.send(404); }
     var updated = _.merge(doctor, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, doctor);
+      return res.json(200, doctor); //_.omit(doctor, ['salt','hashedPassword']);
     });
   });
 };

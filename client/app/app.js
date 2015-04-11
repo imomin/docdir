@@ -9,7 +9,8 @@ angular.module('sugarlandDoctorsApp', [
   'ui.bootstrap',
   'ngMap',
   'nya.bootstrap.select',
-  'ngAnimate'
+  'ngAnimate',
+  'jcs-autoValidate'
 ])
 
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
@@ -80,7 +81,19 @@ angular.module('sugarlandDoctorsApp', [
     }
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($q, $rootScope, $location, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier) {
+      // angular auto validate settings.
+      $rootScope.customErrors = {"duplicateEmail":"The specified email address is already in use.",
+        "blankEmail":"Email cannot be blank.",
+        "blankPassword":"Password cannot be blank.",
+        "invalidPassword":"Invalid password."};
+      bootstrap3ElementModifier.enableValidationStateIcons(true);
+      defaultErrorMessageResolver.getErrorMessages().then(function(errorMessages) {
+        angular.forEach($rootScope.customErrors, function(value, key){
+          errorMessages[key] = value;
+        });
+      });
+     
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next, current) {
       Auth.isLoggedInAsync(function(loggedIn) {
