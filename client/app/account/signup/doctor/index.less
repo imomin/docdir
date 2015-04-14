@@ -357,23 +357,6 @@ li.active span.round-tabs.seven{
 }
 
 
-input, textarea {
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  outline: none;
-  box-shadow: none !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-radius: 0px !important;
-  padding: 2pt 4pt;
-  padding-top: 8pt;
-  font-family: "Helvetica Neue";
-  font-size: 14pt;
-  font-weight: lighter;
-}
-
 ::-webkit-input-placeholder {
   color: lightgrey;
   position: relative;
@@ -384,7 +367,6 @@ input, textarea {
           transition-property: top, color;
           transition-duration: .1s;
 }
-
 
 ::-webkit-input-placeholder[style*=hidden] {
   color: rgb(16,124,246);
@@ -417,4 +399,50 @@ input, textarea {
   width: 100%;
 }
 
+/************************ CUSTOM CSS ******************************/
+.entryForm {
+  padding: 5px 20px 20px 20px; 
+  box-shadow: 0 0 3px 
+  rgba(0,0,0,.3); 
+  background-color: #fff;
+  font-family: "Helvetica Neue";
+  font-weight: lighter;
+}
+.entryForm .entryFormHeader {
+  padding-bottom:20px;
+  color: #7C7C7C;
+}
 
+.entryForm .entryFormHeader h3 {
+    font-family: "Helvetica Neue";
+    font-size: 24pt;
+    font-weight: lighter;
+}
+
+.entryForm input, textarea {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  outline: none;
+  box-shadow: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-radius: 0px !important;
+  padding: 2pt 4pt;
+  padding-top: 8pt;
+  font-family: "Helvetica Neue";
+  font-size: 14pt;
+  font-weight: lighter;
+}
+
+.entryForm button {
+    font-family: "Helvetica Neue";
+    font-size: 14pt;
+    font-weight: lighter;
+}
+.entryForm a {
+  color: #2587F6;
+  text-decoration: none;
+}
+/************************ CUSTOM CSS ******************************/

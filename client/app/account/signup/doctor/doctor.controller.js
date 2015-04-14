@@ -28,7 +28,7 @@ angular.module('sugarlandDoctorsApp')
       }
     }}])
 
-  .controller('doctorSignupCtrl', function ($scope, $state, Auth, $location, $animate) {
+  .controller('doctorProfileCtrl', function ($scope, $state, Auth, $location, $animate) {
     $scope.doctor = {};
     $scope.errors = {};
     $scope.currentIndex = 0;
@@ -93,8 +93,6 @@ angular.module('sugarlandDoctorsApp')
       $scope.errors = {};
 
       $scope.submit = function(form) {
-        $scope.submitted = true;
-
         if(form.$valid) {
           Auth.createDoctor({
             firstName: $scope.doctor.firstName,
@@ -120,14 +118,25 @@ angular.module('sugarlandDoctorsApp')
       };
   })
 
-  .controller('doctorLoginCtrl', ['$scope', function($scope) {
-    // hide error messages until 'submit' event
-    $scope.submitted = false;
-    // hide success message
-    $scope.showMessage = false;
+  .controller('doctorLoginCtrl',function($scope, Auth, $state) {
+    $scope.doctor = {};
+    $scope.errors = {};
     // method called from shakeThat directive
-    $scope.submit = function() {
+    $scope.submit = function(form) {
       // show success message
       $scope.showMessage = true;
+      if(form.$valid) {
+        Auth.loginDoctor({
+          email: $scope.doctor.email,
+          password: $scope.doctor.password
+        })
+        .then( function() {
+          // Logged in, redirect to home
+         $state.go('doctor.profile');
+        })
+        .catch( function(err) {
+          $scope.errors.other = err.message;
+        });
+      }
     };
-  }]);
+  });

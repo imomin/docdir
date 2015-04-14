@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
 var User = require('../api/user/user.model');
+var Doctor = require('../api/doctor/doctor.model');
 var validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
@@ -70,6 +71,35 @@ function setTokenCookie(req, res) {
   res.redirect('/');
 }
 
+/**
+ * Attaches the user object to the request if authenticated
+ * Otherwise returns 403
+ */
+function isDoctorAuthenticated() {
+  return compose()
+    // Validate jwt
+    .use(function(req, res, next) {
+      // allow access_token to be passed through query parameter as well
+      if(req.query && req.query.hasOwnProperty('access_token')) {
+        console.log('query param');
+        console.log(req.query);
+        req.headers.authorization = 'Bearer ' + req.query.access_token;
+      }
+      validateJwt(req, res, next);
+    })
+    // Attach user to request
+    .use(function(req, res, next) {
+      Doctor.findById(req.user._id, function (err, doctor) {//req.user._id is coming from express-jwt and its not User object ID.
+        if (err) return next(err);
+        if (!doctor) return res.send(401);
+
+        req.doctor = doctor;
+        next();
+      });
+    });
+}
+
+exports.isDoctorAuthenticated = isDoctorAuthenticated;
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;

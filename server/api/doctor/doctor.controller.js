@@ -88,7 +88,7 @@ exports.me = function(req, res, next) {
     _id: doctorId
   }, '-salt -hashedPassword', function(err, doctor) { // don't ever give out the password or salt
     if (err) return next(err);
-    if (!user) return res.json(401);
+    if (!doctor) return res.json(401);
     res.json(doctor);
   });
 };

@@ -29,15 +29,19 @@ angular.module('sugarlandDoctorsApp', [
         if ($cookieStore.get('token')) {
           config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
         }
+        if ($cookieStore.get('tokend')) {
+          config.headers.Authorization = 'Bearer ' + $cookieStore.get('tokend');
+        }
         return config;
       },
 
       // Intercept 401s and redirect you to login
       responseError: function(response) {
         if(response.status === 401) {
-          $location.path('/login');
+          $location.path('/');///login
           // remove any stale tokens
           $cookieStore.remove('token');
+          $cookieStore.remove('tokend');
           return $q.reject(response);
         }
         else {
@@ -96,15 +100,19 @@ angular.module('sugarlandDoctorsApp', [
      
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next, current) {
-      Auth.isLoggedInAsync(function(loggedIn) {
+      Auth.isDoctorLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           if(next.name.split(".")[0] === "doctor"){
-            $location.path('/signup/doctor');
-          }
-          else {
-            $location.path('/login');
+            $location.path('/signup/doctor/login');
           }
         }
       });
+
+      // Auth.isLoggedInAsync(function(loggedIn) {
+      //   if (next.authenticate && !loggedIn) {
+      //       $location.path('/login');
+      //   }
+      // });
+
     });
   });

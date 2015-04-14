@@ -3,11 +3,11 @@
       <div class="row" ng-controller="doctorSignupCtrl">
         <form name="form" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
           <div class="col-md-5 col-md-offset-4">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <span class="fa fa-user-md fa-2x pull-right"></span> Create new account
+                  <div class="entryForm">
+                    <div class="entryFormHeader">
+                        <h3><span class="fa fa-user-md fa-lg pull-right"></span> Create new account</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="">
                          <div class="form-group">
                             <div class="col-sm-12">
                                 <input type="input" class="form-control" name="firstName" id="firstName" placeholder="First Name" ng-model="doctor.firstName" required>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                   </div>
-                  <div class="panel-footer">
+                  <div class="">
                       Already Registered? <a ui-sref-active="active" ui-sref="doctor.login">Login here</a>
                   </div>
               </div>

@@ -42,37 +42,42 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/signup/doctor/passwordReset.html',
         controller:'doctorLoginCtrl'
       })
-      .state('doctor.bio', {
+      .state('doctor.profile', {
+        url: '/profile',
+        templateUrl: 'app/account/signup/doctor/profile.html',
+        authenticate: true
+      })
+      .state('doctor.profile.bio', {
         url: '/bio',
         templateUrl: 'app/account/signup/doctor/bio.html',
         authenticate: true
       })
-      .state('doctor.education', {
+      .state('doctor.profile.education', {
         url: '/education',
         templateUrl: 'app/account/signup/doctor/education.html',
         authenticate: true
       })
-      .state('doctor.featuers', {
+      .state('doctor.profile.featuers', {
         url: '/featuers',
         templateUrl: 'app/account/signup/doctor/features.html',
         authenticate: true
       })
-      .state('doctor.pictures', {
+      .state('doctor.profile.pictures', {
         url: '/pictures',
         templateUrl: 'app/account/signup/doctor/pictures.html',
         authenticate: true
       })
-      .state('doctor.address', {
+      .state('doctor.profile.address', {
         url: '/address',
         templateUrl: 'app/account/signup/doctor/address.html',
         authenticate: true
       })
-      .state('doctor.subscribe', {
+      .state('doctor.profile.subscribe', {
         url: '/subscribe',
         templateUrl: 'app/account/signup/doctor/subscribe.html',
         authenticate: true
       })      
-      .state('doctor.finish', {
+      .state('doctor.profile.finish', {
         url: '/finish',
         templateUrl: 'app/account/signup/doctor/finish.html',
         authenticate: true
