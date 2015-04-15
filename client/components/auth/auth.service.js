@@ -222,5 +222,13 @@ angular.module('sugarlandDoctorsApp')
           cb(false);
         }
       },
+            /**
+       * Check if a user is logged in
+       *
+       * @return {Boolean}
+       */
+      isDoctorLoggedIn: function() {
+        return currentDoctor.hasOwnProperty('_id');
+      }
     };
   });

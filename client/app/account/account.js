@@ -20,7 +20,7 @@ angular.module('sugarlandDoctorsApp')
         authenticate: true
       })
       .state('doctor', {
-        url: '/signup/doctor',
+        url: '/doctor',
         templateUrl: 'app/account/signup/doctor/index.html',
         controller:'doctorSignupCtrl'
       })

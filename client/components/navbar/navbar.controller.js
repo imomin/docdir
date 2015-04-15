@@ -9,6 +9,7 @@ angular.module('sugarlandDoctorsApp')
 
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.isDoctorLoggedIn = Auth.isDoctorLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
@@ -16,6 +17,11 @@ angular.module('sugarlandDoctorsApp')
       Auth.logout();
       $location.path('/login');
     };
+
+    $scope.logoutDoctor = function(){
+      Auth.logoutDoctor();
+      $location.path("/");
+    }
 
     $scope.isActive = function(route) {
       return route === $location.path();
