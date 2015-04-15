@@ -12,6 +12,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.isDoctorLoggedIn = Auth.isDoctorLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.getCurrentDoctor = Auth.getCurrentDoctor;
 
     $scope.logout = function() {
       Auth.logout();

@@ -229,6 +229,14 @@ angular.module('sugarlandDoctorsApp')
        */
       isDoctorLoggedIn: function() {
         return currentDoctor.hasOwnProperty('_id');
-      }
+      },      
+      /**
+       * Gets all available info on authenticated user
+       *
+       * @return {Object} user
+       */
+      getCurrentDoctor: function() {
+        return currentDoctor;
+      },
     };
   });
