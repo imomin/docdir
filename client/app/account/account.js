@@ -50,36 +50,57 @@ angular.module('sugarlandDoctorsApp')
       .state('doctor.profile.bio', {
         url: '/bio',
         templateUrl: 'app/account/doctor/bio.html',
-        authenticate: true
+        authenticate: true,
+        data: {
+            index:0
+          }
       })
       .state('doctor.profile.education', {
         url: '/education',
         templateUrl: 'app/account/doctor/education.html',
-        authenticate: true
+        authenticate: true,
+        data: {
+            index:1
+          }
       })
       .state('doctor.profile.featuers', {
         url: '/featuers',
         templateUrl: 'app/account/doctor/features.html',
-        authenticate: true
+        authenticate: true,
+        data: {
+            index:2
+          }
       })
       .state('doctor.profile.pictures', {
         url: '/pictures',
         templateUrl: 'app/account/doctor/pictures.html',
-        authenticate: true
+        authenticate: true,
+        data: {
+            index:4
+          }
       })
       .state('doctor.profile.address', {
         url: '/address',
         templateUrl: 'app/account/doctor/address.html',
-        authenticate: true
+        authenticate: true,
+        data: {
+            index:3
+          }
       })
       .state('doctor.profile.subscribe', {
         url: '/subscribe',
         templateUrl: 'app/account/doctor/subscribe.html',
-        authenticate: true
+        authenticate: true,
+        data: {
+            index:5
+          }
       })      
       .state('doctor.profile.finish', {
         url: '/finish',
         templateUrl: 'app/account/doctor/finish.html',
-        authenticate: true
+        authenticate: true,
+        data: {
+            index:6
+          }
       });
   });

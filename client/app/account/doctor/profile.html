@@ -1,12 +1,13 @@
 <section ui-view="doctor.profile" style="background:#efefe9;">
   <div class="container" ng-controller="doctorProfileCtrl">
     <div class="row">
-        <div class="board">
+        <div class="col-md-8 col-md-offset-2" style="padding-left:0px;padding-right:0px;">
                     <!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->
+          <div class="board">
           <div class="board-inner">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="active">
-                  <a ui-sref-active="active" ui-sref=".bio" data-toggle="tab" title="" ng-click="slide(0);">
+                  <a ui-sref-active="active" ui-sref=".bio" data-toggle="tab" title="">
                     <span class="round-tabs one">
                       <i class="fa fa-user-md"></i>
                     </span> 
@@ -14,42 +15,42 @@
                 </li>
 
                 <li >
-                  <a ui-sref-active="active" ui-sref=".education" data-toggle="tab" title="" ng-click="slide(1);">
+                  <a ui-sref-active="active" ui-sref=".education" data-toggle="tab" title="">
                     <span class="round-tabs two">
                       <i class="fa fa-graduation-cap"></i>
                     </span> 
                   </a>
                 </li>
                 <li>
-                  <a ui-sref-active="active" ui-sref=".featuers" data-toggle="tab" title="" ng-click="slide(2);">
+                  <a ui-sref-active="active" ui-sref=".featuers" data-toggle="tab" title="">
                     <span class="round-tabs three">
                       <i class="fa fa-info"></i>
                     </span>
                   </a>
                 </li>
                 <li>
-                  <a ui-sref-active="active" ui-sref=".address" data-toggle="tab" title="" ng-click="slide(3);">
+                  <a ui-sref-active="active" ui-sref=".address" data-toggle="tab" title="">
                     <span class="round-tabs four">
                       <i class="fa fa-map-marker"></i>
                     </span> 
                   </a>
                 </li>
                 <li>
-                  <a ui-sref-active="active" ui-sref=".pictures" data-toggle="tab" title="" ng-click="slide(4);">
+                  <a ui-sref-active="active" ui-sref=".pictures" data-toggle="tab" title="">
                     <span class="round-tabs five">
                       <i class="fa fa-camera-retro"></i>
                     </span>
                   </a>
                 </li>
                 <li>
-                  <a ui-sref-active="active" ui-sref=".subscribe" data-toggle="tab" title="" ng-click="slide(5);">
+                  <a ui-sref-active="active" ui-sref=".subscribe" data-toggle="tab" title="">
                     <span class="round-tabs six">
                       <i class="fa fa-credit-card"></i>
                     </span>
                   </a>
                 </li>
                 <li>
-                  <a ui-sref-active="active" ui-sref=".finish" data-toggle="tab" title="" ng-click="slide(6);">
+                  <a ui-sref-active="active" ui-sref=".finish" data-toggle="tab" title="">
                     <span class="round-tabs seven">
                       <i class="fa fa-check"></i>
                     </span>
@@ -57,9 +58,10 @@
                 </li>
 <!--                 <div class="liner"></div>
  -->            </ul>
+            </div>
           </div>
-          <div class="tab-content" style="">
-              <div class="ui-view-container" style="position:relative; min-height:300px; overflow:hidden;">
+          <div class="tab-content" style="padding-bottom:10px;">
+              <div class="ui-view-container" style="position:relative;min-height:300px; overflow:hidden;"> <!--  -->
                 <div id="form-views" ng-class="direction" ui-view style=""></div>
               </div>
             <div class="clearfix"></div>

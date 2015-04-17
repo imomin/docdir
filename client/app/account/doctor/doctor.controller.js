@@ -28,7 +28,7 @@ angular.module('sugarlandDoctorsApp')
       }
     }}])
 
-  .controller('doctorProfileCtrl', function ($scope, $state, Auth, $location, $animate) {
+  .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, Auth, $location, $animate) {
     $scope.doctor = {};
     $scope.errors = {};
     $scope.currentIndex = 0;
@@ -40,6 +40,12 @@ angular.module('sugarlandDoctorsApp')
     if($state.current.url === '/signup/doctor'){
       $state.go('doctor.login');
     }
+
+    $rootScope.$on('$stateChangeStart', function (event, next, current) {
+      if(next.data && next.data.index > -1){
+        $scope.slide(next.data.index);
+      }
+    });
 
     $scope.slide = function(index){
       if($scope.currentIndex < index) {
@@ -132,7 +138,7 @@ angular.module('sugarlandDoctorsApp')
         })
         .then( function() {
           // Logged in, redirect to home
-         $state.go('doctor.profile');
+         $state.go('doctor.profile.bio');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;

@@ -152,9 +152,7 @@
 }
 /* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/
 .board {
-    width: 75%;
     margin: 0px auto;
-    height: 600px;
     background: #fff;
 /*box-shadow: 10px 10px #ccc,-10px 20px #ddd;*/
 }
@@ -419,7 +417,7 @@ li.active span.round-tabs.seven{
     font-weight: lighter;
 }
 
-.entryForm input, textarea {
+.entryForm input, textarea, select {
   position: relative;
   display: inline-block;
   margin: 0;
@@ -434,6 +432,13 @@ li.active span.round-tabs.seven{
   font-family: "Helvetica Neue";
   font-size: 14pt;
   font-weight: lighter;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.entryForm select {
+  font-size: 13pt;
+  cursor: pointer;
 }
 
 .entryForm button {
