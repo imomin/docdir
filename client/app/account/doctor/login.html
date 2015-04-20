@@ -1,12 +1,17 @@
 <section ng-view="doctor.login" style="">
   <div class="container" ng-controller="doctorLoginCtrl">
       <div class="row">
-        <form name="form" shake-that autocomplete="off" novalidate ng-submit="submit(form)" class="form-horizontal" role="form">
+        <form name="form" login-error shake-that autocomplete="off" novalidate ng-submit="submit(form)" class="form-horizontal">
           <div class="col-md-4 col-md-offset-4">
               <div class="entryForm">
                   <div class="entryFormHeader">
                       <h3>Login for doctors <span class="fa fa-lock fa-lg pull-right"></span></h3>
                   </div>
+                  <div ng-show="errors.other" class="form-group has-error">
+                          <div class="col-sm-12">
+                              <h4 class="help-block has-error error-msg text-center">Invalid Username or Password.</h4>
+                          </div>
+                      </div>
                   <div class="">
                       <div class="form-group">
                           <div class="col-sm-12">
@@ -24,7 +29,7 @@
                           </div>
                       </div>
                     </div>
-                    <div >
+                    <div>
                         <a style="" ui-sref-active="active" ui-sref="doctor.resetPassword">Reset Password</a>
                         <a style="" class="pull-right" ui-sref-active="active" ui-sref="doctor.signup">Create an Account</a>
                     </div>

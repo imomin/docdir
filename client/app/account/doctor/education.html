@@ -1,10 +1,64 @@
-<div ng-view="doctor.education" class="container ltr">
+<div ng-view="doctor.education" class="ltr">
 	<div class="row">
-	    <div class="col-sm-12">
-	      <h1>Education</h1>
-	    </div>
-	    <div class="col-sm-12">
-
-	    </div>
+	    <form name="form" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
+          <div class=""><!-- col-md-12 -->
+              <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
+                <div class="entryFormHeader">
+                    <h3><span class="fa fa-user-md fa-lg pull-right"></span>Education</h3>
+                </div>
+			    <div class='row'>
+			        <div class='col-sm-4'>
+			        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+			        		<select class="form-control" name="specialist" id="specialist" placeholder="Specialist" ng-model="doctor.specialist" required>
+                              <option value="" disabled selected style="display: block;">Select primary practice</option>
+                              <option>Dentist</option>
+                              <option>Optometrist</option>
+                              <option>ENT</option>
+                            </select>
+			        	</div>
+			        </div>
+			        <div class='col-sm-4'>    
+			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
+			                <input type="input" class="form-control" name="title" id="title" placeholder="Name of College" ng-model="doctor.title" required>
+			            </div>
+			        </div>
+			        <div class='col-sm-4'>    
+			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
+			                <input type="input" class="form-control" name="title" id="title" placeholder="Year Graduated" ng-model="doctor.title" required>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="entryFormHeader">
+                    <h3><span class="fa fa-user-md fa-lg pull-right"></span>Education</h3>
+                </div>
+			    <div class='row'>
+			        <div class='col-sm-4'>
+			        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+			        		<select class="form-control" name="specialist" id="specialist" placeholder="Specialist" ng-model="doctor.specialist" required>
+                              <option value="" disabled selected style="display: block;">Select primary practice</option>
+                              <option>Dentist</option>
+                              <option>Optometrist</option>
+                              <option>ENT</option>
+                            </select>
+			        	</div>
+			        </div>
+			        <div class='col-sm-4'>    
+			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
+			                <input type="input" class="form-control" name="title" id="title" placeholder="Name of College" ng-model="doctor.title" required>
+			            </div>
+			        </div>
+			        <div class='col-sm-4'>    
+			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
+			                <input type="input" class="form-control" name="title" id="title" placeholder="Year Graduated" ng-model="doctor.title" required>
+			            </div>
+			        </div>
+			    </div>
+		    	<a ui-sref-active="active" ui-sref="doctor.profile.bio">Prev</a>
+		    	<div class="pull-right">
+				  <a ui-sref-active="active" ui-sref="doctor.profile.education">Next</a>
+				</div>
+              </div>
+          </div>
+        </form>
 	</div>
 </div>

@@ -13,10 +13,10 @@ exports.setup = function (Doctor, config) {
         if (err) return done(err);
 
         if (!doctor) {
-          return done(null, false, { message: 'This email is not registered.' });
+          return done(null, false, { message: 'InvalidEmailOrPassword' });
         }
         if (!doctor.authenticate(password)) {
-          return done(null, false, { message: 'This password is not correct.' });
+          return done(null, false, { message: 'InvalidEmailOrPassword' });
         }
         return done(null, doctor);
       });

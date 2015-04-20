@@ -4,7 +4,7 @@
           <div class=""><!-- col-md-12 -->
                   <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
                     <div class="entryFormHeader">
-                        <h3><span class="fa fa-user-md fa-lg pull-right"></span> Create new account</h3>
+                        <h3><span class="fa fa-user-md fa-lg pull-right"></span>Dr. {{doctor.firstName}} {{doctor.lastName}}&nbsp;&nbsp;{{doctor.credential}}</h3>
                     </div>
                     <div class="">
                     	 <div class='row'>
@@ -15,44 +15,58 @@
 					        </div>
 					        <div class='col-sm-6'>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                <input type="input" class="form-control" name="firstName" id="firstName" placeholder="First Name" ng-model="doctor.firstName" required>
+					                <input type="input" class="form-control" name="lastName" id="lastName" placeholder="Last Name" ng-model="doctor.lastName" required>
 					            </div>
 					        </div>
 					    </div>
-
+					    <div class='row'>
+					        <div class='col-sm-6'>    
+					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
+					                <input type="input" class="form-control" name="credential" id="credential" placeholder="Professional Credential Abbrivations" ng-model="doctor.credential" required>
+					            </div>
+					        </div>
+					        <div class='col-sm-6'>
+					        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+					        		<select class="form-control" name="specialist" id="specialist" placeholder="Specialist" ng-model="doctor.specialist" required>
+	                                  <option value="" disabled selected style="display: block;">Select primary practice</option>
+	                                  <option>Dentist</option>
+	                                  <option>Optometrist</option>
+	                                  <option>ENT</option>
+	                                </select>
+					        	</div>
+					        </div>
+					    </div>
+					    <div class='row'>
+					        <div class='col-sm-6'>
+					        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+					        		<select class="form-control" name="gender" id="gender" placeholder="Gender" ng-model="doctor.gender" required>
+	                                  <option value="" disabled selected style="display: block;">Select Gender</option>
+	                                  <option>Female</option>
+	                                  <option>Male</option>
+	                                </select>
+					        	</div>
+					        </div>
+					        <div class='col-sm-6'>
+					            <div class='form-group' style="padding-left: 20px;padding-right:20px;font-size:10pt;">
+					                <!-- <input type="input" class="form-control" name="dateOfBirth" id="dateOfBirth" placeholder="Date of birth" ng-model="doctor.dateOfBirth" required> -->
+					                 <input type="text" 
+					                 		class="form-control" 
+					                 		datepicker-popup="MM/dd/yyyy" 
+							                ng-model="doctor.dateOfBirth" is-open="calElements.dateOfBirth" 
+							                min="'1/1/1930'" max="'12/31/2014'" 
+							                datepicker-options="dateOptions"
+							                ng-required="true" 
+							                close-text="Close"
+							                ng-click="open($event,'dateOfBirth')" 
+							                name="dateOfBirth" 
+							                show-button-bar="false"
+							                placeholder="Date of Birth"/>
+					            </div>
+					        </div>
+					    </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <input type="input" class="form-control" name="firstName" id="firstName" placeholder="First Name" ng-model="doctor.firstName" required>
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="input" class="form-control" name="lastName" id="lastName" placeholder="Last Name" ng-model="doctor.lastName" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <select class="form-control" name="specialist" id="specialist" placeholder="Specialist" ng-model="doctor.specialist" required>
-                                  <option value="" disabled selected>Select your primary practice</option>
-                                  <option>Dentist</option>
-                                  <option>Optometrist</option>
-                                  <option>ENT</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="input" class="form-control" name="phone" id="phone" placeholder="Phone" ng-model="doctor.phone" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                           <div class="col-sm-12">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" ng-model="doctor.email" required mongoose-error>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Password" ng-model="doctor.password" required>
+                                <textarea ng-model="bio" name="bio" id="bio" class="form-control" placeholder="Bio, tell us about you." ng-model="doctor.bio" required></textarea>
                             </div>
                         </div>
                   </div>

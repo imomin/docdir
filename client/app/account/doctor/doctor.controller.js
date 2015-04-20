@@ -29,13 +29,26 @@ angular.module('sugarlandDoctorsApp')
     }}])
 
   .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, Auth, $location, $animate) {
-    $scope.doctor = {};
+    $scope.doctor = Auth.getCurrentDoctor();
     $scope.errors = {};
     $scope.currentIndex = 0;
     $scope.maxIndex = 2;
     $scope.direction = "rtl";
-    $scope.nextIndex = 1 
-    $scope.prevIndex = 0
+    $scope.nextIndex = 1;
+    $scope.prevIndex = 0;
+    $scope.calElements = {};
+    $scope.open = function($event, elementOpened) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
+      $scope.calElements[elementOpened] = !$scope.calElements[elementOpened];
+    };
+    $scope.dateOptions = {
+       datepickerMode:"'year'",
+       showWeeks:"false"
+    };
+
+    $scope.format = 'MM/dd/yyyy';
 
     if($state.current.url === '/signup/doctor'){
       $state.go('doctor.login');
@@ -127,10 +140,9 @@ angular.module('sugarlandDoctorsApp')
   .controller('doctorLoginCtrl',function($scope, Auth, $state) {
     $scope.doctor = {};
     $scope.errors = {};
+    $scope.doctor.email = "imomin@gmail.com";
     // method called from shakeThat directive
     $scope.submit = function(form) {
-      // show success message
-      $scope.showMessage = true;
       if(form.$valid) {
         Auth.loginDoctor({
           email: $scope.doctor.email,
@@ -142,6 +154,8 @@ angular.module('sugarlandDoctorsApp')
         })
         .catch( function(err) {
           $scope.errors.other = err.message;
+          angular.element(form).addClass("shake");
+          $state.go('doctor.login');
         });
       }
     };

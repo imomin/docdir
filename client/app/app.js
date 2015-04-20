@@ -7,6 +7,7 @@ angular.module('sugarlandDoctorsApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
+  'ui.bootstrap.datepicker',
   'ngMap',
   'nya.bootstrap.select',
   'ngAnimate',
@@ -90,7 +91,7 @@ angular.module('sugarlandDoctorsApp', [
       $rootScope.customErrors = {"duplicateEmail":"The specified email address is already in use.",
         "blankEmail":"Email cannot be blank.",
         "blankPassword":"Password cannot be blank.",
-        "invalidPassword":"Invalid password."};
+        "InvalidEmailOrPassword":"Invalid email or password."};
       bootstrap3ElementModifier.enableValidationStateIcons(true);
       defaultErrorMessageResolver.getErrorMessages().then(function(errorMessages) {
         angular.forEach($rootScope.customErrors, function(value, key){

@@ -81,15 +81,13 @@ function isDoctorAuthenticated() {
     .use(function(req, res, next) {
       // allow access_token to be passed through query parameter as well
       if(req.query && req.query.hasOwnProperty('access_token')) {
-        console.log('query param');
-        console.log(req.query);
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
       validateJwt(req, res, next);
     })
     // Attach user to request
     .use(function(req, res, next) {
-      Doctor.findById(req.user._id, function (err, doctor) {//req.user._id is coming from express-jwt and its not User object ID.
+      Doctor.findById(req.user._id, function (err, doctor) {//req.user._id is coming from express-jwt and its not "User" object.
         if (err) return next(err);
         if (!doctor) return res.send(401);
 
