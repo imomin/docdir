@@ -9,9 +9,11 @@ angular.module('sugarlandDoctorsApp', [
   'ui.bootstrap',
   'ui.bootstrap.datepicker',
   'ngMap',
+  'ngImgCrop',
   'nya.bootstrap.select',
   'ngAnimate',
-  'jcs-autoValidate'
+  'jcs-autoValidate',
+  'angularFileUpload'
 ])
 
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {

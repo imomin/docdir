@@ -459,4 +459,60 @@ li.active span.round-tabs.seven{
   color: #2587F6;
   text-decoration: none;
 }
+
+.cropBox {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    color: #666;
+    margin-bottom: 20px;
+    padding: 10px
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: 0;
+    background: #fff;
+    cursor: inherit;
+    display: block
+}
+
+.cropArea {
+    height: 350px;
+    overflow: hidden;
+    background-color: #fff
+}
+
+.croppedBox {
+    width: 220px;
+    height: 220px
+}
+
+.croppedBox>div {
+    background: url(../images/picture.svg)center center no-repeat #fff;
+    background-size: 50px 50px;
+    height: 200px
+}
+
+img-crop {
+    background: url(../images/picture.svg)center center no-repeat;
+    background-size: 100px 100px
+}
+
+.croppedBox img {
+  width: 150px;
+  height: 150px;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 50%;
+  border: 10px solid #ffffff;
+}
+
 /************************ CUSTOM CSS ******************************/
