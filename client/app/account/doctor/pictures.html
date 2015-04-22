@@ -6,20 +6,31 @@
 			        <div class="entryFormHeader">
 			            <h3>Profile Picture</h3>
 			        </div>
+			        <div class="card hovercard">
+		                <div class="cardheader">
+		                </div>
+		                <div class="avatar">
+		                    <img style="background-color: lightgray;" alt="" ng-src="{{profilePicture}}">
+		                    <!--  -->
+		                </div>
+		                <div class="info">
+		                    <ul class="list-justified text-center">
+		                        <li>
+		                            <p class="title">Dr. {{doctor.firstName}} {{doctor.lastName}}&nbsp;&nbsp;{{doctor.credential}}</p>
+		                            <p class="desc">{{doctor.specialist}}</p>
+		                        </li>
+		                    </ul>
+		                </div>
+            		</div>
 			        <div class="row">
-						<div class="col-md-12" style=" margin-bottom:20px">
+						<div class="col-md-12  text-center" style=" margin-bottom:20px">
 							<span class="btn btn-primary btn-file"> Select a picture file
 								<input type="file" name="fileInput" id="fileInput">
 							</span>
 						</div>
 					</div>
 				    <div class="row">
-				    	<div class="col-md-3">
-			                <div class="croppedBox">
-			                    <img alt="" ng-src="{{profilePicture}}">
-			                </div>
-				    	</div>
-				    	<div class="col-md-9">
+				    	<div class="col-md-12">
 							<div class="cropBox">
 								<div class="cropArea">
 									<img-crop image="uploadedProfilePicture" result-image="profilePicture" area-type="circle" class="ng-isolate-scope"></img-crop>
