@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 var Doctor = require('./doctor.model');
+var path = require('path');
+var fs = require('fs');
 
 // Get list of doctors
 exports.index = function(req, res) {
@@ -98,4 +100,23 @@ exports.me = function(req, res, next) {
  */
 exports.authCallback = function(req, res, next) {
   res.redirect('/');
+};
+
+/**
+ * Upload Files
+ */
+exports.uploadFile = function (req, res, next) {
+    var data = _.pick(req.body, 'type');
+    var file = req.files.file;
+    var tempPath = file.path;
+    var uploadPath = __dirname + '/../../../client/assets/images/' + file.name;
+    console.log(file);
+    fs.readFile(tempPath, function(err, data) {
+      fs.writeFile(uploadPath, data, function(err) {
+        fs.unlink(tempPath, function(){
+            if(err) throw err;
+            res.send("File uploaded to: " + uploadPath);
+        });
+      }); 
+    }); 
 };

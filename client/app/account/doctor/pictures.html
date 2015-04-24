@@ -1,7 +1,7 @@
 <div ng-view="doctor.pictures" class="ltr">
 	<div class="row">
 	    <form name="form" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
-			<div class=""><!-- col-md-12 -->
+			<div class="col-md-12"><!-- col-md-12 -->
 			  <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
 			        <div class="entryFormHeader">
 			            <h3>Profile Picture</h3>
@@ -10,7 +10,7 @@
 		                <div class="cardheader">
 		                </div>
 		                <div class="avatar">
-		                    <img style="background-color: lightgray;" alt="" ng-src="{{profilePicture}}">
+		                    <img style="background-color: lightgray;" alt="" ng-src="{{uploader.queue[0].croppedImage}}"><!-- profilePicture -->
 		                    <!--  -->
 		                </div>
 		                <div class="info">
@@ -22,23 +22,56 @@
 		                    </ul>
 		                </div>
             		</div>
-			        <div class="row">
-						<div class="col-md-12  text-center" style=" margin-bottom:20px">
-							<span class="btn btn-primary btn-file"> Select a picture file
-								<input type="file" name="fileInput" id="fileInput">
-							</span>
-						</div>
-					</div>
 				    <div class="row">
 				    	<div class="col-md-12">
 							<div class="cropBox">
 								<div class="cropArea">
-									<img-crop image="uploadedProfilePicture" result-image="profilePicture" area-type="circle" class="ng-isolate-scope"></img-crop>
+									<img-crop image="uploader.queue[0].image" result-image="uploader.queue[0].croppedImage" area-type="circle" class="ng-isolate-scope" on-load-done="picturePreview=true"></img-crop>
 								</div>
 							</div>
 						</div>
 					</div>
+
 					<div class="row">
+					    <div class="" nv-file-drop="" uploader="uploader">
+					        <div class="col-md-12">
+					            
+					            <div ng-show="uploader.isHTML5">
+					                <!-- Example: nv-file-drop="" uploader="{Object}" options="{Object}" filters="{String}" -->
+					                <div nv-file-drop="" uploader="uploader" options="">
+					                    <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="well my-drop-zone btn-file" style="border: 2px dashed #999999;margin-bottom: 0px;">
+					                        Drop file or click here.
+					                        <input type="file" nv-file-select="" uploader="uploader"/>
+					                    </div>
+					                </div>
+					         	</div>
+					         	<div ng-hide="uploader.isHTML5">
+					            	<span class="btn btn-primary btn-file"> Select a picture file
+										<input type="file" nv-file-select="" uploader="uploader"/><br/>
+									</span>
+					         	</div>
+					    	</div>
+					    </div>
+					</div>
+					<div style="margin-bottom: 40px;"></div>
+					<div ng-show="picturePreview" class="row">
+						<div class="col-md-12">
+					        <div style="">
+					            <div class="col-md-10" style="padding-left:0px;">
+					                <div class="progress" style="">
+					                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+					                </div>
+					            </div>
+					             <div class="col-md-2">
+					             	<button type="button" class="btn btn-success btn-xs" ng-click="uploader.queue[0].upload()" ng-disabled="uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess">
+					                    <i class="fa fa-upload"></i> Upload
+					                </button>
+					             </div>
+					        </div>
+					    </div>
+					</div>
+
+					<div class="">
 				    	<a ui-sref-active="active" ui-sref="doctor.profile.bio">Prev</a>
 				    	<div class="pull-right">
 						  <a ui-sref-active="active" ui-sref="doctor.profile.education">Next</a>
