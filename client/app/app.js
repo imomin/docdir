@@ -7,7 +7,10 @@ angular.module('sugarlandDoctorsApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
+  'ui.bootstrap.carousel',
   'ui.bootstrap.datepicker',
+  'ui.bootstrap.buttons',
+  'angularPayments',
   'ngMap',
   'ngImgCrop',
   'nya.bootstrap.select',
@@ -22,6 +25,7 @@ angular.module('sugarlandDoctorsApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+    Stripe.setPublishableKey('your-publishable-key');
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
@@ -99,8 +103,10 @@ angular.module('sugarlandDoctorsApp', [
         angular.forEach($rootScope.customErrors, function(value, key){
           errorMessages[key] = value;
         });
+        errorMessages["card"] = "Invalid card number.";
+        errorMessages["expiry"] = "Invalid expiration date.";
+        errorMessages["cvc"] = "Invalid CVC number.";
       });
-     
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next, current) {
       Auth.isDoctorLoggedInAsync(function(loggedIn) {

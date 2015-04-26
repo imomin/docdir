@@ -37,6 +37,8 @@ angular.module('sugarlandDoctorsApp')
     $scope.nextIndex = 1;
     $scope.prevIndex = 0;
     $scope.calElements = {};
+    $scope.doctor.subscriptionType = "monthly";
+    $scope.subscriptionOptions = {"monthly":"$25 per month.","yearly":"$255 per year. You save 15%."};
 
     $scope.open = function($event, elementOpened) {
       $event.preventDefault();
@@ -123,86 +125,14 @@ angular.module('sugarlandDoctorsApp')
       angular.element(document.querySelector('#fileInput')).on('change',$scope.handleFileSelect);
     },500);
 
-    /*************File Upload Example *****************/
-    var uploader = $scope.uploader = new FileUploader({
-      url: '/api/doctors/'+ $scope.doctor._id +'/upload'
-    });
-
-    uploader.filters.push({
-      name: 'imageFilter',
-      fn: function(item /*{File|FileLikeObject}*/, options) {
-      var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+     $scope.handleStripe = function(status, response){
+      if(response.error) {
+        // there was an error. Fix it.
+      } else {
+        // got stripe token, now charge it or smt
+        token = response.id
       }
-    });
-
-    // CALLBACKS
- 
-    /**
-     * Show preview with cropping
-     */
-    uploader.onAfterAddingFile = function(item) {
-        item.croppedImage = '';
-        if($scope.uploader.queue.length > 1) {
-          $scope.uploader.removeFromQueue(0);
-        }
-        var reader = new FileReader();
-        reader.onload = function(event) {
-          $scope.$apply(function(){
-            item.image = event.target.result;
-          });
-        };
-        reader.readAsDataURL(item._file);
-      };
- 
-     
-      uploader.onBeforeUploadItem = function(item) {
-        var blob = dataURItoBlob(item.croppedImage);
-        item._file = blob;
-      };
- 
-      var dataURItoBlob = function(dataURI) {
-        var binary = atob(dataURI.split(',')[1]);
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-        var array = [];
-        for(var i = 0; i < binary.length; i++) {
-          array.push(binary.charCodeAt(i));
-        }
-        return new Blob([new Uint8Array(array)], {type: mimeString});
-      };
- 
-      uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-          //console.info('onWhenAddingFileFailed', item, filter, options);
-      };
-      uploader.onAfterAddingAll = function(addedFileItems) {
-          //console.info('onAfterAddingAll', addedFileItems);
-      };
-      uploader.onProgressItem = function(fileItem, progress) {
-          //console.info('onProgressItem', fileItem, progress);
-      };
-      uploader.onProgressAll = function(progress) {
-          //console.info('onProgressAll', progress);
-      };
-      uploader.onSuccessItem = function(fileItem, response, status, headers) {
-          //console.info('onSuccessItem', fileItem, response, status, headers);
-      };
-      uploader.onErrorItem = function(fileItem, response, status, headers) {
-          //console.info('onErrorItem', fileItem, response, status, headers);
-      };
-      uploader.onCancelItem = function(fileItem, response, status, headers) {
-          //console.info('onCancelItem', fileItem, response, status, headers);
-      };
-      uploader.onCompleteItem = function(fileItem, response, status, headers) {
-          //console.info('onCompleteItem', fileItem, response, status, headers);
-          $scope.picturePreview=false;
-      };
-      uploader.onCompleteAll = function() {
-          //console.info('onCompleteAll');
-      };
-
-    /*************File Upload Example *****************/
-
-
+    }
 
   })
 
@@ -260,95 +190,165 @@ angular.module('sugarlandDoctorsApp')
     };
   })
 
-  // .controller('fileUploadCtrl',function($scope, Auth, $state, FileUploader) {
+  .controller('photoUploadCtrl',function($scope, Auth, $state, FileUploader) {
+      /*************File Upload Example *****************/
+      var photoUploader = $scope.photoUploader = new FileUploader({
+        url: '/api/doctors/'+ $scope.doctor._id +'/upload'
+      });
 
-  //   var uploader = $scope.uploader = new FileUploader({
-  //       url: '/api/users/photo'
-  //   });
- 
-  //   // FILTERS
- 
-  //   uploader.filters.push({
-  //       name: 'imageFilter',
-  //       fn: function(item /*{File|FileLikeObject}*/, options) {
-  //           var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-  //           return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-  //       }
-  //   });
- 
-  //   // CALLBACKS
- 
-  //   /**
-  //    * Show preview with cropping
-  //    */
-  //   uploader.onAfterAddingFile = function(item) {
-  //     // $scope.croppedImage = '';
-  //     item.croppedImage = '';
-  //     var reader = new FileReader();
-  //     reader.onload = function(event) {
-  //       $scope.$apply(function(){
-  //         item.image = event.target.result;
-  //       });
-  //     };
-  //     reader.readAsDataURL(item._file);
-  //   };
- 
-  //   /**
-  //    * Upload Blob (cropped image) instead of file.
-  //    * @see
-  //    *   https://developer.mozilla.org/en-US/docs/Web/API/FormData
-  //    *   https://github.com/nervgh/angular-file-upload/issues/208
-  //    */
-  //   uploader.onBeforeUploadItem = function(item) {
-  //     var blob = dataURItoBlob(item.croppedImage);
-  //     item._file = blob;
-  //   };
- 
-  //   /**
-  //    * Converts data uri to Blob. Necessary for uploading.
-  //    * @see
-  //    *   http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata
-  //    * @param  {String} dataURI
-  //    * @return {Blob}
-  //    */
-  //   var dataURItoBlob = function(dataURI) {
-  //     var binary = atob(dataURI.split(',')[1]);
-  //     var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-  //     var array = [];
-  //     for(var i = 0; i < binary.length; i++) {
-  //       array.push(binary.charCodeAt(i));
-  //     }
-  //     return new Blob([new Uint8Array(array)], {type: mimeString});
-  //   };
- 
-  //   uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-  //       console.info('onWhenAddingFileFailed', item, filter, options);
-  //   };
-  //   uploader.onAfterAddingAll = function(addedFileItems) {
-  //       console.info('onAfterAddingAll', addedFileItems);
-  //   };
-  //   uploader.onProgressItem = function(fileItem, progress) {
-  //       console.info('onProgressItem', fileItem, progress);
-  //   };
-  //   uploader.onProgressAll = function(progress) {
-  //       console.info('onProgressAll', progress);
-  //   };
-  //   uploader.onSuccessItem = function(fileItem, response, status, headers) {
-  //       console.info('onSuccessItem', fileItem, response, status, headers);
-  //   };
-  //   uploader.onErrorItem = function(fileItem, response, status, headers) {
-  //       console.info('onErrorItem', fileItem, response, status, headers);
-  //   };
-  //   uploader.onCancelItem = function(fileItem, response, status, headers) {
-  //       console.info('onCancelItem', fileItem, response, status, headers);
-  //   };
-  //   uploader.onCompleteItem = function(fileItem, response, status, headers) {
-  //       console.info('onCompleteItem', fileItem, response, status, headers);
-  //   };
-  //   uploader.onCompleteAll = function() {
-  //       console.info('onCompleteAll');
-  //   };
- 
-  //   console.info('uploader', uploader);
-  // })
+      photoUploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+          return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+      });
+
+      // CALLBACKS
+   
+      /**
+       * Show preview with cropping
+       */
+      photoUploader.onAfterAddingFile = function(item) {
+          item.croppedImage = '';
+          if($scope.photoUploader.queue.length > 1) {
+            $scope.photoUploader.removeFromQueue(0);
+          }
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            $scope.$apply(function(){
+              item.image = event.target.result;
+            });
+          };
+          reader.readAsDataURL(item._file);
+        };
+   
+       
+        photoUploader.onBeforeUploadItem = function(item) {
+          var blob = dataURItoBlob(item.croppedImage);
+          item._file = blob;
+        };
+   
+        var dataURItoBlob = function(dataURI) {
+          var binary = atob(dataURI.split(',')[1]);
+          var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+          var array = [];
+          for(var i = 0; i < binary.length; i++) {
+            array.push(binary.charCodeAt(i));
+          }
+          return new Blob([new Uint8Array(array)], {type: mimeString});
+        };
+   
+        photoUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            //console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        photoUploader.onAfterAddingAll = function(addedFileItems) {
+            //console.info('onAfterAddingAll', addedFileItems);
+        };
+        photoUploader.onProgressItem = function(fileItem, progress) {
+            //console.info('onProgressItem', fileItem, progress);
+        };
+        photoUploader.onProgressAll = function(progress) {
+            //console.info('onProgressAll', progress);
+        };
+        photoUploader.onSuccessItem = function(fileItem, response, status, headers) {
+            //console.info('onSuccessItem', fileItem, response, status, headers);
+        };
+        photoUploader.onErrorItem = function(fileItem, response, status, headers) {
+            //console.info('onErrorItem', fileItem, response, status, headers);
+        };
+        photoUploader.onCancelItem = function(fileItem, response, status, headers) {
+            //console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        photoUploader.onCompleteItem = function(fileItem, response, status, headers) {
+            //console.info('onCompleteItem', fileItem, response, status, headers);
+            //$scope.photoPreview=false;
+        };
+        photoUploader.onCompleteAll = function() {
+            //console.info('onCompleteAll');
+        };
+
+      /*************File Upload Example *****************/
+
+  })
+  .controller('pictureUploadCtrl',function($scope, Auth, $state, FileUploader) {
+      $scope.myInterval = 5000;
+
+      /*************File Upload Example *****************/
+      var pictureUploader = $scope.pictureUploader = new FileUploader({
+        url: '/api/doctors/'+ $scope.doctor._id +'/upload'
+      });
+
+      pictureUploader.filters.push({
+        name: 'imageFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+          return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+      });
+
+      // CALLBACKS
+   
+      /**
+       * Show preview with cropping
+       */
+        pictureUploader.onAfterAddingFile = function(item) {
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            $scope.$apply(function(){
+              item.text = "blah";
+              item.image = event.target.result;
+            });
+          };
+          reader.readAsDataURL(item._file);
+        };
+   
+       
+        pictureUploader.onBeforeUploadItem = function(item) {
+          var blob = dataURItoBlob(item.image);
+          item._file = blob;
+        };
+   
+        var dataURItoBlob = function(dataURI) {
+          var binary = atob(dataURI.split(',')[1]);
+          var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+          var array = [];
+          for(var i = 0; i < binary.length; i++) {
+            array.push(binary.charCodeAt(i));
+          }
+          return new Blob([new Uint8Array(array)], {type: mimeString});
+        };
+   
+        pictureUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            //console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        pictureUploader.onAfterAddingAll = function(addedFileItems) {
+            //console.info('onAfterAddingAll', addedFileItems);
+        };
+        pictureUploader.onProgressItem = function(fileItem, progress) {
+            //console.info('onProgressItem', fileItem, progress);
+        };
+        pictureUploader.onProgressAll = function(progress) {
+            //console.info('onProgressAll', progress);
+        };
+        pictureUploader.onSuccessItem = function(fileItem, response, status, headers) {
+            //console.info('onSuccessItem', fileItem, response, status, headers);
+        };
+        pictureUploader.onErrorItem = function(fileItem, response, status, headers) {
+            //console.info('onErrorItem', fileItem, response, status, headers);
+        };
+        pictureUploader.onCancelItem = function(fileItem, response, status, headers) {
+            //console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        pictureUploader.onCompleteItem = function(fileItem, response, status, headers) {
+            //console.info('onCompleteItem', fileItem, response, status, headers);
+            //$scope.photoPreview=false;
+        };
+        pictureUploader.onCompleteAll = function() {
+            //console.info('onCompleteAll');
+        };
+
+      /*************File Upload Example *****************/
+
+  })
 ;

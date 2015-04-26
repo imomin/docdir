@@ -79,6 +79,14 @@ angular.module('sugarlandDoctorsApp')
             index:4
           }
       })
+      .state('doctor.profile.profilePicture', {
+        url: '/photo',
+        templateUrl: 'app/account/doctor/profilePicture.html',
+        authenticate: true,
+        data: {
+            index:-1
+          }
+      })
       .state('doctor.profile.address', {
         url: '/address',
         templateUrl: 'app/account/doctor/address.html',
