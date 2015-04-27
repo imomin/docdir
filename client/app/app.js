@@ -7,6 +7,8 @@ angular.module('sugarlandDoctorsApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
+  'ui.bootstrap.alert',
+  'ui.bootstrap.typeahead',
   'ui.bootstrap.carousel',
   'ui.bootstrap.datepicker',
   'ui.bootstrap.buttons',

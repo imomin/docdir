@@ -86,4 +86,14 @@ User.find({}).remove(function() {
 }
 */
 
+// var jsonData = [...]
+// distinctArray = [];
+// _.each(jsonData,function(item,index){
+//   if(item.insurances && _.isArray(item.insurances) && item.insurances.length > 0){
+//     distinctArray = _.union(distinctArray,item.insurances);
+//   }
+// });
+
+
+
 

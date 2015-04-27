@@ -37,8 +37,13 @@ angular.module('sugarlandDoctorsApp')
     $scope.nextIndex = 1;
     $scope.prevIndex = 0;
     $scope.calElements = {};
+    $scope.language = "";
     $scope.doctor.subscriptionType = "monthly";
     $scope.subscriptionOptions = {"monthly":"$25 per month.","yearly":"$255 per year. You save 15%."};
+    $scope.doctor.languages = $scope.doctor.languages && $scope.doctor.languages.length > 0 ? $scope.doctor.languages : ["English"];
+    $scope.doctor.insurances = $scope.doctor.insurances && $scope.doctor.insurances.length > 0 ? $scope.doctor.insurances : []; 
+    $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
+    $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
 
     $scope.open = function($event, elementOpened) {
       $event.preventDefault();
@@ -133,6 +138,28 @@ angular.module('sugarlandDoctorsApp')
         token = response.id
       }
     }
+
+    $scope.addLanguage = function($item, $model, $label) {
+      if($label && $label.trim().length > 0 && $scope.doctor.languages.indexOf($label.trim()) === -1) {
+        $scope.doctor.languages.push($label.trim());
+      }
+    };
+
+    $scope.removeLanguage = function(index) {
+      $scope.doctor.languages.splice(index, 1);
+    };
+
+    $scope.addInsurance = function($item, $model, $label) {
+      if($label && $label.trim().length > 0 && $scope.doctor.insurances.indexOf($label.trim()) === -1) {
+        $scope.doctor.insurances.push($label.trim());
+      }
+    };
+
+    $scope.removeInsurance = function(index) {
+      $scope.doctor.insurances.splice(index, 1);
+    };
+
+
 
   })
 
