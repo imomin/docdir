@@ -1,60 +1,95 @@
 <div ng-view="doctor.education" class="ltr">
 	<div class="row">
-	    <form name="form" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
+	    <form name="forms.education" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
           <div class=""><!-- col-md-12 -->
               <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
-                <div class="entryFormHeader">
+                <div class="entryFormHeader" style="padding-bottom:0px;">
                     <h3 style="font-size: 17pt;">Education</h3>
                 </div>
+                <div class="row">
+	        		<div class='col-sm-10'>
+	        			<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+	        				{{doctor.educations}}
+	        			</div>
+	        		</div>
+	        	</div>
 			    <div class='row'>
 			        <div class='col-sm-4'>
 			        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			        		<input type="input" class="form-control" name="title" id="title" placeholder="Degree, Residency, etc." ng-model="doctor.degree" required>
+			        		<input type="input" class="form-control" name="degree" id="degree" placeholder="Degree, Residency, etc.">
 			        	</div>
 			        </div>
 			        <div class='col-sm-4'>    
 			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			                <input type="input" class="form-control" name="title" id="title" placeholder="Name of College" ng-model="doctor.schoolName" required>
+			                <input type="input" class="form-control" name="college" id="college" placeholder="Name of College">
 			            </div>
 			        </div>
 			        <div class='col-sm-2'>    
 			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			                <input type="input" maxlength="4" ng-minlength="4" class="form-control" name="title" id="title" placeholder="Year" valid-number filter="limitTo:4 | number:0" ng-model="doctor.yearGraduate" required>
+			                <input type="input" maxlength="4" ng-minlength="4" class="form-control" name="yearGraduate" id="yearGraduate" placeholder="Year" valid-number filter="limitTo:4 | number:0">
 			            </div>
 			        </div>
 					<div class='col-sm-2'>
 			        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			        		<button class="btn btn-default">Add</button>
+			        		<button type="button" class="btn btn-default" ng-click="addEducation()">Add</button>
 			        	</div>
 			        </div>
 			    </div>
-			    <div class="entryFormHeader">
+			    <div class="entryFormHeader" style="padding-bottom:0px;">
                     <h3 style="font-size: 17pt;">Board Certifications</h3>
                 </div>
+                <div class="row">
+	        		<div class='col-sm-10'>
+	        			<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+		            		<ul class="list-group" style="margin-bottom:0px;">
+								<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;border: 1px solid #BEE5BF" ng-repeat="boardCertification in doctor.boardCertifications" type="success">{{boardCertification}}
+									<ul class="list-group-submenu" ng-click="removeBoardCertification($index)">
+										<li><span class="fa fa-times"></span></li>
+									</ul>
+								</li>
+		            		</ul>
+			            </div>
+	        		</div>
+	        		<div class='col-sm-2'></div>
+	        	</div>
 			    <div class='row'>
 			        <div class='col-sm-10'>
 			        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			        		<input type="input" class="form-control" name="title" id="title" placeholder="Board Certifications" ng-model="doctor.boardCertification" required>
+			        		<input type="input" class="form-control" name="boardCertification" id="boardCertification" placeholder="Board Certifications">
 			        	</div>
 			        </div>
 			        <div class='col-sm-2'>
 			        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			        		<button class="btn btn-default">Add</button>
+			        		<button type="button" class="btn btn-default" ng-click="addBoardCertification()">Add</button>
 			        	</div>
 			        </div>
 			    </div>
-			    <div class="entryFormHeader">
+			    <div class="entryFormHeader" style="padding-bottom:0px;">
                     <h3 style="font-size: 17pt;">Professional Memberships</h3>
                 </div>
+                <div class="row">
+	        		<div class='col-sm-10'>
+	        			<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+		            		<ul class="list-group" style="margin-bottom:0px;">
+								<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;border: 1px solid #BEE5BF" ng-repeat="professionalMembership in doctor.professionalMemberships" type="success">{{professionalMembership}}
+									<ul class="list-group-submenu" ng-click="removeProfessionalMembership($index)">
+										<li><span class="fa fa-times"></span></li>
+									</ul>
+								</li>
+		            		</ul>
+			            </div>
+	        		</div>
+	        		<div class='col-sm-2'></div>
+	        	</div>
 			    <div class='row'>
 			        <div class='col-sm-10'>    
 			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			                <input type="input" class="form-control" name="title" id="title" placeholder="Professional Memberships" ng-model="doctor.ProfessionalMemership" required>
+			                <input type="input" class="form-control" name="professionalMembership" id="professionalMembership" placeholder="Professional Memberships">
 			            </div>
 			        </div>
 			        <div class='col-sm-2'>
 			        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			        		<button class="btn btn-default">Add</button>
+			        		<button type="button" class="btn btn-default" ng-click="addProfessionalMemberships()">Add</button>
 			        	</div>
 			        </div>
 			    </div>

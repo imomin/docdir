@@ -1,6 +1,6 @@
 <div ng-view="doctor.bio" class="rtl"><!-- container -->
 	<div class="row">
-	    <form name="form" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
+	    <form name="forms.bio" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(forms.bio)" class="form-horizontal">
           <div class=""><!-- col-md-12 -->
                   <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
                     <div class="entryFormHeader">
@@ -66,7 +66,7 @@
 					    </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <textarea ng-model="bio" name="bio" id="bio" class="form-control" placeholder="Bio, tell us about you." ng-model="doctor.bio" required></textarea>
+                                <textarea ng-model="doctor.bio" name="bio" id="bio" class="form-control" placeholder="Bio, tell us about you." ng-model="doctor.bio" required></textarea>
                             </div>
                         </div>
                   </div>

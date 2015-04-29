@@ -30,6 +30,7 @@ angular.module('sugarlandDoctorsApp')
 
   .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, Auth, $location, $animate, $timeout, FileUploader) {
     $scope.doctor = Auth.getCurrentDoctor();
+    $scope.forms = {};
     $scope.errors = {};
     $scope.currentIndex = 0;
     $scope.maxIndex = 2;
@@ -62,9 +63,13 @@ angular.module('sugarlandDoctorsApp')
       $state.go('doctor.login');
     }
 
-    $rootScope.$on('$stateChangeStart', function (event, next, current) {
+    $rootScope.$on('$stateChangeStart', function (event, next, current, from) {
       if(next.data && next.data.index > -1){
         $scope.slide(next.data.index);
+        var formName = from.name.split(".")[from.name.split(".").length-1];
+        if($scope.forms[formName] && $scope.forms[formName].$valid && $scope.forms[formName].$dirty){
+          $scope.save();
+        }
       }
     });
 
@@ -88,32 +93,6 @@ angular.module('sugarlandDoctorsApp')
         }
       });
     }
-
-    $scope.register = function(form) {
-      $scope.submitted = true;
-
-      if(form.$valid) {
-        Auth.createUser({
-          name: $scope.doctor.name,
-          email: $scope.doctor.email,
-          password: $scope.doctor.password
-        })
-        .then( function() {
-          // Account created, redirect to home
-          $location.path('/');
-        })
-        .catch( function(err) {
-          err = err.data;
-          $scope.errors = {};
-
-          // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function(error, field) {
-            form[field].$setValidity('mongoose', false);
-            $scope.errors[field] = error.message;
-          });
-        });
-      }
-    };
 
     $scope.handleFileSelect=function(evt) {
       var file=evt.currentTarget.files[0];
@@ -142,24 +121,119 @@ angular.module('sugarlandDoctorsApp')
     $scope.addLanguage = function($item, $model, $label) {
       if($label && $label.trim().length > 0 && $scope.doctor.languages.indexOf($label.trim()) === -1) {
         $scope.doctor.languages.push($label.trim());
+        _.remove($scope.languages, function(n) {
+          return n === $label;
+        });
       }
     };
 
     $scope.removeLanguage = function(index) {
+      $scope.languages.push($scope.doctor.languages[index]);
       $scope.doctor.languages.splice(index, 1);
     };
+    $scope.syncLanguageList = function(){
+      _.remove($scope.languages, function(n) {
+        return $scope.doctor.languages.indexOf(n) > -1;
+      });
+    }
+    $scope.syncLanguageList();
+
 
     $scope.addInsurance = function($item, $model, $label) {
       if($label && $label.trim().length > 0 && $scope.doctor.insurances.indexOf($label.trim()) === -1) {
         $scope.doctor.insurances.push($label.trim());
+        _.remove($scope.insurances, function(n) {
+          return n === $label;
+        });
       }
     };
-
     $scope.removeInsurance = function(index) {
+      $scope.insurances.push($scope.doctor.insurances[index]);
       $scope.doctor.insurances.splice(index, 1);
     };
+    $scope.syncInsuranceList = function(){
+      _.remove($scope.insurances, function(n) {
+        return $scope.doctor.insurances.indexOf(n) > -1;
+      });
+    }
+    $scope.syncInsuranceList();
 
+    $scope.addAffiliation = function() {
+      var affiliate =  $('#affiliation').val();
+      if(affiliate && affiliate.trim().length > 0 && $scope.doctor.insurances.indexOf(affiliate.trim()) === -1) {
+        $scope.doctor.affiliations.push(affiliate.trim());
+      };
+      $('#affiliation').val("");
+    }
+    $scope.removeAffiliation = function(index) {
+      $scope.forms['additionalInformation'].$dirty = true;
+      $scope.doctor.affiliations.splice(index, 1);
+    };
 
+    $scope.addPersonalInterest = function() {
+      var personalInterest =  $('#interest').val();
+      if(personalInterest && personalInterest.trim().length > 0 && $scope.doctor.personalInterests.indexOf(personalInterest.trim()) === -1) {
+        $scope.doctor.personalInterests.push(personalInterest.trim());
+      };
+      $('#interest').val("");
+    }
+    $scope.removePersonalInterest = function(index) {
+      $scope.forms['additionalInformation'].$dirty = true;
+      $scope.doctor.personalInterests.splice(index, 1);
+    };
+
+    $scope.addEducation = function() {
+      var degree =  $('#degree').val();
+      var college =  $('#college').val();
+      var yearGraduate =  $('#yearGraduate').val();
+      var educationObj = {"degree":degree,"college":college,"yearGraduate":yearGraduate};
+
+      if($scope.doctor.educations.indexOf(educationObj) === -1) {
+        $scope.doctor.educations.push(educationObj);
+      };
+
+      degree =  $('#degree').val("");
+      college =  $('#college').val("");
+      yearGraduate =  $('#yearGraduate').val("");
+    }
+    $scope.removeEducation = function(index) {
+      $scope.forms['education'].$dirty = true;
+      $scope.doctor.educations.splice(index, 1);
+    };
+
+    $scope.addBoardCertification = function() {
+      var boardCertification =  $('#boardCertification').val();
+      if(boardCertification && boardCertification.trim().length > 0 && $scope.doctor.boardCertifications.indexOf(boardCertification.trim()) === -1) {
+        $scope.doctor.boardCertifications.push(boardCertification.trim());
+      };
+      $('#boardCertification').val("");
+    }
+    $scope.removeBoardCertification = function(index) {
+      $scope.forms['education'].$dirty = true;
+      $scope.doctor.boardCertifications.splice(index, 1);
+    };
+
+    $scope.addProfessionalMemberships = function() {
+      var professionalMembership =  $('#professionalMembership').val();
+      if(professionalMembership && professionalMembership.trim().length > 0 && $scope.doctor.professionalMemberships.indexOf(professionalMembership.trim()) === -1) {
+        $scope.doctor.professionalMemberships.push(professionalMembership.trim());
+      };
+      $('#professionalMembership').val("");
+    }
+    $scope.removeProfessionalMembership = function(index) {
+      $scope.forms['education'].$dirty = true;
+      $scope.doctor.professionalMemberships.splice(index, 1);
+    };
+
+    $scope.save = function(){
+      Auth.updateDoctor($scope.doctor)
+      .then(function(){
+      })
+      .catch(function(err){
+        debugger;
+        console.log(err);
+      });
+    }
 
   })
 

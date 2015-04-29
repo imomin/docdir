@@ -146,7 +146,7 @@ angular.module('sugarlandDoctorsApp')
         return $cookieStore.get('token');
       },
 
-            /**
+      /**
        * Create a new doctor
        *
        * @param  {Object}   doctor     - doctor info
@@ -157,6 +157,27 @@ angular.module('sugarlandDoctorsApp')
         var cb = callback || angular.noop;
 
         return Doctor.save(doctor,
+          function(data) {
+            //$cookieStore.put('tokend', data.token);
+            //currentDoctor = Doctor.get();
+            return cb(doctor);
+          },
+          function(err) {
+            this.logout();
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+      /**
+       * Update doctor's data
+       *
+       * @param  {Object}   doctor     - doctor info
+       * @param  {Function} callback - optional
+       * @return {Promise}
+       */
+      updateDoctor: function(doctor, callback) {
+        var cb = callback || angular.noop;
+
+        return Doctor.update(doctor,
           function(data) {
             //$cookieStore.put('tokend', data.token);
             //currentDoctor = Doctor.get();

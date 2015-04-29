@@ -33,10 +33,11 @@ exports.create = function(req, res) {
 // Updates an existing doctor in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Doctor.findById(req.params.id, function (err, doctor) {/*'-salt -hashedPassword',*/
+  Doctor.findById(req.params.id, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
     if (err) { return handleError(res, err); }
     if(!doctor) { return res.send(404); }
     var updated = _.merge(doctor, req.body);
+    console.log(updated);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, doctor); //_.omit(doctor, ['salt','hashedPassword']);

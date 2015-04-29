@@ -17,6 +17,9 @@ angular.module('sugarlandDoctorsApp')
         params: {
           id:'me'
         }
+      },
+      update: {
+        method: 'PUT'
       }
 	  });
   });

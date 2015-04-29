@@ -1,8 +1,8 @@
-<div ng-view="doctor.features" class="ltr">
+<div ng-view="doctor.additionalInformation" class="ltr">
 	<div class="row">
-	    <form name="form" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
+	    <form name="forms.additionalInformation" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(forms.additionalInformation)" class="form-horizontal">
           <div class=""><!-- col-md-12 -->
-                  <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
+                <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
                     <div class="entryFormHeader">
                         <h3>Additional Information</h3>
                     </div>
@@ -18,11 +18,14 @@
 					            <span>Need a website? Contact us at 832-630-4986 for a free quote.</span>
 					        </div>
 					    </div>
+				        <div class="entryFormHeader">
+		                    <h3 style="font-size: 17pt;">Languages</h3>
+		                </div>
                     	<div class="row">
-                    		<div class='col-sm-6'> <!-- languages -->
+                    		<div class='col-sm-10'> <!-- languages -->
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
 				            		<ul class="list-group" style="margin-bottom:0px;">
-										<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;" ng-repeat="language in doctor.languages" type="success">{{language}}
+										<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;border: 1px solid #BEE5BF" ng-repeat="language in doctor.languages" type="success">{{language}}
 											<ul ng-hide="language === 'English'" class="list-group-submenu" ng-click="removeLanguage($index)">
 												<li><span class="fa fa-times"></span></li>
 											</ul>
@@ -30,82 +33,108 @@
 				            		</ul>
 					            </div>
 					        </div>
-					        <div class='col-sm-6'> <!-- insurances -->
-					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					            	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					            		<ul class="list-group" style="margin-bottom:0px;">
-											<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;" ng-repeat="insurance in doctor.insurances" type="success">{{insurance}}
-												<ul class="list-group-submenu" ng-click="removeInsurance($index)">
-													<li><span class="fa fa-times"></span></li>
-												</ul>
-											</li>
-					            		</ul>
-						            </div>
-					            </div>
+					        <div class='col-sm-2'> <!-- insurances -->
+
 					        </div>
                     	</div>
                     	<div class='row'>
-					        <div class='col-sm-6'>    
+					        <div class='col-sm-10'>    
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" name="language" id="language" ng-model="selectedLanguage" typeahead="language for language in languages | filter:$viewValue | limitTo:8" class="form-control" placeholder="Languages you speak" typeahead-on-select="addLanguage($item, $model, $label);selectedLanguage='';">
+					                 <input type="input" name="language" id="language" ng-model="selectedLanguage" typeahead="language for language in languages | filter:$viewValue | limitTo:10" class="form-control" placeholder="Languages you speak" typeahead-on-select="addLanguage($item, $model, $label);selectedLanguage='';">
 					            </div>
 					        </div>
-					        <div class='col-sm-6'>
-					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
+					        <div class='col-sm-2'>
+					        </div>
+					    </div>
+						<div class="entryFormHeader" style="padding-bottom:0px;">
+		                    <h3 style="font-size: 17pt;">Insurances</h3>
+		                </div>
+		                <div class="row">
+                    		<div class='col-sm-10'>
+                    			<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+				            		<ul class="list-group" style="margin-bottom:0px;">
+										<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;border: 1px solid #BEE5BF" ng-repeat="insurance in doctor.insurances" type="success">{{insurance}}
+											<ul class="list-group-submenu" ng-click="removeInsurance($index)">
+												<li><span class="fa fa-times"></span></li>
+											</ul>
+										</li>
+				            		</ul>
+					            </div>
+                    		</div>
+                    		<div class='col-sm-5'></div>
+                    	</div>
+                    	<div class='row'>
+					        <div class='col-sm-10'>
+	                    		<div class='form-group' style="padding-left: 20px;padding-right:20px;">
 					                <input type="input" class="form-control" name="insurance" ng-model="selectedInsurance" id="insurance" placeholder="Accept Insurance from..." typeahead="insurance for insurance in insurances | filter:$viewValue | limitTo:10" typeahead-on-select="addInsurance($item, $model, $label);selectedInsurance='';">
 					            </div>
 					        </div>
 					    </div>
-					    <div class="row">
-                    		<div class='col-sm-6'>    
-					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
+                    	</div>
+					    <div class="entryFormHeader" style="padding-bottom:0px;">
+		                    <h3 style="font-size: 17pt;">Affiliations</h3>
+		                </div>
+                    	<div class="row">
+                    		<div class='col-sm-10'>
+                    			<div class='form-group' style="padding-left: 20px;padding-right:20px;">
 				            		<ul class="list-group" style="margin-bottom:0px;">
-										<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;" ng-repeat="affiliation in doctor.affiliations" type="success">{{affiliation}}
+										<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;border: 1px solid #BEE5BF" ng-repeat="affiliation in doctor.affiliations" type="success">{{affiliation}}
 											<ul class="list-group-submenu" ng-click="removeAffiliation($index)">
 												<li><span class="fa fa-times"></span></li>
 											</ul>
 										</li>
 				            		</ul>
 					            </div>
-					        </div>
+                    		</div>
+                    		<div class='col-sm-5'></div>
                     	</div>
                     	<div class='row'>
-					        <div class='col-sm-6'>    
+					        <div class='col-sm-10'>    
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
 					                 <input type="input" name="affiliation" id="affiliation" class="form-control" placeholder="Affiliation with ...">
 					            </div>
 					        </div>
-					        <div class='col-sm-6'>
+					        <div class='col-sm-2'>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					            	<button class="btn btn-default">Add</button>
+					            	<button type="button" class="btn btn-default" ng-click="addAffiliation();">Add</button>
 					            </div>
 					        </div>
 					    </div>
+					    <div class="entryFormHeader" style="padding-bottom:0px;">
+		                    <h3 style="font-size: 17pt;">Personal Interest</h3>
+		                </div>
+					    <div class="row">
+                    		<div class='col-sm-10'>
+                    			<div class='form-group' style="padding-left: 20px;padding-right:20px;">
+				            		<ul class="list-group" style="margin-bottom:0px;">
+										<li class="list-group-item list-group-item-success" style="margin-bottom:0px;border-radius:0px;border: 1px solid #BEE5BF" ng-repeat="personalInterest in doctor.personalInterests" type="success">{{personalInterest}}
+											<ul class="list-group-submenu" ng-click="removePersonalInterest($index)">
+												<li><span class="fa fa-times"></span></li>
+											</ul>
+										</li>
+				            		</ul>
+					            </div>
+                    		</div>
+                    		<div class='col-sm-2'></div>
+                    	</div>
 					    <div class='row'>
-					        <div class='col-sm-6'>    
+					        <div class='col-sm-10'>    
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                <input type="input" class="form-control" name="" id="" placeholder="Personal Interests"  required>
+					                <input type="input" class="form-control" ng-model="interest" name="interest" id="interest" placeholder="Personal Interests">
 					            </div>
 					        </div>
-					        <div class='col-sm-6'>
+					        <div class='col-sm-2'>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                <button class="btn btn-default">Add</button>
+					                <button type="button" ng-click="addPersonalInterest($('#interest').val());" class="btn btn-default">Add</button>
 					            </div>
 					        </div>
 					    </div>
-					    
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                
-                            </div>
-                        </div>
-                  </div>
-					<a ui-sref-active="active" ui-sref="doctor.profile.education">Prev</a>
+						 <a ui-sref-active="active" ui-sref="doctor.profile.education">Prev</a>
 						<div class="pull-right">
-					<a ui-sref-active="active" ui-sref="doctor.profile.address">Next</a>
-					</div>
-              </div>
-          </div>
+							<a ui-sref-active="active" ui-sref="doctor.profile.address">Next</a>
+						</div>
+                 </div>
+            </div>
         </form>
 	</div>
 </div>
