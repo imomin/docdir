@@ -1,6 +1,6 @@
 <div ng-view="doctor.education" class="ltr">
 	<div class="row">
-	    <form name="forms.education" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
+	    <form name="forms.education" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(forms.education)" class="form-horizontal">
           <div class=""><!-- col-md-12 -->
               <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
                 <div class="entryFormHeader" style="padding-bottom:0px;">
@@ -9,7 +9,22 @@
                 <div class="row">
 	        		<div class='col-sm-10'>
 	        			<div class='form-group' style="padding-left: 20px;padding-right:20px;">
-	        				{{doctor.educations}}
+						        <!-- <div class="timelineEducationBar">
+						        	<i class="fa fa-play fa-flip-horizontal" style="left: -10px;position: absolute;top: 3px;"></i><i class="fa fa-play"></i>
+						        </div> -->
+					        	<div class="" ng-repeat="education in doctor.educations">
+					        		<div class="col-sm-12">
+					        			<div class="pull-left" style="">{{education.yearGraduate}}</div>
+					        			<div ng-class="{'timelineEducationBar':!$last}"></div>
+					        			<div class="blurCircle pull-left" style=""></div>
+							           	<div class="pull-left" style="padding-bottom: 25px;">
+							           		<div class="pull-left" style="">{{education.degree}}&nbsp;</div>
+							           		<div class="pull-left"> at {{education.college}}</div>
+							           		<div class="pull-left" ng-click="removeEducation($index)">&nbsp;<span style="color:red;" class="fa fa-times"></span></div>
+							           	</div>
+							           	<div class="clear"></div>
+					        		</div>
+					        	</div>
 	        			</div>
 	        		</div>
 	        	</div>

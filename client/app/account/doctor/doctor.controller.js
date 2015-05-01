@@ -28,6 +28,17 @@ angular.module('sugarlandDoctorsApp')
       }
     }}])
 
+  .directive('disableAnimation', function($animate){
+      return {
+          restrict: 'A',
+          link: function($scope, $element, $attrs){
+              $attrs.$observe('disableAnimation', function(value){
+                  $animate.enabled(!value, $element);
+              });
+          }
+      }
+  })
+
   .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, Auth, $location, $animate, $timeout, FileUploader) {
     $scope.doctor = Auth.getCurrentDoctor();
     $scope.forms = {};
@@ -189,6 +200,7 @@ angular.module('sugarlandDoctorsApp')
       var educationObj = {"degree":degree,"college":college,"yearGraduate":yearGraduate};
 
       if($scope.doctor.educations.indexOf(educationObj) === -1) {
+        $scope.forms['education'].$dirty = true;
         $scope.doctor.educations.push(educationObj);
       };
 
@@ -204,6 +216,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.addBoardCertification = function() {
       var boardCertification =  $('#boardCertification').val();
       if(boardCertification && boardCertification.trim().length > 0 && $scope.doctor.boardCertifications.indexOf(boardCertification.trim()) === -1) {
+        $scope.forms['education'].$dirty = true;
         $scope.doctor.boardCertifications.push(boardCertification.trim());
       };
       $('#boardCertification').val("");
@@ -216,6 +229,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.addProfessionalMemberships = function() {
       var professionalMembership =  $('#professionalMembership').val();
       if(professionalMembership && professionalMembership.trim().length > 0 && $scope.doctor.professionalMemberships.indexOf(professionalMembership.trim()) === -1) {
+        $scope.forms['education'].$dirty = true;
         $scope.doctor.professionalMemberships.push(professionalMembership.trim());
       };
       $('#professionalMembership').val("");
@@ -234,6 +248,12 @@ angular.module('sugarlandDoctorsApp')
         console.log(err);
       });
     }
+
+  $scope.myInterval = 5000;
+  $scope.addresses = [
+    {"address":"12404 South Kirkwood","Suite":"A","city":"Stafford","state":"TX","postalCode":"77477","latitude":"","longitude":""},
+    {"address":"15205 Westheimer Rd.","Suite":"A","city":"Houston","state":"TX","postalCode":"77082","latitude":"","longitude":""},
+  ];
 
   })
 

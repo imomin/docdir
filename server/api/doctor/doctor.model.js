@@ -18,7 +18,11 @@ var DoctorSchema = new Schema({
   insurances: {type:[String],"default":[]},
   languages: {type:[String],"default":["English"]},
   specialist: String,
-  educations: {type:[String],"default":[]},
+  educations: [{
+    degree: {type:String, require:true},
+    college: {type:String, require:true},
+    yearGraduate: {type:Number, require:true},
+  }],
   boardCertifications: {type:[String],"default":[]},
   professionalMemberships: {type:[String],"default":[]},
   website: String,

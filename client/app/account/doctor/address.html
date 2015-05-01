@@ -7,11 +7,17 @@
                         <h3>Address</h3>
                     </div>
                     <div class="">
-                    	<div class="form-group">
-                            <div class="col-sm-12">
-                                Blah
-                            </div>
-                        </div>
+                    	<div id="carousel-example-generic"  class="carousel slide" data-ride="carousel">
+					    	<carousel interval="myInterval" disable-animation="true">
+						      <slide ng-repeat="address in addresses" active="address.active">
+						        <div style="height:300px;">{{address}}</div>
+						        <div class="carousel-caption">
+						          <h4>&nbsp;</h4>
+						          <p>{{address.address}}</p>
+						        </div>
+						      </slide>
+						    </carousel>
+					    </div>
                     	<div class='row'>
 					        <div class='col-sm-6'>    
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
