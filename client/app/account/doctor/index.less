@@ -421,7 +421,12 @@ li.active span.round-tabs.seven{
     font-weight: lighter;
 }
 
-.entryForm input, textarea, select {
+.entryForm input[type="input"], 
+            input[type="text"], 
+            input[type="email"],
+            input[type="password"], 
+            textarea, 
+            select {
   position: relative;
   display: inline-block;
   margin: 0;
@@ -448,6 +453,39 @@ li.active span.round-tabs.seven{
 
 .entryForm textarea {
   font-size: 18px;
+}
+
+input[type="checkbox"].checkbox {
+    display: none;
+}
+input[type="checkbox"].checkbox + label {
+    display: inline;
+    position: relative;
+    background-color: #A19E9E;
+    /*label styling*/
+    color: #D8D8D8;
+    vertical-align: baseline;
+    white-space: nowrap;
+    padding: 4px 9px 4px 9px;
+    font-weight:lighter;
+    font-size: 15px;
+}
+input[type="checkbox"].checkbox:checked + label {
+    background-color: #FFF;
+    /*border: solid 1px #68ACF9;*/
+    color: #000;
+}
+
+input[type="checkbox"].checkbox:disabled + label {
+    opacity: 0.5;
+}
+input[type=checkbox]:focus
+  {
+  border-color: #ACACB8;
+  color: #2E3236;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18)!important;
+     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18)!important;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18)!important;
 }
 
 #bio {

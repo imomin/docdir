@@ -39,7 +39,67 @@ angular.module('sugarlandDoctorsApp')
       }
   })
 
-  .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, Auth, $location, $animate, $timeout, FileUploader) {
+  .directive('locationPredictions', [
+    function() {
+      return {
+        restrict: 'EA',
+        scope: { results: '=' },
+        template: '<input type="text" class="form-control" placeholder="search for a location">',
+        link: function(scope, iElement, iAttrs) {
+
+          // Setup Google Auto-complete Service
+          var googleMapsService = new google.maps.places.AutocompleteService();
+          var el = angular.element(iElement.find('input'));
+
+          // Fetch predictions based on query
+          var fetch = function(query) {
+            googleMapsService.getPlacePredictions({
+              input: query
+            }, fetchCallback);
+          };
+
+          // Display predictions to the user
+          var fetchCallback = function(predictions, status) {
+
+            if (status !== google.maps.places.PlacesServiceStatus.OK) {
+
+              scope.$apply(function() {
+                scope.results = [];
+              })
+
+              return;
+
+            } else {
+
+              scope.$apply(function() {
+                scope.results = predictions;
+              })
+            }
+          };
+
+
+          // Refresh on every edit
+          el.on('input', function() {
+            var query = el.val();
+
+            if (query && query.length >= 3) {
+
+              fetch(query);
+
+            } else {
+
+              scope.$apply(function() {
+                scope.results = [];
+              });
+            }
+          });
+
+        }
+      }
+    }
+])
+
+  .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, $q, Auth, $location, $animate, $timeout, FileUploader) {
     $scope.doctor = Auth.getCurrentDoctor();
     $scope.forms = {};
     $scope.errors = {};
@@ -56,6 +116,14 @@ angular.module('sugarlandDoctorsApp')
     $scope.doctor.insurances = $scope.doctor.insurances && $scope.doctor.insurances.length > 0 ? $scope.doctor.insurances : []; 
     $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
     $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
+
+    $scope.workDays = [{"name":"Sunday","isOpen":false,"open":null,"close":null},
+        {"name":"Monday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
+        {"name":"Tuesday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
+        {"name":"Wednesday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
+        {"name":"Thursday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
+        {"name":"Friday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
+        {"name":"Saturday","isOpen":false,"open":null,"close":null}];
 
     $scope.open = function($event, elementOpened) {
       $event.preventDefault();
@@ -250,12 +318,84 @@ angular.module('sugarlandDoctorsApp')
     }
 
   $scope.myInterval = 5000;
-  $scope.addresses = [
-    {"address":"12404 South Kirkwood","Suite":"A","city":"Stafford","state":"TX","postalCode":"77477","latitude":"","longitude":""},
-    {"address":"15205 Westheimer Rd.","Suite":"A","city":"Houston","state":"TX","postalCode":"77082","latitude":"","longitude":""},
-  ];
+  $scope.addresses = [];
 
-  })
+  //   {"address":"12404 South Kirkwood","Suite":"A","city":"Stafford","state":"TX","postalCode":"77477","latitude":"","longitude":""},
+  //   {"address":"15205 Westheimer Rd.","Suite":"A","city":"Houston","state":"TX","postalCode":"77082","latitude":"","longitude":""},
+  // ];
+
+  $scope.toggleTimePicker = function(index){
+    if($scope.workDays[index].isOpen){
+      $scope.workDays[index].open = "9:00 AM";
+      $scope.workDays[index].close = "6:00 PM";
+    }
+    else {
+      $scope.workDays[index].open = null;
+      $scope.workDays[index].close = null;
+    }
+  }
+
+  $scope.getLocation = function(query) {
+    var deferred = $q.defer();
+    // Setup Google Auto-complete Service
+    var googleMapsService = new google.maps.places.AutocompleteService();
+ 
+    // Fetch predictions based on query
+    if (query && query.length >= 3) {
+        googleMapsService.getPlacePredictions({
+          input: query,
+          sensor:false,
+          region:'us'
+        }, function(predictions, status) {
+            if (status !== google.maps.places.PlacesServiceStatus.OK) {
+              return deferred.resolve([]);// in case of error return nothing.
+            } else {
+              return deferred.resolve(predictions);
+            }
+          });
+    } 
+    else {
+      return [];
+    }
+    return deferred.promise;
+  }
+
+  var geocoder = new google.maps.Geocoder();
+  var latlng = new google.maps.LatLng(29.59842628970894, -95.62241274584954);
+  var mapOptions = {zoom: 13,center: latlng}
+  var map;
+  var marker;
+  $scope.selectAddress = function($item, $model, $label){
+    debugger;
+    geocoder.geocode({'address': $item.description}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        marker.setPosition(results[0].geometry.location);
+        marker.setVisible(true);
+        map.fitBounds(results[0].geometry.viewport);
+      } else {
+        alert('Problem populating the address.');
+      }
+    });
+  }
+
+  var initMap = function(){
+    map = new google.maps.Map(document.getElementById('mapPreview'), mapOptions);
+    marker = new google.maps.Marker({
+            map: map,
+            position: latlng,
+            draggable: true
+        });
+    google.maps.event.addListener(marker, 'dragend', function(){
+       //update the lat/lon based on the marker.
+       marker.getPosition();
+    });
+    marker.setVisible(false);
+  }
+  $scope.$on('$viewContentLoaded', function() {
+     initMap();
+  });
+})
 
   .controller('doctorSignupCtrl', function($scope, Auth, $state, $window) {
       $scope.doctor = {};
