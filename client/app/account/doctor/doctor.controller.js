@@ -171,7 +171,7 @@ angular.module('sugarlandDoctorsApp')
 
     $rootScope.$on('$stateChangeStart', function (event, next, current, from) {
       if(next.data && next.data.index > -1){
-        //$scope.slide(next.data.index);
+        $scope.slide(next.data.index);
         var formName = from.name.split(".")[from.name.split(".").length-1];
         if($scope.forms[formName] && $scope.forms[formName].$valid && $scope.forms[formName].$dirty){
           $scope.save();
