@@ -17,25 +17,25 @@
                     <div class="row">
                     	<div class='col-sm-6'>    
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" ng-model="streetAddress" class="form-control" placeholder="Street Address" required >
+					                 <input type="input" name="streetAddress" ng-model="address.streetAddress" class="form-control" placeholder="Street Address" required >
 					            </div>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" ng-model="suite" class="form-control" placeholder="Suite Number" required >
+					                 <input type="input" name="suite" ng-model="address.suite" class="form-control" placeholder="Suite Number" required >
 					            </div>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" ng-model="city" class="form-control" placeholder="City" required >
+					                 <input type="input" name="city" ng-model="address.city" class="form-control" placeholder="City" required >
 					            </div>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" ng-model="state" class="form-control" placeholder="State" required >
+					                 <input type="input" name="state" ng-model="address.state" class="form-control" placeholder="State" required >
 					            </div>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" ng-model="postalCode" class="form-control" placeholder="Postal Code" required >
+					                 <input type="input" name="postalCode" ng-model="address.postalCode" class="form-control" placeholder="Postal Code" required >
 					            </div>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" ng-model="phone" class="form-control" placeholder="Phone Number" required >
+					                 <input type="input" name="phone" ng-model="address.phone" class="form-control" placeholder="Phone Number" required >
 					            </div>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-					                 <input type="input" ng-model="fax" class="form-control" placeholder="Fax Number">
+					                 <input type="input" name="fax" ng-model="address.fax" class="form-control" placeholder="Fax Number">
 					            </div>
 					        </div>
 					        <div class='col-sm-6'>
@@ -44,8 +44,8 @@
 					            	<table class="table" width="100%">
 					            		<tr ng-repeat="day in workDays">
 					            			<td class="col-md-2">
-					            				<input type="checkbox" name="{{day.name}}" id="{{day.name}}" class="checkbox" ng-model="day.isOpen" ng-checked="day.isOpen" ng-click="toggleTimePicker($index);">
-												<label for="{{day.name}}">{{day.name}}</label>
+					            				<input type="checkbox" disable-validation-message="" name="{{day.name}}" id="{{day.name}}" class="checkbox" ng-model="day.isOpen" ng-checked="day.isOpen" ng-click="toggleTimePicker($index);">
+												<label disable-validation-message="" for="{{day.name}}">{{day.name}}</label>
 					            			</td>
 					            			<td class="col-md-10">
 					            				<div ng-show="day.isOpen">
@@ -56,11 +56,18 @@
 					            				<span ng-hide="day.isOpen">Closed</span>
 					            			</td>
 					            		</tr>
+					            		<tr>
+					            			<td colspan="2">
+					            				<div class='form-group' style="padding-left: 20px;padding-right:20px;padding-top: 10px;">
+									            	<button ng-click="submit(forms.address)" type="button" class="btn btn-primary btn-lg btn-block" >Save</button>
+									            </div>
+					            			</td>
+					            		</tr>
 					            	</table>
 					            </div>
 					        </div>
                     </div>
-                    <div class="">
+                    <!-- <div class="">
                     	<div id="carousel-example-generic"  class="carousel slide" data-ride="carousel">
 					    	<carousel interval="myInterval" disable-animation="true">
 						      <slide ng-repeat="address in addresses" active="address.active">
@@ -72,15 +79,14 @@
 						      </slide>
 						    </carousel>
 					    </div>
-                  </div>
+                  </div> -->
                   <div class="row">
-                  		<div id="mapPreview" style="height: 100%;min-height:300px;">
-                  			test
+                  		<div id="mapPreview" style="min-height:300px;">
                   		</div>
                   </div>
 					<a ui-sref-active="active" ui-sref="doctor.profile.additionalInformation">Prev</a>
-						<div class="pull-right">
-					<a ui-sref-active="active" ui-sref="doctor.profile.pictures">Next</a>
+					<div class="pull-right">
+						<a ui-sref-active="active" ui-sref="doctor.profile.pictures">Next</a>
 					</div>
               </div>
           </div>

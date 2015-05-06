@@ -28,7 +28,25 @@ var DoctorSchema = new Schema({
   website: String,
   affiliations: {type:[String],"default":[]},
   personalInterests: {type:[String],"default":[]},
-  addresses: {type:[String],"default":[]},
+  addresses: [{
+    address: {
+      streetAddress:{type:String},
+      suite:{type:String},
+      city:{type:String},
+      state:{type:String},
+      postalCode:{type:String},
+      phone:{type:String},
+      fax:{type:String},
+      latitude:{type:Number},
+      longitude:{type:Number}
+    },
+    workDays: [{
+      name:{type:String},
+      isOpen:{type:Boolean},
+      open:{type:String},
+      close:{type:String}
+    }]
+  }],
   pictures: {type:[String],"default":[]},
   profilePicture: String,
   subscriptionType: String,

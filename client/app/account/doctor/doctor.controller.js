@@ -117,6 +117,8 @@ angular.module('sugarlandDoctorsApp')
     $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
     $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
 
+    $scope.addresses = [];
+    $scope.address = {};
     $scope.workDays = [{"name":"Sunday","isOpen":false,"open":null,"close":null},
         {"name":"Monday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
         {"name":"Tuesday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
@@ -124,6 +126,17 @@ angular.module('sugarlandDoctorsApp')
         {"name":"Thursday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
         {"name":"Friday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
         {"name":"Saturday","isOpen":false,"open":null,"close":null}];
+
+    //bind data from the database 
+    if($scope.doctor.addresses && $scope.doctor.addresses.length > 0){
+      $scope.addresses = $scope.doctor.addresses;
+      if($scope.addresses.length > 0){
+        $scope.address = $scope.addresses[0].address;
+      }
+      if($scope.addresses[0].workDays.length === 7){
+        $scope.workDays = $scope.addresses[0].workDays;
+      }
+    }
 
     $scope.open = function($event, elementOpened) {
       $event.preventDefault();
@@ -142,9 +155,23 @@ angular.module('sugarlandDoctorsApp')
       $state.go('doctor.login');
     }
 
+    $scope.submit = function(form) {
+      if(form.$name === "forms.address"){
+        if(form.$valid) {
+          $scope.addAddressToList();
+        }
+        else {
+          for(var index in form.$error.required) { 
+              form.$error.required[index].$setDirty(true);
+              form.$error.required[index].$setValidity('required',false);
+          }
+        }
+      }
+    }
+
     $rootScope.$on('$stateChangeStart', function (event, next, current, from) {
       if(next.data && next.data.index > -1){
-        $scope.slide(next.data.index);
+        //$scope.slide(next.data.index);
         var formName = from.name.split(".")[from.name.split(".").length-1];
         if($scope.forms[formName] && $scope.forms[formName].$valid && $scope.forms[formName].$dirty){
           $scope.save();
@@ -312,17 +339,9 @@ angular.module('sugarlandDoctorsApp')
       .then(function(){
       })
       .catch(function(err){
-        debugger;
         console.log(err);
       });
     }
-
-  $scope.myInterval = 5000;
-  $scope.addresses = [];
-
-  //   {"address":"12404 South Kirkwood","Suite":"A","city":"Stafford","state":"TX","postalCode":"77477","latitude":"","longitude":""},
-  //   {"address":"15205 Westheimer Rd.","Suite":"A","city":"Houston","state":"TX","postalCode":"77082","latitude":"","longitude":""},
-  // ];
 
   $scope.toggleTimePicker = function(index){
     if($scope.workDays[index].isOpen){
@@ -361,14 +380,44 @@ angular.module('sugarlandDoctorsApp')
   }
 
   var geocoder = new google.maps.Geocoder();
-  var latlng = new google.maps.LatLng(29.59842628970894, -95.62241274584954);
+  var lat = $scope.address.latitude ? $scope.address.latitude : 29.59842628970894;
+  var lng = $scope.address.longitude ? $scope.address.longitude : -95.62241274584954;
+  var latlng = new google.maps.LatLng(lat,lng);
   var mapOptions = {zoom: 13,center: latlng}
   var map;
   var marker;
+  var addressItems = {street_number: null, route: null, locality: null, sublocality: null,
+                    administrative_area_level_3: null, administrative_area_level_2: null,
+                    administrative_area_level_1: null, country: null, postal_code:null, type: null};
+
   $scope.selectAddress = function($item, $model, $label){
-    debugger;
     geocoder.geocode({'address': $item.description}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
+        for (var item in addressItems){
+          for (var i = 0; i < results[0].address_components.length; i++) {
+            var component = results[0].address_components[i];
+            if (component.types.indexOf(item) !=-1) {
+              addressItems[item] = component.long_name;
+              break;
+            }
+          }
+        }
+
+        //randomly doesn't update view.
+        $scope.$apply(function() {
+          $scope.address.streetAddress = addressItems.street_number + ' ' + addressItems.route;
+          $scope.address.city = addressItems.locality;
+          $scope.address.state = addressItems.administrative_area_level_1;
+          $scope.address.postalCode = addressItems.postal_code;
+          $scope.address.latitude = results[0].geometry.location.A;
+          $scope.address.longitude = results[0].geometry.location.F;
+
+          $scope.forms['address']['suite'].$dirty = true;
+          $scope.forms['address']['phone'].$dirty = true;
+          $scope.forms['address']['fax'].$dirty = true;
+
+        });
+
         map.setCenter(results[0].geometry.location);
         marker.setPosition(results[0].geometry.location);
         marker.setVisible(true);
@@ -379,20 +428,37 @@ angular.module('sugarlandDoctorsApp')
     });
   }
 
-  var initMap = function(){
-    map = new google.maps.Map(document.getElementById('mapPreview'), mapOptions);
-    marker = new google.maps.Marker({
-            map: map,
-            position: latlng,
-            draggable: true
-        });
-    google.maps.event.addListener(marker, 'dragend', function(){
-       //update the lat/lon based on the marker.
-       marker.getPosition();
-    });
-    marker.setVisible(false);
+  $scope.addAddressToList = function(){
+    //validate form
+    var addressRecord = {"address":$scope.address,"workDays":$scope.workDays};
+    if($scope.addresses.length > 0){//for now lets just have one address.
+      $scope.addresses[0] = addressRecord;
+    }
+    else {
+      $scope.addresses.push(addressRecord);
+    }
+    $scope.doctor.addresses = $scope.addresses;
+    $scope.save();
   }
-  $scope.$on('$viewContentLoaded', function() {
+
+  var initMap = function(){
+    if(document.getElementById('mapPreview')){
+        map = new google.maps.Map(document.getElementById('mapPreview'), mapOptions);
+        marker = new google.maps.Marker({
+                map: map,
+                position: latlng,
+                draggable: true
+            });
+        google.maps.event.addListener(marker, 'dragend', function(){
+          //update the lat/lon based on the marker.
+          $scope.$apply(function() {
+            $scope.address.latitude = marker.getPosition().lat();
+            $scope.address.longitude = marker.getPosition().lng();
+          });
+        });
+    }
+  }
+  $scope.$on('$viewContentLoaded', function(event) {
      initMap();
   });
 })
