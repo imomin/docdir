@@ -116,7 +116,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.doctor.insurances = $scope.doctor.insurances && $scope.doctor.insurances.length > 0 ? $scope.doctor.insurances : []; 
     $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
     $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
-
+    $scope.doctor.pictures = $scope.doctor.pictures.length > 0 ? $scope.doctor.pictures : [];
     $scope.addresses = [];
     $scope.address = {};
     $scope.workDays = [{"name":"Sunday","isOpen":false,"open":null,"close":null},
@@ -172,6 +172,7 @@ angular.module('sugarlandDoctorsApp')
     $rootScope.$on('$stateChangeStart', function (event, next, current, from) {
       if(next.data && next.data.index > -1){
         $scope.slide(next.data.index);
+        debugger;
         var formName = from.name.split(".")[from.name.split(".").length-1];
         if($scope.forms[formName] && $scope.forms[formName].$valid && $scope.forms[formName].$dirty){
           $scope.save();
@@ -599,9 +600,13 @@ angular.module('sugarlandDoctorsApp')
 
   })
   .controller('pictureUploadCtrl',function($scope, Auth, $state, FileUploader) {
-      $scope.myInterval = 5000;
+      $scope.slideInterval = 5000;
+      $scope.officePictures = [];
+      
+      for(var index in $scope.doctor.pictures){
+        $scope.officePictures.push({"server":true,"url":$scope.doctor.pictures[index]});
+      }
 
-      /*************File Upload Example *****************/
       var pictureUploader = $scope.pictureUploader = new FileUploader({
         url: '/api/doctors/'+ $scope.doctor._id +'/upload'
       });
@@ -614,66 +619,86 @@ angular.module('sugarlandDoctorsApp')
         }
       });
 
-      // CALLBACKS
+      $scope.remove = function(item){
+        item.remove();
+        $scope.officePictures.splice(item.pictureIndex, 1);
+      }
+
+      $scope.removeAll = function(){
+        pictureUploader.clearQueue();
+        $scope.officePictures = _.filter($scope.officePictures, function(item) {
+                                    return item.server === true;
+                                  });
+      }
+
+      $scope.removeOldPicture = function(index){
+        var img = $scope.doctor.pictures[index];
+        $scope.doctor.pictures.splice(index, 1);
+        $scope.officePictures = _.filter($scope.officePictures, function(item) {
+                                    return item.url === img;
+                                  });
+        $scope.forms['pictures'].$dirty = true;
+      }
+
+      pictureUploader.onAfterAddingFile = function(item) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          $scope.$apply(function(){
+            item.text = "";
+            item.image = event.target.result;
+            item.pictureIndex = $scope.officePictures.length;
+            $scope.officePictures.push({"server":false,"url":item.image});
+          });
+        };
+        reader.readAsDataURL(item._file);
+      };
+ 
+     
+      pictureUploader.onBeforeUploadItem = function(item) {
+        var blob = dataURItoBlob(item.image);
+        item._file = blob;
+      };
    
-      /**
-       * Show preview with cropping
-       */
-        pictureUploader.onAfterAddingFile = function(item) {
-          var reader = new FileReader();
-          reader.onload = function(event) {
-            $scope.$apply(function(){
-              item.text = "blah";
-              item.image = event.target.result;
-            });
-          };
-          reader.readAsDataURL(item._file);
-        };
-   
-       
-        pictureUploader.onBeforeUploadItem = function(item) {
-          var blob = dataURItoBlob(item.image);
-          item._file = blob;
-        };
-   
-        var dataURItoBlob = function(dataURI) {
-          var binary = atob(dataURI.split(',')[1]);
-          var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-          var array = [];
-          for(var i = 0; i < binary.length; i++) {
-            array.push(binary.charCodeAt(i));
-          }
-          return new Blob([new Uint8Array(array)], {type: mimeString});
-        };
-   
-        pictureUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-            //console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-        pictureUploader.onAfterAddingAll = function(addedFileItems) {
-            //console.info('onAfterAddingAll', addedFileItems);
-        };
-        pictureUploader.onProgressItem = function(fileItem, progress) {
-            //console.info('onProgressItem', fileItem, progress);
-        };
-        pictureUploader.onProgressAll = function(progress) {
-            //console.info('onProgressAll', progress);
-        };
-        pictureUploader.onSuccessItem = function(fileItem, response, status, headers) {
-            //console.info('onSuccessItem', fileItem, response, status, headers);
-        };
-        pictureUploader.onErrorItem = function(fileItem, response, status, headers) {
-            //console.info('onErrorItem', fileItem, response, status, headers);
-        };
-        pictureUploader.onCancelItem = function(fileItem, response, status, headers) {
-            //console.info('onCancelItem', fileItem, response, status, headers);
-        };
-        pictureUploader.onCompleteItem = function(fileItem, response, status, headers) {
-            //console.info('onCompleteItem', fileItem, response, status, headers);
-            //$scope.photoPreview=false;
-        };
-        pictureUploader.onCompleteAll = function() {
-            //console.info('onCompleteAll');
-        };
+      var dataURItoBlob = function(dataURI) {
+        var binary = atob(dataURI.split(',')[1]);
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        var array = [];
+        for(var i = 0; i < binary.length; i++) {
+          array.push(binary.charCodeAt(i));
+        }
+        return new Blob([new Uint8Array(array)], {type: mimeString});
+      };
+ 
+      pictureUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+          //console.info('onWhenAddingFileFailed', item, filter, options);
+      };
+      pictureUploader.onAfterAddingAll = function(addedFileItems) {
+          //console.info('onAfterAddingAll', addedFileItems);
+      };
+      pictureUploader.onProgressItem = function(fileItem, progress) {
+          //console.info('onProgressItem', fileItem, progress);
+      };
+      pictureUploader.onProgressAll = function(progress) {
+          //console.info('onProgressAll', progress);
+      };
+      pictureUploader.onSuccessItem = function(fileItem, response, status, headers) {
+          //console.info('onSuccessItem', fileItem, response, status, headers);
+      };
+      pictureUploader.onErrorItem = function(fileItem, response, status, headers) {
+          //console.info('onErrorItem', fileItem, response, status, headers);
+      };
+      pictureUploader.onCancelItem = function(fileItem, response, status, headers) {
+          //console.info('onCancelItem', fileItem, response, status, headers);
+      };
+      pictureUploader.onCompleteItem = function(fileItem, response, status, headers) {
+          $scope.forms['pictures'].$dirty = true;
+          $scope.doctor.pictures.push(response);
+          //console.info('onCompleteItem', fileItem, response, status, headers);
+          //$scope.photoPreview=false;
+      };
+      pictureUploader.onCompleteAll = function() {
+          //console.info('onCompleteAll');
+      };
 
       /*************File Upload Example *****************/
 

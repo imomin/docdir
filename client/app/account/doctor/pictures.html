@@ -1,6 +1,6 @@
 <div ng-view="doctor.pictures" class="ltr">
 	<div class="row" ng-controller="pictureUploadCtrl">
-	    <form name="forms.pictures" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
+	    <form name="forms.pictures" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form.pictures)" class="form-horizontal">
 			<div class="col-md-12"><!-- col-md-12 -->
 			  <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
 			        <div class="entryFormHeader">
@@ -10,11 +10,11 @@
 				    <div class="row">
 				    	<div class="col-md-10 col-md-offset-1">
 							<div class="carousel slide" data-ride="carousel">
-							    <carousel interval="myInterval" disable-animation="true">
-							      <slide ng-repeat="slide in pictureUploader.queue" active="slide.active">
-							      	<img  style="height: 300px;width:800px;" ng-src="{{slide.image}}" style="margin:auto;">
+							    <carousel interval="slideInterval" disable-animation="true">
+							      <slide ng-repeat="slide in officePictures" active="slide.active">
+							      	<img  style="height: 300px;width:800px;" ng-src="{{slide.url}}" style="margin:auto;">
 							      	<div class="carousel-caption">
-							          <p>{{slide.text}}</p>
+							          <p>&nbsp;</p>
 							        </div>
 							      </slide>
 							    </carousel>
@@ -22,6 +22,26 @@
 						</div>
 					</div>
 					<div class="row" style="padding-bottom:40px;"></div>
+					<div class="row" style="padding-bottom:40px;">
+						 <div class="col-md-12">
+						 	<div style="border:solid 2px #F7F4F4;" class="pull-left" ng-repeat="picture in doctor.pictures">
+						 		<div class="cuadro_intro_hover " style="">
+									<p style="text-align:center;">
+										<img style="height:75px;width:100px;padding:5px;" ng-src="{{picture}}" class="img-responsive" alt="">
+									</p>
+									<div class="caption">
+										<div class="blur"></div>
+										<div class="caption-text">
+											<h3>&nbsp;</h3>
+											 <button type="button" class="btn btn-danger btn-xs" ng-click="removeOldPicture($index)">
+				                                <span class="glyphicon glyphicon-trash"></span> Remove
+				                            </button>
+										</div>
+									</div>
+								</div>
+						 	</div>
+						 </div>
+					</div>
 					<div class="row">
 					    <div class="" nv-file-drop="" uploader="pictureUploader">
 					        <div class="col-md-12">
@@ -59,7 +79,7 @@
 					             </div>
 					        </div> -->
 					        <div class="col-md-12" style="margin-bottom: 40px">
-					            <p>Pictures: {{ pictureUploader.queue.length }}</p>
+					            <p>New Pictures: {{ pictureUploader.queue.length }}</p>
 					            <table class="table">
 					                <thead>
 					                    <tr>
@@ -93,7 +113,7 @@
 					                            <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
 					                                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
 					                            </button>
-					                            <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+					                            <button type="button" class="btn btn-danger btn-xs" ng-click="remove(item)">
 					                                <span class="glyphicon glyphicon-trash"></span> Remove
 					                            </button>
 					                        </td>
@@ -114,7 +134,7 @@
 					                <button type="button" class="btn btn-warning btn-s" ng-click="pictureUploader.cancelAll()" ng-disabled="!pictureUploader.isUploading">
 					                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
 					                </button>
-					                <button type="button" class="btn btn-danger btn-s" ng-click="pictureUploader.clearQueue()" ng-disabled="!pictureUploader.queue.length">
+					                <button type="button" class="btn btn-danger btn-s" ng-click="removeAll()" ng-disabled="!pictureUploader.queue.length">
 					                    <span class="glyphicon glyphicon-trash"></span> Remove all
 					                </button>
 					            </div>

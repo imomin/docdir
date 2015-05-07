@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Doctor = require('./doctor.model');
 var path = require('path');
 var fs = require('fs');
+var uuid = require('node-uuid');
 
 // Get list of doctors
 exports.index = function(req, res) {
@@ -37,7 +38,6 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!doctor) { return res.send(404); }
     var updated = _.merge(doctor, req.body);
-    console.log(updated);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, doctor); //_.omit(doctor, ['salt','hashedPassword']);
@@ -107,17 +107,41 @@ exports.authCallback = function(req, res, next) {
  * Upload Files
  */
 exports.uploadFile = function (req, res, next) {
+    var doctorId = req.params.id;
     var data = _.pick(req.body, 'type');
     var file = req.files.file;
     var tempPath = file.path;
-    var uploadPath = __dirname + '/../../../client/assets/images/' + file.name;
-    console.log(file);
-    fs.readFile(tempPath, function(err, data) {
-      fs.writeFile(uploadPath, data, function(err) {
-        fs.unlink(tempPath, function(){
-            if(err) throw err;
-            res.send("File uploaded to: " + uploadPath);
-        });
-      }); 
-    }); 
+    var uploadPath = __dirname + '/../../../client';
+    var clientPath = '/assets/images' + '/' + doctorId;
+    var uploadFile = '/' + uuid.v4() + '-'+ file.name;
+    var dirPath = uploadPath + clientPath;
+
+    ensureExists(dirPath, parseInt('0744',8), function(err) {
+      if(err){
+        throw err;
+      }
+      else {
+        fs.readFile(tempPath, function(err, data) {
+          fs.writeFile(dirPath+uploadFile, data, function(err) {
+            fs.unlink(tempPath, function(){
+                if(err) throw err;
+                  res.send(clientPath+uploadFile);
+            });
+          }); 
+        }); 
+      }
+    });
 };
+
+function ensureExists(path, mask, cb) {
+    if (typeof mask == 'function') { // allow the `mask` parameter to be optional
+        cb = mask;
+        mask = parseInt('0777',8);
+    }
+    fs.mkdir(path, mask, function(err) {
+        if (err) {
+            if (err.code == 'EEXIST') cb(null); // ignore the error if the folder already exists
+            else cb(err); // something else went wrong
+        } else cb(null); // successfully created folder
+    });
+}
