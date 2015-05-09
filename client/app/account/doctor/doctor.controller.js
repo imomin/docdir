@@ -116,7 +116,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.doctor.insurances = $scope.doctor.insurances && $scope.doctor.insurances.length > 0 ? $scope.doctor.insurances : []; 
     $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
     $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
-    $scope.doctor.pictures = $scope.doctor.pictures.length > 0 ? $scope.doctor.pictures : [];
+    $scope.doctor.pictures = $scope.doctor.pictures && $scope.doctor.pictures.length > 0 ? $scope.doctor.pictures : [];
     $scope.addresses = [];
     $scope.address = {};
     $scope.workDays = [{"name":"Sunday","isOpen":false,"open":null,"close":null},
@@ -130,9 +130,7 @@ angular.module('sugarlandDoctorsApp')
     //bind data from the database 
     if($scope.doctor.addresses && $scope.doctor.addresses.length > 0){
       $scope.addresses = $scope.doctor.addresses;
-      if($scope.addresses.length > 0){
-        $scope.address = $scope.addresses[0].address;
-      }
+      $scope.address = $scope.addresses[0].address;
       if($scope.addresses[0].workDays.length === 7){
         $scope.workDays = $scope.addresses[0].workDays;
       }
@@ -169,10 +167,26 @@ angular.module('sugarlandDoctorsApp')
       }
     }
 
+    $scope.subscribe = function(status, response){
+      if(response.error) {
+        // there was an error. Fix it.
+        $scope.subscriptionError = response.error.message;
+      } else {
+        // got stripe token, now charge it or smt
+        $scope.doctor.token = response.id;
+        Auth.subscribeDoctor($scope.doctor)
+          .then(function(r){
+            $state.go('doctor.finish');
+          })
+          .catch(function(err){
+            $scope.subscriptionError = err.data;
+          });
+      }
+    }
+
     $rootScope.$on('$stateChangeStart', function (event, next, current, from) {
       if(next.data && next.data.index > -1){
         $scope.slide(next.data.index);
-        debugger;
         var formName = from.name.split(".")[from.name.split(".").length-1];
         if($scope.forms[formName] && $scope.forms[formName].$valid && $scope.forms[formName].$dirty){
           $scope.save();
@@ -599,7 +613,7 @@ angular.module('sugarlandDoctorsApp')
       /*************File Upload Example *****************/
 
   })
-  .controller('pictureUploadCtrl',function($scope, Auth, $state, FileUploader) {
+  .controller('pictureUploadCtrl',function($scope, $timeout, Auth, $state, FileUploader) {
       $scope.slideInterval = 5000;
       $scope.officePictures = [];
       
@@ -634,9 +648,9 @@ angular.module('sugarlandDoctorsApp')
       $scope.removeOldPicture = function(index){
         var img = $scope.doctor.pictures[index];
         $scope.doctor.pictures.splice(index, 1);
-        $scope.officePictures = _.filter($scope.officePictures, function(item) {
-                                    return item.url === img;
-                                  });
+        _.remove($scope.officePictures, function(item) {
+          return item.url === img;
+        });
         $scope.forms['pictures'].$dirty = true;
       }
 

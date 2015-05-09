@@ -20,6 +20,12 @@ angular.module('sugarlandDoctorsApp')
       },
       update: {
         method: 'PUT'
+      },
+      subscribe: {
+        method: 'PUT',
+        params: {
+          controller:'subscribe' //api/doctor/:id/subscribe
+        }
       }
 	  });
   });

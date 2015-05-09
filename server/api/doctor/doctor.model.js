@@ -50,7 +50,8 @@ var DoctorSchema = new Schema({
   pictures: {type:[String],"default":[]},
   profilePicture: String,
   subscriptionType: String,
-  stripeCId: String,
+  stripeCustId: String,
+  stripeCardId: String,
   stripeSubId: String,
   active: Boolean
 });

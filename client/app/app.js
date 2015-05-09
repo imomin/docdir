@@ -28,7 +28,7 @@ angular.module('sugarlandDoctorsApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
-    Stripe.setPublishableKey('your-publishable-key');
+    Stripe.setPublishableKey('pk_test_VZQrOeMrh2S3F26kwVe9xF5M');
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {

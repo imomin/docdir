@@ -44,8 +44,8 @@
 					            	<table class="table" width="100%">
 					            		<tr ng-repeat="day in workDays">
 					            			<td class="col-md-2">
-					            				<input type="checkbox" disable-validation-message="" name="{{day.name}}" id="{{day.name}}" class="checkbox" ng-model="day.isOpen" ng-checked="day.isOpen" ng-click="toggleTimePicker($index);">
-												<label disable-validation-message="" for="{{day.name}}">{{day.name}}</label>
+					            				<input type="checkbox" disable-valid-styling="true" name="{{day.name}}" id="{{day.name}}" class="checkbox" ng-model="day.isOpen" ng-checked="day.isOpen" ng-click="toggleTimePicker($index);">
+												<label disable-valid-styling="true" for="{{day.name}}">{{day.name}}</label>
 					            			</td>
 					            			<td class="col-md-10">
 					            				<div ng-show="day.isOpen">
@@ -80,7 +80,7 @@
 						    </carousel>
 					    </div>
                   </div> -->
-                  <div class="row">
+                  <div class="row" style="padding-bottom:20px;">
                   		<div id="mapPreview" style="min-height:300px;">
                   		</div>
                   </div>

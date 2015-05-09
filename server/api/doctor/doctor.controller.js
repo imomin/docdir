@@ -5,6 +5,7 @@ var Doctor = require('./doctor.model');
 var path = require('path');
 var fs = require('fs');
 var uuid = require('node-uuid');
+var stripe = require('stripe')('sk_test_4ZtRKcjoaZltF5ngEo3J4Pio');
 
 // Get list of doctors
 exports.index = function(req, res) {
@@ -33,6 +34,7 @@ exports.create = function(req, res) {
 
 // Updates an existing doctor in the DB.
 exports.update = function(req, res) {
+  console.log(req);
   if(req.body._id) { delete req.body._id; }
   Doctor.findById(req.params.id, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
     if (err) { return handleError(res, err); }
@@ -132,6 +134,53 @@ exports.uploadFile = function (req, res, next) {
       }
     });
 };
+
+exports.subscribe = function(req, res, next) {
+  var doctor = req.body;
+  var token = doctor.token;//"tok_160OLAIfr2dTjlGD3C0tlYmT";
+  var doctorId = doctor._id;//req.params.id;
+  Doctor.findById(doctorId, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
+    if (err) { return handleError(res, err); }
+    if(!doctor) { return res.send(404); }
+    var updatedData = _.merge(doctor, req.body);
+    // CHECK IF STRIPECID EXISTS
+    if(doctor.stripeCustId && doctor.stripeCustId.lenght > 0){
+      stripe.customers.create({//create the customer
+        email: updatedData.email,
+        source: token
+      }).then(function(customer) {
+          updatedData.stripeCustId = customer.id;//save stripe customer id
+          updatedData.stripeCardId = customer.default_source;
+          return stripe.customers.createSubscription( //create subscription for the customer
+                    customer.id,
+                    {plan: "sugarlandDocMonthly"}
+                  );
+      }).then(function(subscription) {//save subscription id.
+        // New charge created on a new customer
+          updatedData.stripeSubId = subscription.id;
+          updatedData.save(function (err) {
+            if (err) { return handleError(res, err); }
+            console.log("test6");
+            return res.send(200);
+          });
+      }, function(err) {
+          // Deal with an error
+          console.log(err);
+          if(err) throw err;
+      });
+    }
+    else {
+      return handleError(res, "Already subscribed to " +  doctor.subscriptionType + " subscription.");
+    }
+  });
+}
+exports.changeSubscription = function(req, res, next) {
+
+}
+
+exports.unsubscribe = function(req, res, next) {
+
+}
 
 function ensureExists(path, mask, cb) {
     if (typeof mask == 'function') { // allow the `mask` parameter to be optional

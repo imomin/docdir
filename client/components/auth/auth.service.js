@@ -184,7 +184,26 @@ angular.module('sugarlandDoctorsApp')
             return cb(doctor);
           },
           function(err) {
-            this.logout();
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+       /**
+       * Subscribe doctor's data
+       *
+       * @param  {Object}   doctor     - doctor info
+       * @param  {Function} callback - optional
+       * @return {Promise}
+       */
+      subscribeDoctor: function(doctor, callback) {
+        var cb = callback || angular.noop;
+
+        return Doctor.subscribe(doctor,
+          function(data) {
+            //$cookieStore.put('tokend', data.token);
+            //currentDoctor = Doctor.get();
+            return cb(doctor);
+          },
+          function(err) {
             return cb(err);
           }.bind(this)).$promise;
       },
