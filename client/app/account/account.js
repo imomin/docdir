@@ -19,6 +19,12 @@ angular.module('sugarlandDoctorsApp')
         controller: 'SettingsCtrl',
         authenticate: true
       })
+      .state('dashboard', {
+        url: '/dashboard',
+        templateUrl: 'app/account/dashboard/dashboard.html',
+        controller: 'DashboardCtrl',
+        authenticate: true
+      })
       .state('doctor', {
         url: '/doctor',
         templateUrl: 'app/account/doctor/index.html',

@@ -34,7 +34,6 @@ exports.create = function(req, res) {
 
 // Updates an existing doctor in the DB.
 exports.update = function(req, res) {
-  console.log(req);
   if(req.body._id) { delete req.body._id; }
   Doctor.findById(req.params.id, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
     if (err) { return handleError(res, err); }
@@ -135,13 +134,14 @@ exports.uploadFile = function (req, res, next) {
     });
 };
 
-exports.subscribe = function(req, res, next) {
-  var doctor = req.body;
-  var token = doctor.token;//"tok_160OLAIfr2dTjlGD3C0tlYmT";
-  var doctorId = doctor._id;//req.params.id;
-  Doctor.findById(doctorId, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
+exports.subscribe = function(req, res, next) {Doctor.findById(doctorId, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
     if (err) { return handleError(res, err); }
     if(!doctor) { return res.send(404); }
+    var doctor = req.body;
+    var token = doctor.token;//"tok_160OLAIfr2dTjlGD3C0tlYmT";
+    var doctorId = doctor._id;//req.params.id;
+    var subscriptionPlan = req.body.subscriptionType === "Yearly" ? "SugarlandDocYearly" : "sugarlandDocMonthly";
+  
     var updatedData = _.merge(doctor, req.body);
     // CHECK IF STRIPECID EXISTS
     if(doctor.stripeCustId && doctor.stripeCustId.lenght > 0){
@@ -153,14 +153,13 @@ exports.subscribe = function(req, res, next) {
           updatedData.stripeCardId = customer.default_source;
           return stripe.customers.createSubscription( //create subscription for the customer
                     customer.id,
-                    {plan: "sugarlandDocMonthly"}
+                    {plan: subscriptionPlan}
                   );
       }).then(function(subscription) {//save subscription id.
         // New charge created on a new customer
           updatedData.stripeSubId = subscription.id;
           updatedData.save(function (err) {
             if (err) { return handleError(res, err); }
-            console.log("test6");
             return res.send(200);
           });
       }, function(err) {
@@ -175,11 +174,58 @@ exports.subscribe = function(req, res, next) {
   });
 }
 exports.changeSubscription = function(req, res, next) {
+  var doctorId = req.params.id;
+  var subscriptionPlan = req.body.subscriptionType === "Yearly" ? "SugarlandDocYearly" : "sugarlandDocMonthly";
 
+  Doctor.findById(doctorId, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
+    if (err) { return handleError(res, err); }
+    if(!doctor) { return res.send(404); }
+      stripe.customers.updateSubscription(
+        doctor.stripeCustId,
+        doctor.stripeSubId,
+        { plan: subscriptionPlan },
+        function(err, subscription) {
+          if (err) { return handleError(res, err); }
+          doctor.subscriptionType = req.body.subscriptionType;
+          doctor.save(function (err) {
+            if (err) { return handleError(res, err); }
+            return res.send(200);
+          });
+        }
+      );
+  });
 }
 
 exports.unsubscribe = function(req, res, next) {
+  var doctorId = req.params.id;
+  Doctor.findById(doctorId, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
+    if (err) { return handleError(res, err); }
+    if(!doctor) { return res.send(404); }
+      stripe.customers.cancelSubscription(
+        doctor.stripeCustId,
+        doctor.stripeSubId,
+        function(err, confirmation) {
+          if (err) { return handleError(res, err); }
+          doctor.active = false;
+          doctor.save(function (err) {
+            if (err) { return handleError(res, err); }
+            return res.send(200);
+          });
+        }
+      );
+  });
+}
 
+exports.updateCard = function(req, res, next) {
+
+  stripe.customers.updateCard(
+    doctor.stripeCustId,
+    doctor.stripeCardId,
+    { name: "Jane Austen" },
+    function(err, card) {
+      // asynchronously called
+    }
+  );
 }
 
 function ensureExists(path, mask, cb) {
