@@ -61,12 +61,20 @@ angular.module('sugarlandDoctorsApp')
             index:0
           }
       })
+      .state('doctor.profile.profilePicture', {
+        url: '/photo',
+        templateUrl: 'app/account/doctor/profilePicture.html',
+        authenticate: true,
+        data: {
+            index:1
+          }
+      })
       .state('doctor.profile.education', {
         url: '/education',
         templateUrl: 'app/account/doctor/education.html',
         authenticate: true,
         data: {
-            index:1
+            index:2
           }
       })
       .state('doctor.profile.additionalInformation', {
@@ -74,23 +82,7 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/doctor/additionalInformation.html',
         authenticate: true,
         data: {
-            index:2
-          }
-      })
-      .state('doctor.profile.pictures', {
-        url: '/pictures',
-        templateUrl: 'app/account/doctor/pictures.html',
-        authenticate: true,
-        data: {
-            index:4
-          }
-      })
-      .state('doctor.profile.profilePicture', {
-        url: '/photo',
-        templateUrl: 'app/account/doctor/profilePicture.html',
-        authenticate: true,
-        data: {
-            index:-1
+            index:3
           }
       })
       .state('doctor.profile.address', {
@@ -98,7 +90,15 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/doctor/address.html',
         authenticate: true,
         data: {
-            index:3
+            index:4
+          }
+      })
+      .state('doctor.profile.pictures', {
+        url: '/pictures',
+        templateUrl: 'app/account/doctor/pictures.html',
+        authenticate: true,
+        data: {
+            index:5
           }
       })
       .state('doctor.profile.subscribe', {
@@ -106,7 +106,7 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/doctor/subscribe.html',
         authenticate: true,
         data: {
-            index:5
+            index:6
           }
       })      
       .state('doctor.profile.finish', {
@@ -114,7 +114,7 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/doctor/finish.html',
         authenticate: true,
         data: {
-            index:6
+            index:7
           }
       });
   });

@@ -76,10 +76,6 @@ angular.module('sugarlandDoctorsApp', [
   .directive('scroll', function ($window) {
     return {
       restrict: 'A',
-      scope: {
-        subscription: '=',
-        index: '@'
-      },
       link: function(scope, elem, attrs) {
           scope.onResize = function() {
               var scrollHeight = $window.innerHeight - elem[0].getBoundingClientRect().top;;

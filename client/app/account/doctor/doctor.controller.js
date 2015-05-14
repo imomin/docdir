@@ -129,11 +129,13 @@ angular.module('sugarlandDoctorsApp')
 
     //bind data from the database 
     if($scope.doctor.addresses && $scope.doctor.addresses.length > 0){
-      $scope.addresses = $scope.doctor.addresses;
-      $scope.address = $scope.addresses[0].address;
-      if($scope.addresses[0].workDays.length === 7){
-        $scope.workDays = $scope.addresses[0].workDays;
-      }
+      $timeout(function(){
+        $scope.addresses = $scope.doctor.addresses;
+        $scope.address = $scope.addresses[0].address;
+        if($scope.addresses[0].workDays.length === 7){
+          $scope.workDays = $scope.addresses[0].workDays;
+        }
+      },1000)
     }
 
     $scope.open = function($event, elementOpened) {
@@ -534,6 +536,7 @@ angular.module('sugarlandDoctorsApp')
 
   .controller('photoUploadCtrl',function($scope, Auth, $state, FileUploader) {
       /*************File Upload Example *****************/
+      $scope.photoPreview = false; 
       var photoUploader = $scope.photoUploader = new FileUploader({
         url: '/api/doctors/'+ $scope.doctor._id +'/upload'
       });
@@ -547,7 +550,6 @@ angular.module('sugarlandDoctorsApp')
       });
 
       // CALLBACKS
-   
       /**
        * Show preview with cropping
        */
@@ -563,6 +565,7 @@ angular.module('sugarlandDoctorsApp')
             });
           };
           reader.readAsDataURL(item._file);
+          $scope.picture = $scope.photoUploader.queue[0].croppedImage;
         };
    
        
@@ -581,35 +584,11 @@ angular.module('sugarlandDoctorsApp')
           return new Blob([new Uint8Array(array)], {type: mimeString});
         };
    
-        photoUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-            //console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-        photoUploader.onAfterAddingAll = function(addedFileItems) {
-            //console.info('onAfterAddingAll', addedFileItems);
-        };
-        photoUploader.onProgressItem = function(fileItem, progress) {
-            //console.info('onProgressItem', fileItem, progress);
-        };
-        photoUploader.onProgressAll = function(progress) {
-            //console.info('onProgressAll', progress);
-        };
-        photoUploader.onSuccessItem = function(fileItem, response, status, headers) {
-            //console.info('onSuccessItem', fileItem, response, status, headers);
-        };
-        photoUploader.onErrorItem = function(fileItem, response, status, headers) {
-            //console.info('onErrorItem', fileItem, response, status, headers);
-        };
-        photoUploader.onCancelItem = function(fileItem, response, status, headers) {
-            //console.info('onCancelItem', fileItem, response, status, headers);
-        };
         photoUploader.onCompleteItem = function(fileItem, response, status, headers) {
-            //console.info('onCompleteItem', fileItem, response, status, headers);
-            //$scope.photoPreview=false;
+            $scope.forms['profilePicture'].$dirty = true;
+            $scope.doctor.profilePicture = response;
+            $scope.save();
         };
-        photoUploader.onCompleteAll = function() {
-            //console.info('onCompleteAll');
-        };
-
       /*************File Upload Example *****************/
 
   })
@@ -683,27 +662,6 @@ angular.module('sugarlandDoctorsApp')
         return new Blob([new Uint8Array(array)], {type: mimeString});
       };
  
-      pictureUploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-          //console.info('onWhenAddingFileFailed', item, filter, options);
-      };
-      pictureUploader.onAfterAddingAll = function(addedFileItems) {
-          //console.info('onAfterAddingAll', addedFileItems);
-      };
-      pictureUploader.onProgressItem = function(fileItem, progress) {
-          //console.info('onProgressItem', fileItem, progress);
-      };
-      pictureUploader.onProgressAll = function(progress) {
-          //console.info('onProgressAll', progress);
-      };
-      pictureUploader.onSuccessItem = function(fileItem, response, status, headers) {
-          //console.info('onSuccessItem', fileItem, response, status, headers);
-      };
-      pictureUploader.onErrorItem = function(fileItem, response, status, headers) {
-          //console.info('onErrorItem', fileItem, response, status, headers);
-      };
-      pictureUploader.onCancelItem = function(fileItem, response, status, headers) {
-          //console.info('onCancelItem', fileItem, response, status, headers);
-      };
       pictureUploader.onCompleteItem = function(fileItem, response, status, headers) {
           $scope.forms['pictures'].$dirty = true;
           $scope.doctor.pictures.push(response);

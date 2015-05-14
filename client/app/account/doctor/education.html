@@ -41,7 +41,7 @@
 			        </div>
 			        <div class='col-sm-2'>    
 			            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
-			                <input type="input" maxlength="4" ng-minlength="4" class="form-control" name="yearGraduate" id="yearGraduate" placeholder="Year" valid-number filter="limitTo:4 | number:0">
+			                <input type="input" maxlength="4" ng-minlength="4" class="form-control" name="yearGraduate" id="yearGraduate" placeholder="Year" ng-model="year" valid-number filter="limitTo:4 | number:0">
 			            </div>
 			        </div>
 					<div class='col-sm-2'>
@@ -108,7 +108,7 @@
 			        	</div>
 			        </div>
 			    </div>
-		    	<a ui-sref-active="active" ui-sref="doctor.profile.bio">Prev</a>
+		    	<a ui-sref-active="active" ui-sref="doctor.profile.profilePicture">Prev</a>
 		    	<div class="pull-right">
 				  <a ui-sref-active="active" ui-sref="doctor.profile.additionalInformation">Next</a>
 				</div>

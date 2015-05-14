@@ -1,6 +1,6 @@
 <div ng-view="doctor.profilePicture" class="ltr">
 	<div class="row" ng-controller="photoUploadCtrl">
-	    <form name="forms.profilePicture" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(form)" class="form-horizontal">
+	    <form name="forms.profilePicture" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(forms.profilePicture)" class="form-horizontal">
 			<div class="col-md-12"><!-- col-md-12 -->
 			  <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
 			        <div class="entryFormHeader">
@@ -10,8 +10,11 @@
 		                <div class="cardheader">
 		                </div>
 		                <div class="avatar">
-		                    <img style="background-color: lightgray;" alt="" ng-src="{{photoUploader.queue[0].croppedImage}}"><!-- profilePicture -->
-		                    <!--  -->
+		                	<p ng-switch="photoPreview">
+						 		<img ng-switch-when="true" style="background-color: lightgray;" alt="" ng-src="{{photoUploader.queue[0].croppedImage}}">
+						 		<img ng-switch-default style="background-color: lightgray;" alt="" ng-src="{{doctor.profilePicture}}">
+						    </p>
+		                    
 		                </div>
 		                <div class="info">
 		                    <ul class="list-justified text-center">
