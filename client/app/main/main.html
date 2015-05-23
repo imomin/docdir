@@ -1,4 +1,13 @@
 <div ng-include="'components/navbar/navbar.home.html'"></div>
+<style type="text/css">
+.carousel .carousel-indicators { visibility: hidden; }
+.carousel:hover .carousel-indicators { visibility: hidden; }
+.carousel-control.left, .carousel-control.right {visibility:hidden;}
+
+
+/***********************************/
+
+</style>
 <main role="main">
       <div id="intro-wrap">
         <div id="intro" class="preload" data-autoplay="0" data-navigation="false" has-pagination="false" data-transition="fade">  
@@ -49,36 +58,30 @@
                 <p class="text-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
               </div>
             </div>
-            <div class="column four">
-              <div class="small-icon red"><i class="icon icon-tablet"></i></div>
-              <div class="small-icon-text clear-after">
-                <h4>Responsive</h4>
-                <p class="text-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
+            <!-- Randomaly show 10 or 15 doctors with lowest views-->
+            <!-- <div scroll-box list="randomDoctors" class="row-content even clear-after"> -->
+            <!-- </div> -->
+            <div class="section-title">
+                <h3 style="font-weight:100;text-align:center">Some of our doctors in Sugar land.</h3>
             </div>
-            <div class="column four">
-              <div class="small-icon red"><i class="icon icon-megaphone"></i></div>
-              <div class="small-icon-text clear-after">
-                <h4>Blog</h4>
-                <p class="text-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-            </div>
-            <div class="column four last">
-              <div class="small-icon red"><i class="icon icon-multiview"></i></div>
-              <div class="small-icon-text clear-after">
-                <h4>Layer CSS</h4>
-                <p class="text-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- <section class="row section call-to-action">
-          <div class="row-content buffer even animation">
-            <p>Have you fallen in love with Beetle?</p>
-            <a class="button red" href="#">Buy it now!</a>
-          </div>
-        </section>   -->
+            <carousel interval="5000" disable-animation="true">
+              <slide ng-repeat="slideCollection in groupedSlides" active="slide.active">
+                <div>
+                  <a href="#"><img ng-src="{{slideCollection.image0.image}}" style="margin:auto;"></a>
+                  <a href="#"><img ng-src="{{slideCollection.image1.image}}" style="margin:auto;"></a>
+                  <a href="#"><img ng-src="{{slideCollection.image2.image}}" style="margin:auto;"></a>
+                  <a href="#"><img ng-src="{{slideCollection.image3.image}}" style="margin:auto;"></a>
+                  <a href="#"><img ng-src="{{slideCollection.image4.image}}" style="margin:auto;"></a>
+                </div>
+              </slide>
+            </carousel>
 
+        </section>
+
+        <section class="row section" style="">
+
+        </section>
+        
       </div><!-- id-main -->
     </main><!-- main -->
 
@@ -123,12 +126,6 @@
         </div><!-- row-content -->  
       </div><!-- row -->  
     </footer>
-
-
-
-
-
-
 
 <!-- <header class="hero-unit" id="banner">
   <div class="container">

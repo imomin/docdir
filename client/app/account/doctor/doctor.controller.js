@@ -110,7 +110,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.prevIndex = 0;
     $scope.calElements = {};
     $scope.language = "";
-    $scope.doctor.subscriptionType = "monthly";
+    $scope.doctor.subscriptionType = "yearly";//default
     $scope.subscriptionOptions = {"monthly":"$25 per month.","yearly":"$255 per year. You save 15%."};
     $scope.doctor.languages = $scope.doctor.languages && $scope.doctor.languages.length > 0 ? $scope.doctor.languages : ["English"];
     $scope.doctor.insurances = $scope.doctor.insurances && $scope.doctor.insurances.length > 0 ? $scope.doctor.insurances : []; 
