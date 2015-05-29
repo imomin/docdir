@@ -2,11 +2,30 @@
 <style type="text/css">
 .carousel .carousel-indicators { visibility: hidden; }
 .carousel:hover .carousel-indicators { visibility: hidden; }
-.carousel-control.left, .carousel-control.right {visibility:hidden;}
+/*.carousel-control.left, .carousel-control.right {visibility:hidden;}*/
 
 
 /***********************************/
+#name {
+  font-family: "Helvetica Neue";
+  font-weight: 200;
+  z-index: 100;
+  position: absolute;
+  color: white;
+  font-size: 17px;
+  left: 50px;
+  top: -50px;
+}
+#name > span {
+  font-weight: 100;
+}
+.carouselPictures a {    
+    text-decoration: none;
+}
 
+.carouselPictures a:hover {
+    text-decoration: none;
+}
 </style>
 <main role="main">
       <div id="intro-wrap">
@@ -19,6 +38,7 @@
                   <!-- <input type="text" class="plain" placeholder=""> -->
                   <form id="contact-form" class="contact-section" method="post" action="">
                     <span class="pre-input" ><i class="fa fa-search" style="color:##898989;"></i></span>
+                    <!-- ADD TAB HERE FOR DOCTOR, IMAGING, EMERGENCY CARE AND THERAPY -->
                     <input style="padding-left: 40px;" class="plain" type="text" name="name" placeholder="Type the name of the doctor.">
                   </form>
                 </p>
@@ -64,14 +84,44 @@
             <div class="section-title">
                 <h3 style="font-weight:100;text-align:center">Some of our doctors in Sugar land.</h3>
             </div>
-            <carousel interval="5000" disable-animation="true">
+            <carousel interval="99000" disable-animation="true">
               <slide ng-repeat="slideCollection in groupedSlides" active="slide.active">
-                <div>
-                  <a href="#"><img ng-src="{{slideCollection.image0.image}}" style="margin:auto;"></a>
-                  <a href="#"><img ng-src="{{slideCollection.image1.image}}" style="margin:auto;"></a>
-                  <a href="#"><img ng-src="{{slideCollection.image2.image}}" style="margin:auto;"></a>
-                  <a href="#"><img ng-src="{{slideCollection.image3.image}}" style="margin:auto;"></a>
-                  <a href="#"><img ng-src="{{slideCollection.image4.image}}" style="margin:auto;"></a>
+                <div class="carouselPictures">
+                  <a href="#" style="position:relative;text-decoration: none;">
+                      <img ng-src="{{slideCollection.image0.image}}" style="">
+                        <p id="name">
+                          Hello World!<br>
+                          <span>Dentist</span>
+                        </p>
+                  </a>
+                  <a href="#" style="position:relative;">
+                      <img ng-src="{{slideCollection.image1.image}}" style="">
+                        <p id="name">
+                          Hello World!<br>
+                          <span>Dentist</span>
+                        </p>
+                  </a>
+                  <a href="#" style="position:relative;">
+                      <img ng-src="{{slideCollection.image2.image}}" style="">
+                        <p id="name">
+                          Hello World!<br>
+                          <span>Dentist</span>
+                        </p>
+                  </a>
+                  <a href="#" style="position:relative;">
+                      <img ng-src="{{slideCollection.image3.image}}" style="">
+                        <p id="name">
+                          Hello World!<br>
+                          <span>Dentist</span>
+                        </p>
+                  </a>
+                  <a href="#" style="position:relative;">
+                      <img ng-src="{{slideCollection.image4.image}}" style="">
+                        <p id="name">
+                          Hello World!<br>
+                          <span>Dentist</span>
+                        </p>
+                  </a>
                 </div>
               </slide>
             </carousel>
@@ -81,7 +131,7 @@
         <section class="row section" style="">
 
         </section>
-        
+
       </div><!-- id-main -->
     </main><!-- main -->
 

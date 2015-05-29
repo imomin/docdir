@@ -52,10 +52,6 @@ angular.module('sugarlandDoctorsApp')
       {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"}
     ];
 
-
-
-
-
     $scope.myInterval = 3000;
     $scope.slides = [{
       image: 'http://placekitten.com/221/200',
