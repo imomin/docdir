@@ -127,16 +127,6 @@ angular.module('sugarlandDoctorsApp')
         {"name":"Friday","isOpen":true,"open":"9:00 AM","close":"6:00 PM"},
         {"name":"Saturday","isOpen":false,"open":null,"close":null}];
 
-    //bind data from the database 
-    if($scope.doctor.addresses && $scope.doctor.addresses.length > 0){
-      $timeout(function(){
-        $scope.addresses = $scope.doctor.addresses;
-        $scope.address = $scope.addresses[0].address;
-        if($scope.addresses[0].workDays.length === 7){
-          $scope.workDays = $scope.addresses[0].workDays;
-        }
-      },1000)
-    }
 
     $scope.open = function($event, elementOpened) {
       $event.preventDefault();
@@ -396,11 +386,24 @@ angular.module('sugarlandDoctorsApp')
     return deferred.promise;
   }
 
+  $scope.lat = 29.59842628970894;// default to hwy 6 & 59
+  $scope.lng = -95.62241274584954;//
+  //bind data from the database
+  if($scope.doctor.addresses && $scope.doctor.addresses.length > 0){
+    //$timeout(function(){
+      $scope.addresses = $scope.doctor.addresses;
+      $scope.address = $scope.addresses[0].address;
+      if($scope.addresses[0].workDays.length === 7){
+        $scope.workDays = $scope.addresses[0].workDays;
+      }
+      $scope.lat = $scope.address.latitude;
+      $scope.lng = $scope.address.longitude;
+    //},1000)
+  }
+
   var geocoder = new google.maps.Geocoder();
-  var lat = $scope.address.latitude ? $scope.address.latitude : 29.59842628970894;
-  var lng = $scope.address.longitude ? $scope.address.longitude : -95.62241274584954;
-  var latlng = new google.maps.LatLng(lat,lng);
-  var mapOptions = {zoom: 13,center: latlng}
+  $scope.latlng = new google.maps.LatLng($scope.lat,$scope.lng);
+  var mapOptions = {zoom: 13,center: $scope.latlng}
   var map;
   var marker;
   var addressItems = {street_number: null, route: null, locality: null, sublocality: null,
@@ -463,7 +466,7 @@ angular.module('sugarlandDoctorsApp')
         map = new google.maps.Map(document.getElementById('mapPreview'), mapOptions);
         marker = new google.maps.Marker({
                 map: map,
-                position: latlng,
+                position: $scope.latlng,
                 draggable: true
             });
         google.maps.event.addListener(marker, 'dragend', function(){

@@ -1,31 +1,31 @@
-<div ng-view="doctor.bio" class="rtl"><!-- container -->
+<div ng-view="doctor.bio" class="rtl" style="min-width:780px;">
 	<div class="row">
 	    <form name="forms.bio" shake-that autocomplete="off" novalidate submitted="submitted" ng-submit="submit(forms.bio)" class="form-horizontal">
-          <div class=""><!-- col-md-12 -->
+          <div style=""><!-- col-md-12 -->
                   <div class="entryForm" style="box-shadow: 0 0 0 rgba(0, 0, 0, 0);padding-left: 30px;padding-right: 30px;padding-bottom: 30px;">
                     <div class="entryFormHeader">
                         <h3><span class="fa fa-user-md fa-lg"></span>&nbsp;&nbsp;Dr. {{doctor.firstName}} {{doctor.lastName}}&nbsp;&nbsp;{{doctor.credential}}</h3>
                     </div>
                     <div class="">
                     	 <div class='row'>
-					        <div class='col-sm-6'>    
+					        <div class='col-md-6 col-sm-6'>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
 					                <input type="input" class="form-control" name="firstName" id="firstName" placeholder="First Name" ng-model="doctor.firstName" required>
 					            </div>
 					        </div>
-					        <div class='col-sm-6'>
+					        <div class='col-md-6 col-sm-6'>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
 					                <input type="input" class="form-control" name="lastName" id="lastName" placeholder="Last Name" ng-model="doctor.lastName" required>
 					            </div>
 					        </div>
 					    </div>
 					    <div class='row'>
-					        <div class='col-sm-6'>    
+					        <div class='col-md-6 col-sm-6'>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;">
 					                <input type="input" class="form-control" name="credential" id="credential" placeholder="Professional Credential Abbrivations" ng-model="doctor.credential" required>
 					            </div>
 					        </div>
-					        <div class='col-sm-6'>
+					        <div class='col-md-6 col-sm-6'>
 					        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
 					        		<select class="form-control" name="specialist" id="specialist" placeholder="Specialist" ng-model="doctor.specialist" required>
 	                                  <option value="" disabled selected style="display: block;">Select primary practice</option>
@@ -37,7 +37,7 @@
 					        </div>
 					    </div>
 					    <div class='row'>
-					        <div class='col-sm-6'>
+					        <div class='col-md-6 col-sm-6'>
 					        	<div class='form-group' style="padding-left: 20px;padding-right:20px;">
 					        		<select class="form-control" name="gender" id="gender" placeholder="Gender" ng-model="doctor.gender" required>
 	                                  <option value="" disabled selected style="display: block;">Select Gender</option>
@@ -46,7 +46,7 @@
 	                                </select>
 					        	</div>
 					        </div>
-					        <div class='col-sm-6'>
+					        <div class='col-md-6 col-sm-6'>
 					            <div class='form-group' style="padding-left: 20px;padding-right:20px;font-size:10pt;">
 					                <!-- <input type="input" class="form-control" name="dateOfBirth" id="dateOfBirth" placeholder="Date of birth" ng-model="doctor.dateOfBirth" required> -->
 					                 <input type="text" 
@@ -65,7 +65,7 @@
 					        </div>
 					    </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            <div class='col-md-12 col-sm-12'>
                                 <textarea ng-model="doctor.bio" name="bio" id="bio" class="form-control" placeholder="Bio, tell us about you." ng-model="doctor.bio" required></textarea>
                             </div>
                         </div>
