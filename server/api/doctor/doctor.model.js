@@ -53,7 +53,8 @@ var DoctorSchema = new Schema({
   stripeCustId: String,
   stripeCardId: String,
   stripeSubId: String,
-  active: Boolean
+  active: Boolean,
+  statistics: {type:Schema.Types.ObjectId, ref: 'Statistic'}
 });
 
 /**
@@ -76,7 +77,10 @@ DoctorSchema
   .get(function() {
     return {
       'firstName': this.firstName,
-      'lastName': this.lastName
+      'lastName': this.lastName,
+      'profilePicture': this.profilePicture,
+      'specialist': this.specialist,
+      'credential': this.credential
     };
   });
 

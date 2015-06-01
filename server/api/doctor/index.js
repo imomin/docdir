@@ -10,12 +10,12 @@ var multipartyMiddleware = multiparty();
 var router = express.Router();
 
 router.get('/', controller.index);
+router.get('/me', auth.isDoctorAuthenticated(), controller.me);
 router.get('/lookup', controller.lookup);
 router.get('/:specialist/lookup', controller.lookup);
 router.get('/:specialist', controller.list);
 router.get('/:specialist/:id', controller.show);
 //router.get('/:id', controller.show);
-router.get('/me', auth.isDoctorAuthenticated(), controller.me);
 router.post('/:id/upload', multipartyMiddleware, controller.uploadFile);
 router.put('/:id/subscribe', auth.isDoctorAuthenticated(), controller.subscribe);
 router.post('/', controller.create);

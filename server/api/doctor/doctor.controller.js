@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 // Get a single doctor
 exports.show = function(req, res) {
   Doctor.findById(req.params.id, '-salt -hashedPassword', function (err, doctor) {
-    if(err) { console.log("test"); return handleError(res, err); }
+    if(err) {return handleError(res, err); }
     if(!doctor) { return res.send(404); }
     return res.json(doctor);
   });
@@ -219,7 +219,7 @@ exports.unsubscribe = function(req, res, next) {
 exports.list = function(req, res, next) {
   Doctor
     .find({})
-    .where('specialist').equals(req.params.specialist)
+    .where('specialist').equals(new RegExp('^' + req.params.specialist + '$','i'))
     .limit(100)
     .sort('-_id')
     .select('firstName lastName profilePicture credential specialist')
@@ -239,11 +239,12 @@ exports.lookup = function(req, res, next) {
   if(!query){
     return res.json(200, {});
   }
-  var regexp = new RegExp('^'+ query);
+  var regexp = new RegExp('^'+ query,'i');
   var findQuery = {$or:[{"firstName":regexp},{"lastName":regexp}]};
   if(specialist){
     findQuery.specialist = new RegExp('^' + specialist + '$','i');
   }
+
   Doctor
   .find(findQuery)
   .limit(10)
