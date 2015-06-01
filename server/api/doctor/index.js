@@ -16,6 +16,7 @@ router.get('/:specialist/lookup', controller.lookup);
 router.get('/:specialist', controller.list);
 router.get('/:specialist/:id', controller.show);
 //router.get('/:id', controller.show);
+router.put('/:id/password', auth.isDoctorAuthenticated(), controller.changePassword);
 router.post('/:id/upload', multipartyMiddleware, controller.uploadFile);
 router.put('/:id/subscribe', auth.isDoctorAuthenticated(), controller.subscribe);
 router.post('/', controller.create);

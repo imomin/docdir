@@ -278,5 +278,25 @@ angular.module('sugarlandDoctorsApp')
       getCurrentDoctor: function() {
         return currentDoctor;
       },
+            /**
+       * Change password
+       *
+       * @param  {String}   oldPassword
+       * @param  {String}   newPassword
+       * @param  {Function} callback    - optional
+       * @return {Promise}
+       */
+      changeDoctorPassword: function(oldPassword, newPassword, callback) {
+        var cb = callback || angular.noop;
+
+        return Doctor.changePassword({ id: currentDoctor._id }, {
+          oldPassword: oldPassword,
+          newPassword: newPassword
+        }, function(user) {
+          return cb(user);
+        }, function(err) {
+          return cb(err);
+        }).$promise;
+      },
     };
   });

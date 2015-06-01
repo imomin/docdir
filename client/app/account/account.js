@@ -13,10 +13,16 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupCtrl'
       })
-      .state('settings', {
-        url: '/settings',
-        templateUrl: 'app/account/settings/settings.html',
-        controller: 'SettingsCtrl',
+      .state('changepassword', {
+        url: '/changepassword',
+        templateUrl: 'app/account/settings/changePassword.html',
+        controller: 'ChangePasswordCtrl',
+        authenticate: true
+      })
+      .state('videocall',{
+        url: '/videocall',
+        templateUrl: 'app/account/videoChat/videochat.html',
+        controller: 'VideoChatCtrl',
         authenticate: true
       })
       .state('dashboard', {
