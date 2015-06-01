@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 // Get a single doctor
 exports.show = function(req, res) {
   Doctor.findById(req.params.id, '-salt -hashedPassword', function (err, doctor) {
-    if(err) { return handleError(res, err); }
+    if(err) { console.log("test"); return handleError(res, err); }
     if(!doctor) { return res.send(404); }
     return res.json(doctor);
   });
@@ -213,6 +213,45 @@ exports.unsubscribe = function(req, res, next) {
           });
         }
       );
+  });
+}
+
+exports.list = function(req, res, next) {
+  Doctor
+    .find({})
+    .where('specialist').equals(req.params.specialist)
+    .limit(100)
+    .sort('-_id')
+    .select('firstName lastName profilePicture credential specialist')
+    .exec(function (err, doctors) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, doctors);
+    });
+}
+// db.users.find({name: /a/})  //like '%a%
+// db.users.find({name: /^pa/}) //like 'pa%' 
+// db.users.find({name: /ro$/}) //like '%ro'
+// db.users.find({ $or: [{"firstName": /^Im/},{"lastName":/^Im/}]}) // firstName LIKE Im% OR lastName LIKE Im%
+// db.users.find({ $or: [{"firstName": /^Im/},{"lastName":/^Im/}],"specialist":"Dentist"}) // (firstName LIKE Im% OR lastName LIKE Im%) AND Specialist = "Dentist"
+exports.lookup = function(req, res, next) {
+  var query = req.query.val ? req.query.val : null;
+  var specialist = req.params.specialist ? req.params.specialist : null;
+  if(!query){
+    return res.json(200, {});
+  }
+  var regexp = new RegExp('^'+ query);
+  var findQuery = {$or:[{"firstName":regexp},{"lastName":regexp}]};
+  if(specialist){
+    findQuery.specialist = new RegExp('^' + specialist + '$','i');
+  }
+  Doctor
+  .find(findQuery)
+  .limit(10)
+  .sort('-_id')
+  .select('firstName lastName profilePicture credential specialist -_id')
+  .exec(function (err, doctors) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, doctors);
   });
 }
 

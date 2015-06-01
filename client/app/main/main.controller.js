@@ -104,7 +104,18 @@ angular.module('sugarlandDoctorsApp')
     }
     $scope.groupedSlides = group;
 
-
+    $scope.searchDoctor = function(val) {
+      return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: val,
+          sensor: false
+        }
+      }).then(function(response){
+        return response.data.results.map(function(item){
+          return item.formatted_address;
+        });
+      });
+    };
 
 
     page.setTitle("home page");
@@ -112,6 +123,9 @@ angular.module('sugarlandDoctorsApp')
       $scope.awesomeThings = awesomeThings;
       socket.syncUpdates('thing', $scope.awesomeThings);
     });
+
+
+
 
     $scope.addThing = function() {
       if($scope.newThing === '') {
