@@ -153,4 +153,10 @@ angular.module('sugarlandDoctorsApp', [
       // });
 
     });
+
+    $rootScope.$on("$locationChangeStart",function(event, next, current){
+        if (easyrtc.webSocket) {
+            easyrtc.disconnect();
+        }
+    });
   });

@@ -41,6 +41,13 @@ angular.module('sugarlandDoctorsApp')
            * @param  {String} name   - name or info to show on modal
            * @param  {All}           - any additional args are passed staight to del callback
            */
+           /*
+            $scope.user = {"_id":1,"name":"test"};
+            $scope.delete = Modal.confirm.delete(function(user) { // callback when modal is confirmed
+              debugger;
+            });
+            <button ng-click="delete()">openModal</button>
+           */
           return function() {
             var args = Array.prototype.slice.call(arguments),
                 name = args.shift(),

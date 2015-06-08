@@ -19,10 +19,10 @@ angular.module('sugarlandDoctorsApp')
         controller: 'ChangePasswordCtrl',
         authenticate: true
       })
-      .state('videocall',{
-        url: '/videocall',
-        templateUrl: 'app/account/videoChat/videochat.html',
-        controller: 'VideoChatCtrl',
+      .state('conference',{
+        url: '/conference',
+        templateUrl: 'app/account/conference/conference.html',
+        controller: 'ConferenceCtrl',
         authenticate: true
       })
       .state('dashboard', {
