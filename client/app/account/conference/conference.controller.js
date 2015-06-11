@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-	.controller('ConferenceCtrl', function ($scope, $timeout, Modal, Doctor, Auth) {
+	.controller('ConferenceCtrl', function ($rootScope, $scope, $state, $timeout, $location, Modal, Doctor, Auth) {
 		$scope.userId = null;
 		$scope.users = [];
 		$scope.enableVideo = true;
@@ -9,6 +9,22 @@ angular.module('sugarlandDoctorsApp')
 		$scope.callStatus = null;
 		$scope.isCameraConnected = false;
 		$scope.isConnected = false;
+		$scope.peerId = null;
+
+		$scope.init = function(){
+			$timeout(function(){
+				easyrtc.enableDataChannels(true);
+				easyrtc.dontAddCloseButtons();
+				easyrtc.easyApp("SugarlandDoctors", "selfVideo", ["callerVideo"],
+			         connectSuccessful,
+			         connectFailed
+			     );
+			},100);
+
+			if($state.params.conf){
+				$scope.peerId = $state.params.conf;
+			}
+		}
 
 		$scope.connect = function(){
 			var username = prompt("Enter your username?");
@@ -39,36 +55,56 @@ angular.module('sugarlandDoctorsApp')
 		var connectSuccessful = function(easyRtcId, roomOwner) {
 			$scope.userId = easyRtcId;
 			var callerPending = null;
+			$scope.isCameraConnected = true;
+			console.log(easyRtcId);
+			angular.element($("#connectButton"))[0].style.display = "none";
 			//prompt user to join the call
 			easyrtc.setAcceptChecker(function(easyrtcid, callback) {
 			    callerPending = easyrtcid;
-			    var confirmMessage = "";
+			    angular.element($("#callConfirm"))[0].style.display = "block";
+			    $scope.confirmMessage = "";
 			    if( easyrtc.getConnectionCount() > 0 ) {
-			        confirmMessage = "Drop current call and accept new from " + easyrtc.idToName(easyrtcid) + " ?";
+			        $scope.confirmMessage = "Drop current call and accept " + easyrtc.idToName(easyrtcid) + "'s conference call?";
 			    }
 			    else {
-			        confirmMessage = "Accept incoming call from " + easyrtc.idToName(easyrtcid) + " ?";
+			        $scope.confirmMessage = easyrtc.idToName(easyrtcid) + " has requested a conference call?";
 			    }
-			    var accepted = confirm(confirmMessage);
-			    if(accepted && easyrtc.getConnectionCount() > 0 ) {
-					easyrtc.hangupAll();
-			    }
-			    callback(accepted);
-			    callerPending = null;
+			    $scope.$apply();
+			    var acceptTheCall = function(accepted) {
+					angular.element($("#callConfirm"))[0].style.display = "none";
+				    if( accepted && easyrtc.getConnectionCount() > 0 ) {
+				        easyrtc.hangupAll();
+				    }
+				    callback(accepted);
+				    callerPending = null;
+				};
+				angular.element($("#confirmAccept"))[0].onclick = function() {
+				    acceptTheCall(true);
+				};
+				angular.element($("#confirmReject"))[0].onclick =function() {
+				    acceptTheCall(false);
+				};
 			});
 
 			//in case the requestor cancle the call before responding.
 			easyrtc.setCallCancelled( function(easyrtcid){
 			    if( easyrtcid === callerPending) {
 			        //prompt ui
+			        angular.element($("#callConfirm"))[0].style.display = "none";
 			        callerPending = false;
 			        $scope.isConnected = false;
 			    }
 			});
 
-			// easyrtc.setOnHangup( function(easyrtcid, slot) {
-			// 	alert(easyrtc.idToName(easyrtcid) + " has hung up.");
-			// });
+			easyrtc.setOnCall( function(easyrtcid, slot) {
+			});
+			easyrtc.setOnHangup( function(easyrtcid, slot) {
+				$timeout(function(){
+					$scope.notification =  easyrtc.idToName(easyrtcid) + " has ended the conference call.";
+			    	angular.element($("#callNotification"))[0].style.display = "block";
+			    	
+				},100);
+			});
 
 			easyrtc.setStreamAcceptor(function(easyrtcid, stream) {
 			    easyrtc.setVideoObjectSrc(document.getElementById('callerVideo'),stream);
@@ -78,15 +114,32 @@ angular.module('sugarlandDoctorsApp')
 
 			easyrtc.setOnStreamClosed(function(easyrtcid) {
 			    easyrtc.setVideoObjectSrc(document.getElementById('callerVideo'), "");
-			    $scope.callStatus =  easyrtc.idToName(easyrtcid) + " disconnect!";
-			    $timeout(function(){$scope.isConnected = false;},0);
+			    //replace this with easyrtc.setOnHangUp when its available without having to use easyrtc.EasyApp(...)
+			    $timeout(function(){
+			    	$scope.isConnected = false;
+			    	$scope.notification = " The conference call has ended.";
+			    	angular.element($("#callNotification"))[0].style.display = "block";
+			    	angular.element($("#callNotificationBtn"))[0].onclick = function(){
+			    		debugger;
+			    		$('#callNotification')[0].style.display='none';
+			    		$scope.disconnect(true);
+			    	};
+			    },0);
 			});
+
+			if($scope.peerId){
+				$scope.callPeer();
+			}
 		}
 		var connectFailed = function(errorCode, errorText){
-			alert(errorCode,errorText);
+			//show connect button.
+			angular.element($("#connectButton"))[0].style.display = "block";
+			$scope.disconnect(false);
+			
+			//alert(errorCode,errorText);
 		}
 
-		$scope.disconnect = function(){
+		$scope.disconnect = function(redirect){
 			easyrtc.disconnect();
 			easyrtc.clearMediaStream(document.getElementById('selfVideo'));
   			easyrtc.setVideoObjectSrc(document.getElementById("selfVideo"),"");
@@ -95,6 +148,12 @@ angular.module('sugarlandDoctorsApp')
   			$scope.users = [];
   			$scope.isConnected = false;
   			$scope.isCameraConnected = false;
+  			angular.element($("#disconnectButton"))[0].style.display = "none";
+  			if(redirect){
+  				$timeout(function(){
+  					$location.path('/');
+  				},100);
+  			}
 		}
 
 		$scope.activateCamera = function(){
@@ -124,33 +183,67 @@ angular.module('sugarlandDoctorsApp')
 			easyrtc.enableAudio($scope.enableAudio);
 		}
 
-		$scope.callPeer = function(peerEasyRtcId) {
-			if(!$scope.isCameraConnected){
-				$scope.activateCamera();
+		$scope.callPeer = function() {
+			if($scope.peerId){
+				if(!$scope.isCameraConnected){
+					$scope.activateCamera();
+				}
+				$scope.callStatus = "waiting for response...";
+				$scope.message = "";
+				$scope.toName = easyrtc.idToName($scope.peerId);
+				angular.element($("#callConfirmWaiting"))[0].style.display = "block";
+				angular.element($("#redialButton"))[0].style.display = "none";
+				easyrtc.call($scope.peerId,
+			       function(easyrtcid, mediaType) {//success
+			          $scope.callStatus = "connected with " + easyrtc.idToName(easyrtcid);
+			          angular.element($("#callConfirmWaiting"))[0].style.display = "none";
+			       },
+			       function(errorCode, errMessage) {//failed
+					$scope.message = "Call to  " + easyrtc.idToName($scope.peerId) + " failed: " + errMessage;
+			        angular.element($("#callConfirmWaiting"))[0].style.display = "none";
+			       },
+			       function(wasAccepted, easyrtcid) {//accepted/rejected
+			           if( wasAccepted ){
+			              $scope.callStatus = "call accepted by " + easyrtc.idToName(easyrtcid);
+			              angular.element($("#callConfirmWaiting"))[0].style.display = "none";
+			           }
+			           else {
+			               //$scope.message = toName +" did not accept the call.";
+						$scope.notification = $scope.toName + " did not accept the call.";
+						angular.element($("#callNotification"))[0].style.display = "block";
+						angular.element($("#callConfirmWaiting"))[0].style.display = "none";
+						angular.element($("#callNotificationBtn"))[0].onclick = function(){
+				    		$('#callNotification')[0].style.display='none';
+				    		if($scope.peerId){
+								angular.element($("#redialButton"))[0].style.display = "block";
+							}
+				    	};
+			            $scope.$apply();
+			           }
+			       }
+			    );
 			}
-			$scope.callStatus = "waiting for response...";
-			easyrtc.call(peerEasyRtcId,
-		       function(easyrtcid, mediaType) {//success
-		          $scope.callStatus = "connected with " + easyrtc.idToName(easyrtcid);
-		       },
-		       function(errorCode, errMessage) {//failed
-		          $scope.callStatus = "call to  " + easyrtc.idToName(peerEasyRtcId) + " failed: " + errMessage;
-		       },
-		       function(wasAccepted, easyrtcid) {//accepted/rejected
-		           if( wasAccepted ){
-		              $scope.callStatus = "call accepted by " + easyrtc.idToName(easyrtcid);
-		           }
-		           else {
-		               $scope.callStatus = "call rejected  by " + easyrtc.idToName(easyrtcid);
-		           }
-		       }
-		    );
+			
 		}
 
 		$scope.hangupCall = function(peerEasyRtcId){
 			easyrtc.hangupAll();
 			$scope.callStatus = null;
 			$scope.isConnected = false;
+			angular.element($("#callConfirmWaiting"))[0].style.display = "none";
+			if($scope.peerId){
+				angular.element($("#redialButton"))[0].style.display = "block";
+			}
+		}
+
+		$rootScope.$on('$stateChangeStart', function (event, next, current, from) {
+			if(from.name === "conference"){
+				$scope.disconnect(false);
+			}
+		});
+
+		$scope.fullscreen = function(){
+
 		}
 	});
 

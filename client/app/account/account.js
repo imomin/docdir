@@ -20,7 +20,7 @@ angular.module('sugarlandDoctorsApp')
         authenticate: true
       })
       .state('conference',{
-        url: '/conference',
+        url: '/conference?conf',
         templateUrl: 'app/account/conference/conference.html',
         controller: 'ConferenceCtrl',
         authenticate: true
