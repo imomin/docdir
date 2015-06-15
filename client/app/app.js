@@ -136,6 +136,39 @@ angular.module('sugarlandDoctorsApp', [
         "  </div>\n" +
         "</div>\n"
       );
+
+        // '<a>' +
+        //     '<img ng-src="{{match.model.profilePicture}}" width="48">' +
+        //     '<span bind-html-unsafe="match.model.firstName | typeaheadHighlight:query"></span>' +
+        // '</a>'
+
+
+            // '<div class="col-xs-12 col-sm-3">' +
+            //     '<img ng-src="{{match.model.profilePicture}}" alt="{{match.model.firstName}} {{match.model.lastName}}" class="img-responsive img-circle" />' +
+            // '</div>' +
+            // '<div class="col-xs-12 col-sm-9">' +
+            //     '<span class="name">{{match.model.firstName | typeaheadHighlight:query}} {{match.model.lastName  | typeaheadHighlight:query}} {{match.model.credential}}</span><br/>' +
+            //     '<span>{{match.model.specialist}}</span><br>' +
+            //     '<span> <i class="fa fa-heart" style="color:red;"></i> 23 likes</span>' +
+            // '</div>' +
+            // '<div class="clearfix"></div>' +
+
+            
+
+      $templateCache.put('auto-complete',
+        '<a href="/{{match.model.specialist | lowercase}}/{{match.model.doctorId | lowercase}}">' +
+            '<div class="typeahead" style="font-weight: lighter;clear:none;width:370px;left:515px;">' +
+            '<div class="pull-left"><img ng-src="{{match.model.profilePicture}}" alt="{{match.model.firstName}} {{match.model.lastName}}" width="48" height="48" class=""></div>' +
+            '<div class="pull-left margin-small" style="padding-left: 10px;">' +
+            '<div class="text-left">{{match.model.firstName}} {{match.model.lastName}} {{match.model.credential}}</div>' +
+            '<div class="text-left">{{match.model.specialist}}</div>' +
+            '<div class="text-left"> <i class="fa fa-heart" style="color:red;"></i> 23 likes <i class="fa fa-eye"></i> 89 viwes</div>' +
+            '</div>' +
+            '<div class="clearfix"></div>' +
+            '</div>' +
+        '</a>'
+        );
+
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next, current) {
       Auth.isDoctorLoggedInAsync(function(loggedIn) {

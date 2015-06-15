@@ -234,7 +234,7 @@ exports.list = function(req, res, next) {
 // db.users.find({ $or: [{"firstName": /^Im/},{"lastName":/^Im/}]}) // firstName LIKE Im% OR lastName LIKE Im%
 // db.users.find({ $or: [{"firstName": /^Im/},{"lastName":/^Im/}],"specialist":"Dentist"}) // (firstName LIKE Im% OR lastName LIKE Im%) AND Specialist = "Dentist"
 exports.lookup = function(req, res, next) {
-  var query = req.query.val ? req.query.val : null;
+  var query = req.query.val ? escape(req.query.val) : null;
   var specialist = req.params.specialist ? req.params.specialist : null;
   if(!query){
     return res.json(200, {});
@@ -249,9 +249,10 @@ exports.lookup = function(req, res, next) {
   .find(findQuery)
   .limit(10)
   .sort('-_id')
-  .select('firstName lastName profilePicture credential specialist -_id')
+  .select('doctorId firstName lastName profilePicture credential specialist -_id')
   .exec(function (err, doctors) {
     if(err) { return handleError(res, err); }
+    console.log(doctors);
     return res.json(200, doctors);
   });
 }
@@ -261,7 +262,7 @@ exports.updateCard = function(req, res, next) {
   stripe.customers.updateCard(
     doctor.stripeCustId,
     doctor.stripeCardId,
-    { name: "Jane Austen" },
+    { name: "FirstName LastName" },
     function(err, card) {
       // asynchronously called
     }

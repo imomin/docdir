@@ -33,7 +33,7 @@ angular.module('sugarlandDoctorsApp')
     }
   })
 
-  .controller('MainCtrl', function ($scope, $http, socket,page) {
+  .controller('MainCtrl', function ($scope, $http, $location, socket ,page) {
     $scope.awesomeThings = [];
     $scope.randomDoctors = [
       {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
@@ -105,17 +105,20 @@ angular.module('sugarlandDoctorsApp')
     $scope.groupedSlides = group;
 
     $scope.searchDoctor = function(val) {
-      return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+      return $http.get('/api/doctors/lookup/', {
         params: {
-          address: val,
-          sensor: false
+          val: val
         }
       }).then(function(response){
-        return response.data.results.map(function(item){
-          return item.formatted_address;
+        return response.data.map(function(item){
+          return item;
         });
       });
     };
+
+    $scope.onDoctorSelected = function($item, $model, $label){
+      $location.path('/'+ $model.specialist.toLowerCase() + '/' + 1);
+    }
 
 
     page.setTitle("home page");

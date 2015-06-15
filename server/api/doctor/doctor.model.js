@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
 var DoctorSchema = new Schema({
+  doctorId: { type: String, lowercase: true, required: true, unique: true},
   firstName: String,
   lastName: String,
   email: { type: String, lowercase: true },
@@ -125,6 +126,21 @@ DoctorSchema
       respond(true);
     });
 }, 'duplicateEmail');
+
+// Validate doctorId is not taken
+DoctorSchema
+  .path('doctorId')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({doctorId: value}, function(err, doctor) {
+      if(err) throw err;
+      if(doctor) {
+        if(self.id === doctor.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'duplicateDoctorId');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
