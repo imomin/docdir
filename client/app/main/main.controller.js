@@ -33,8 +33,24 @@ angular.module('sugarlandDoctorsApp')
     }
   })
 
+  .directive('hasResult', function(){
+    return {
+        restrict: 'A',
+        link: function($scope, $element, $attrs){
+          $scope.$watch(function() {
+            return $element.attr('aria-expanded'); 
+          }, function(isOpen){
+              isOpen === 'true' ? $('body').css('overflow', 'hidden') : $('body').css('overflow', 'auto');
+          });
+        }
+    }
+  })
+
   .controller('MainCtrl', function ($scope, $http, $location, socket ,page) {
     $scope.awesomeThings = [];
+    $scope.enableScroll = function(){
+      $('body').css('overflow', 'auto');
+    }
     $scope.randomDoctors = [
       {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
       {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},

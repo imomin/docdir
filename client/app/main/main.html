@@ -43,7 +43,7 @@
                     <div class="form-group">
                       <span class="pre-input" ><i class="fa fa-search" style="color:##898989;"></i></span>
                       <input style="padding-left: 40px;" class="plain" type="text" name="name" placeholder="Type the name of the doctor."  ng-model="doctor" typeahead="doctor as doctor.firstName + ' ' + doctor.lastName for doctor in searchDoctor($viewValue)" typeahead-loading="loadingLocations" disable-valid-styling="true" typeahead-template-url="auto-complete" typeahead-on-select="onDoctorSelected($item, $model, $label)"
-                      typeahead-append-to-body="true">
+                      typeahead-append-to-body="true" aria-expanded="false" has-result ng-blur="enableScroll();">
                       <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
                     </div>
                   </form>
@@ -63,30 +63,28 @@
         </section>
         <section class="row section greyish">
           <div class="row-content buffer even clear-after">
+
+            <!-- Types -->
             <div class="column four">
-              <div class="small-icon red"><i class="icon icon-paperfly"></i></div>
               <div class="small-icon-text clear-after">
                 <h4>Landing page</h4>
                 <p class="text-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
               </div>
             </div>
             <div class="column four">
-              <div class="small-icon red"><i class="icon icon-diamond"></i></div>
               <div class="small-icon-text clear-after">
                 <h4>Portfolio</h4>
                 <p class="text-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
               </div>
             </div>
             <div class="column four last">
-              <div class="small-icon red"><i class="icon icon-crown"></i></div>
               <div class="small-icon-text clear-after">
                 <h4>Resume</h4>
                 <p class="text-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
               </div>
             </div>
-            <!-- Randomaly show 10 or 15 doctors with lowest views-->
-            <!-- <div scroll-box list="randomDoctors" class="row-content even clear-after"> -->
-            <!-- </div> -->
+            <!-- /Types -->
+
             <div class="section-title">
                 <h3 style="font-weight:100;text-align:center">Some of our doctors in Sugar land.</h3>
             </div>
@@ -131,7 +129,7 @@
                 </div>
               </slide>
             </carousel>
-
+          </div> <!-- row-content buffer even clear-after -->
         </section>
 
         <section class="row section" style="">
