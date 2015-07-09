@@ -1,11 +1,15 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .config(function ($stateProvider,$urlMatcherFactoryProvider) {
+  .config(function ($stateProvider,$urlMatcherFactoryProvider,$provide) {
   	//added to deal with tailing /
   	$urlMatcherFactoryProvider.strictMode(false)
-  	//Todo: make following array dynamically come from API (database).
-  	var states = ['dentist','abc','xyz'];
+
+  	$provide.factory('Data',function($http){
+debugger;
+  	})
+  	//Todo: make following array dynamically come from API (database)./api/specialist
+  	var states = ["dentist","ent","family-physician","optometrist","obgna"];
 
 //https://github.com/angular-ui/ui-router/wiki/Multiple-Named-Views 
 
