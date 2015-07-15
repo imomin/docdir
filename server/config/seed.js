@@ -8,7 +8,7 @@
 // var Thing = require('../api/thing/thing.model');
 // var User = require('../api/user/user.model');
 var Specialist = require('../api/specialist/specialist.model');
-
+//http://www.medicare.gov/physiciancompare/staticpages/resources/specialtydefinitions.html
 Specialist.find({}).remove(function(){
 
   Specialist.create(
@@ -35,7 +35,7 @@ Specialist.find({}).remove(function(){
     "description":"Cardiologists treat diseases of the heart and blood vessels."},
   {
     "name":"Chiropractic",
-    "url":"chiropractic",
+    "url":"chiropractor",
     "description":"Chiropractors adjust specific parts of the body (often the spine) to prevent and treat diseases."},
   {
     "name":"Colorectal Surgery",
@@ -130,8 +130,8 @@ Specialist.find({}).remove(function(){
     "url":"nephrology",
     "description":"Nephrologists treat disorders of the kidneys."},
   {
-    "name":"Neurology",
-    "url":"neurology",
+    "name":"Neurologist",
+    "url":"neurologist",
     "description":"Neurologists treat diseases of the brain, spinal cord, and nerves."},
   {
     "name":"Neuropsychiatry",

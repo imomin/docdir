@@ -1,4 +1,5 @@
 'use strict';
+var _$stateProviderRef = null;
 
 angular.module('sugarlandDoctorsApp', [
   'ngCookies',
@@ -62,10 +63,30 @@ angular.module('sugarlandDoctorsApp', [
   })
 
   .factory('page', function() {
-    var title = 'default title';
+    var title = 'Sugar Land Doctors';
+    var metaDescription = 'Find doctors in Sugar Land area.';
+    var metaKeywords = 'Sugar Land';
     return {
       title: function() { return title; },
-      setTitle: function(newTitle) { title = newTitle }
+      setTitle: function(newTitle) { title = newTitle },
+      metaDescription: function() { return metaDescription; },
+      metaKeywords: function() { return metaKeywords; },
+      reset: function() {
+        metaDescription = 'Sugar Land Doctors';
+        metaKeywords = 'Sugar Land';
+      },
+      setMetaDescription: function(newMetaDescription) {
+        metaDescription = newMetaDescription;
+      },
+      appendMetaKeywords: function(newKeywords) {
+        for (var key in newKeywords) {
+          if (metaKeywords === '') {
+            metaKeywords += newKeywords[key].name;
+          } else {
+            metaKeywords += ', ' + newKeywords[key].name;
+          }
+        }
+      }
     };
   })
 
@@ -91,7 +112,29 @@ angular.module('sugarlandDoctorsApp', [
     }
   })
 
-  .run(function ($q, $rootScope, $location, $templateCache, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier) {
+  .run(function ($q, $rootScope, $location, $templateCache, CommonData, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier) {
+      CommonData.getSpecialists().then( function(data) {
+          $rootScope._specialist = data;
+          angular.forEach(data, function(list) {
+            var state = list.url;
+            _$stateProviderRef
+              .state(state, {
+                url: '/'+state,
+                templateUrl: 'app/doctors/doctors.html',
+                controller: 'DoctorsCtrl',
+                data: {
+                 speciality:state
+                }
+              })
+              .state(state + '.detail', {
+               url: '/:doctorId',
+               parent: state,
+               controller: 'DoctorsDetailsCtrl'
+             });
+        });
+        }).catch( function(err) {
+
+        });
       // angular auto validate settings.
       $rootScope.customErrors = {"duplicateEmail":"The specified email address is already in use.",
         "blankEmail":"Email cannot be blank.",

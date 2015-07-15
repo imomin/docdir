@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .factory('Data', function Auth($location, $rootScope, $http, $cookieStore, $q) {
+  .factory('CommonData', function Auth($location, $rootScope, $http, $cookieStore, $q) {
     return {
       getSpecialists: function(callback) {
           var cb = callback || angular.noop;
           var deferred = $q.defer();
 
-          $http.post('/api/specialists', {}).
+          $http.get('/api/specialists', {}).
           success(function(data) {
             //$cookieStore.put('specialists', data);
             deferred.resolve(data);
-            return cb();
+            return cb(null,data);
           }).
           error(function(err) {
             deferred.reject(err);
