@@ -205,7 +205,7 @@ DoctorSchema.methods = {
    * @api public
    */
    createDoctorId: function(firstName,lastName,credential){
-      return firstName + '-' + lastName + '-' + credential;
+      return firstName + '-' + lastName + '-' + credential.toString().replace(" ","").replace(/[^a-z0-9]+/gi,"-");
    }
 };
 
