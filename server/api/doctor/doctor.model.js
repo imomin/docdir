@@ -81,7 +81,8 @@ DoctorSchema
       'lastName': this.lastName,
       'profilePicture': this.profilePicture,
       'specialist': this.specialist,
-      'credential': this.credential
+      'credential': this.credential,
+      'doctorId': this.doctorId
     };
   });
 

@@ -1,26 +1,45 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .controller('DoctorsCtrl', function ($scope,$state,$stateParams,page) {
+  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,page,CommonData) {
     $scope.doctorId = 0;
-    //by default select top 1, if the root speciality is selected.
-    if(!$state.params.doctorId){
-    	$state.params.doctorId = 12;
-    	$state.go( $state.current.data.speciality+'.detail', $state.params);
-    }
-
-    $scope.doctors = [];
-    $scope.specialists = ["Dentist","ENT","Family Physician","Optometrist","OBGNA"];
-    $scope.gender = "both";
-
-    for (var i = 25; i >= 0; i--) {
-      $scope.doctors.push({"name":"John Smith", "degrees":["DC","DDC"], "likes":23,"views":120,"category_labels":[["Healthcare","Chiropractors"]],"picture":"/assets/images/thumbnail.jpeg"});
+    $scope.form = {
+        specialist: null,
+        gender:"both"
     };
+    $scope.specialists = $rootScope._specialists;
+    $scope.form.specialist = _.find($scope.specialists, function(specialist) {
+                                    return specialist.url === $state.current.data.specialist;
+                                  });
+    $scope.$watch(
+        "form.specialist",
+        function( newValue, oldValue ) {
+            // Ignore initial setup.
+            if ( newValue === oldValue ||  $state.current.parent === newValue.url) {
+                return;
+            }
+            $scope.form.specialist = newValue;
+            $state.transitionTo($scope.form.specialist.url, $state.params, {
+              reload: false, inherit: false, notify: true
+            });
+        }
+    );
+
+    $scope.loadData = function(){
+      //http://localhost:9000/api/doctors/dentist/
+      CommonData.listDoctors($scope.form.specialist.url).then( function(data) {
+        $scope.doctors = data;
+        debugger;
+        $state.params.doctorId = $scope.doctors[0].doctorId;
+        $state.go($state.current.data.specialist+'.detail', $state.params);
+      }).catch(function(err) {
+        debugger;
+      });
+    }
 
     $scope.$on("$stateChangeSuccess", function updatePage() {
         //update page title
         $scope.doctorId = $state.params.doctorId;
-        $scope.speciality = $state.current.data.speciality;// + ' ' + $state.params.doctorId;
         $scope.doctor = {
                           "address":"3425 Highway 6",
                           "address_extended":"Ste 101",
@@ -67,7 +86,8 @@ angular.module('sugarlandDoctorsApp')
               });
           }
 
-        page.setTitle('Sugar Land ' + ' ' + $scope.doctor.category_labels[0][1] + ' ' + $scope.doctor.name )
+        page.setTitle('Sugar Land ' + ' ' + $scope.doctor.category_labels[0][1] + ' ' + $scope.doctor.name );
+        $scope.loadData();
 
     });
   });

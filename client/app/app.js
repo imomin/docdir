@@ -114,7 +114,7 @@ angular.module('sugarlandDoctorsApp', [
 
   .run(function ($q, $rootScope, $location, $templateCache, CommonData, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier) {
       CommonData.getSpecialists().then( function(data) {
-          $rootScope._specialist = data;
+          $rootScope._specialists = data;
           angular.forEach(data, function(list) {
             var state = list.url;
             _$stateProviderRef
@@ -123,7 +123,7 @@ angular.module('sugarlandDoctorsApp', [
                 templateUrl: 'app/doctors/doctors.html',
                 controller: 'DoctorsCtrl',
                 data: {
-                 speciality:state
+                 specialist:state
                 }
               })
               .state(state + '.detail', {
