@@ -151,6 +151,7 @@ var validatePresenceOf = function(value) {
  */
 DoctorSchema
   .pre('save', function(next) {
+    this.doctorId = this.createDoctorId(this.firstName,this.lastName,this.credential);
     if (!this.isNew) return next();
 
     if (!validatePresenceOf(this.hashedPassword))
@@ -195,7 +196,17 @@ DoctorSchema.methods = {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
-  }
+  },
+
+  /**
+   * Make URL string
+   * @param {String} firstName, lastName, credentail
+   * @return {String}
+   * @api public
+   */
+   createDoctorId: function(firstName,lastName,credential){
+      return firstName + '-' + lastName + '-' + credential;
+   }
 };
 
 module.exports = mongoose.model('Doctor', DoctorSchema);

@@ -45,9 +45,13 @@ Specialist.find({}).remove(function(){
     "name":"Critical care medicine (intensivists)",
     "url":"intensivists",
     "description":"Intensivists treat critically ill or injured patients."},
+    {
+    "name":"Dentist",
+    "url":"dentist",
+    "description":""},
   {
     "name":"Dermatology",
-    "url":"dermatology",
+    "url":"dermatologist",
     "description":"Dermatologists treat skin conditions."},
   {
     "name":"Diagnostic radiology",
@@ -147,7 +151,7 @@ Specialist.find({}).remove(function(){
     "description":"Nuclear medicine specialists use radioactive materials to diagnose and treat diseases."},
   {
     "name":"Obstetrics Gynecology (OB/GYN)",
-    "url":"obstetrics-gynecology",
+    "url":"obgyn",
     "description":"Obstetricians and gynecologists take care of women during pregnancy and childbirth (called obstetrics). They also treat disorders of the female reproductive system (called gynecology)."},
   {
     "name":"Ophthalmology",
@@ -155,15 +159,15 @@ Specialist.find({}).remove(function(){
     "description":"Ophthalmologists are physicians who specialize in the care of the eyes. They prescribe glasses and contact lenses, diagnose and treat eye conditions, and perform eye surgery."},
   {
     "name":"Optometry",
-    "url":"optometry",
+    "url":"optometrist",
     "description":"Optometrists are eye care professionals who perform eye examinations, prescribe corrective lenses, and treat some eye diseases that don’t require surgery."},
   {
     "name":"Oral Surgery",
     "url":"oral-surgery",
     "description":"Oral surgeons are dentists who use surgery to treat problems in the mouth and nearby areas."},
   {
-    "name":"Orthopedic Surgery",
-    "url":"orthopedic-surgery",
+    "name":"Orthopedic",
+    "url":"orthopedist",
     "description":"Orthopedic surgeons treat diseases, injuries, and deformities of the bones and muscles."},
   {
     "name":"Osteopathic",
@@ -183,7 +187,7 @@ Specialist.find({}).remove(function(){
     "description":"Pathologists examine body tissues and interpret laboratory test results."},
   {
     "name":"Pediatric",
-    "url":"pediatric",
+    "url":"pediatrician",
     "description":"Pediatricians provide primary care for infants, children, and teenagers."},
   {
     "name":"Peripheral Vascular Disease",
