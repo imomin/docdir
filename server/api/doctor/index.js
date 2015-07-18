@@ -14,7 +14,10 @@ router.get('/me', auth.isDoctorAuthenticated(), controller.me);
 router.get('/lookup', controller.lookup);
 router.get('/:specialist/lookup', controller.lookup);
 router.get('/:specialist', controller.list);
-router.get('/:specialist/:id', controller.show);
+//router.get('/:specialist/:id', controller.show);
+router.get('/:specialist/:doctorId', controller.detail);
+
+
 //router.get('/:id', controller.show);
 router.put('/:id/password', auth.isDoctorAuthenticated(), controller.changePassword);
 router.post('/:id/upload', multipartyMiddleware, controller.uploadFile);

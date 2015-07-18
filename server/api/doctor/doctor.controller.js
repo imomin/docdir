@@ -24,6 +24,16 @@ exports.show = function(req, res) {
   });
 };
 
+// Get a single doctor by doctorId
+exports.detail = function(req, res) {
+  Doctor.findOne({doctorId: req.params.doctorId},'-_id -salt -hashedPassword -stripeSubId -stripeCardId -stripeCustId', 
+    function(err,doctor) { 
+      if (err) return next(err);
+      if (!doctor) return res.json(404);
+      res.json(doctor);
+    });
+};
+
 // Creates a new doctor in the DB.
 exports.create = function(req, res) {
   Doctor.create(req.body, function(err, doctor) {

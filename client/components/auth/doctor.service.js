@@ -21,6 +21,13 @@ angular.module('sugarlandDoctorsApp')
       update: {
         method: 'PUT'
       },
+      details: {
+        method: 'GET',
+        params: {
+          id:'@specialist',
+          controller:'@Id'
+        }
+      },
       subscribe: {
         method: 'PUT',
         params: {

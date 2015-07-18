@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,page,CommonData) {
+  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,page,Auth,Doctor,CommonData) {
     $scope.doctorId = 0;
     $scope.form = {
         specialist: null,
@@ -29,9 +29,10 @@ angular.module('sugarlandDoctorsApp')
       //http://localhost:9000/api/doctors/dentist/
       CommonData.listDoctors($scope.form.specialist.url).then( function(data) {
         $scope.doctors = data;
-        debugger;
-        $state.params.doctorId = $scope.doctors[0].doctorId;
-        $state.go($state.current.data.specialist+'.detail', $state.params);
+        if($scope.doctors.length > 0){
+          $state.params.doctorId = $scope.doctors[0].doctorId;
+          $state.go($state.current.data.specialist+'.detail', $state.params);
+        }
       }).catch(function(err) {
         debugger;
       });
@@ -39,6 +40,13 @@ angular.module('sugarlandDoctorsApp')
 
     $scope.$on("$stateChangeSuccess", function updatePage() {
         //update page title
+        debugger;
+        if($state.current.data.specialist && $state.params.doctorId){
+          Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
+            debugger;
+          });
+        }
+
         $scope.doctorId = $state.params.doctorId;
         $scope.doctor = {
                           "address":"3425 Highway 6",
@@ -67,7 +75,7 @@ angular.module('sugarlandDoctorsApp')
                           "neighborhood":["Smada"],
                           "npi_id":"1528075892",
                           "postcode":"77478",
-                          "region":"TX",
+                          "region":"TX",  
                           "tel":"(281) 980-1050",
                           "tel_normalized":"2819801050",
                           "website":"http://www.sugarlandhealthcenter.com",
@@ -87,7 +95,6 @@ angular.module('sugarlandDoctorsApp')
           }
 
         page.setTitle('Sugar Land ' + ' ' + $scope.doctor.category_labels[0][1] + ' ' + $scope.doctor.name );
-        $scope.loadData();
-
     });
+      $scope.loadData();
   });

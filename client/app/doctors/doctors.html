@@ -65,15 +65,28 @@
 				</div>
 				<div ui-view="list" class="row" scroll style="overflow: auto;margin-left:0px;margin-right:0px;background-color:#fff">
 					<ul class="list-group">
-						<li ng-repeat="t in [1,2,3,4,5,6,7,8,9,10]" class="list-group-item" style="border-top-right-radius:0px;border-top-left-radius:0px;border-bottom-right-radius:0px:border-bottom-left-radius:0px;">
-							<a ui-sref=".detail({ doctorId: {{t}} })" > <!-- ui-sref-opts="{reload: true, notify: true}" -->
-								<div class="col-xs-12 col-sm-3">
+						<!-- <li ng-repeat="t in [1,2,3,4,5,6,7,8,9,10]" class="list-group-item" style="border-top-right-radius:0px;border-top-left-radius:0px;border-bottom-right-radius:0px:border-bottom-left-radius:0px;">
+							<a ui-sref=".detail({ doctorId: {{t}} })" > --> <!-- ui-sref-opts="{reload: true, notify: true}" -->
+								<!-- <div class="col-xs-12 col-sm-3">
 		                            <img src="/assets/images/thumbnail.jpeg" alt="Seth Frazier" class="img-responsive img-circle" />
 		                        </div>
 		                        <div class="col-xs-12 col-sm-9">
 		                            <span class="name">Lisa Mona MD, DDC</span><br/>
 		                            <span>Chiropractors</span><br>
 		                            <span> <i class="fa fa-heart" style="color:red;"></i> 23 likes</span>
+		                        </div>
+		                        <div class="clearfix"></div>
+	                    	</a>
+						</li> -->
+						<li ng-repeat="doctor in doctors" class="list-group-item" style="border-top-right-radius:0px;border-top-left-radius:0px;border-bottom-right-radius:0px:border-bottom-left-radius:0px;">
+							<a ui-sref=".detail({ doctorId:doctor.doctorId })" > <!-- ui-sref-opts="{reload: true, notify: true}" -->
+								<div class="col-xs-12 col-sm-3">
+		                            <img ng-src="{{doctor.profilePicture}}" alt="{{doctor.firstName}}{{doctor.lastName}}{{doctor.credential}}" class="img-responsive img-circle" />
+		                        </div>
+		                        <div class="col-xs-12 col-sm-9">
+		                            <span class="name">{{doctor.firstName}} {{doctor.lastName}} {{doctor.credential}}</span><br/>
+		                            <span>{{doctor.specialist}}</span><br>
+		                            <span> <i class="fa fa-heart" style="color:red;"></i> ?? likes</span>
 		                        </div>
 		                        <div class="clearfix"></div>
 	                    	</a>
