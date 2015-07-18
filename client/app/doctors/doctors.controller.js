@@ -19,14 +19,16 @@ angular.module('sugarlandDoctorsApp')
                 return;
             }
             $scope.form.specialist = newValue;
-            $state.transitionTo($scope.form.specialist.url, $state.params, {
-              reload: false, inherit: false, notify: true
-            });
+            $state.go($scope.form.specialist.url);
+            // $state.transitionTo($scope.form.specialist.url, $state.params, {
+            //   reload: false, inherit: false, notify: true
+            // });
         }
     );
 
     $scope.loadData = function(){
       //http://localhost:9000/api/doctors/dentist/
+      $scope.doctors = [];
       CommonData.listDoctors($scope.form.specialist.url).then( function(data) {
         $scope.doctors = data;
         if($scope.doctors.length > 0){
@@ -40,10 +42,9 @@ angular.module('sugarlandDoctorsApp')
 
     $scope.$on("$stateChangeSuccess", function updatePage() {
         //update page title
-        debugger;
         if($state.current.data.specialist && $state.params.doctorId){
           Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
-            debugger;
+            
           });
         }
 

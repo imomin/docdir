@@ -7,10 +7,10 @@
 				<!-- <h2 style="margin-top:0px;margin-bottom:0px;">{{specialist}}{{doctorId}}  </h2> -->
 				<form class="form-inline">
 				  <ol class="nya-bs-select" data-size="10" ng-model="form.specialist" data-live-search="true" style="width:100%;">
-				    <li nya-bs-option="option in specialists" >
+				    <li nya-bs-option="specialist in specialists" >
 				      <!-- the text content of anchor element will be used for search -->
 				      <a>
-				        {{ option.name }}
+				        {{specialist.name }}
 				        <span class="glyphicon glyphicon-ok check-mark"></span>
 				      </a>
 				    </li>
@@ -21,7 +21,6 @@
 				<form class="form-inline">
 				  <ol class="nya-bs-select" ng-model="insurance" data-live-search="true">
 				    <li nya-bs-option="option in specialists">
-				      <!-- the text content of anchor element will be used for search -->
 				      <a>
 				        {{ option }}
 				        <span class="glyphicon glyphicon-ok check-mark"></span>
