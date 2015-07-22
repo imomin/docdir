@@ -232,7 +232,7 @@ exports.list = function(req, res, next) {
     .where('specialist').equals(new RegExp('^' + req.params.specialist + '$','i'))
     .limit(100)
     .sort('-_id')
-    .select('firstName lastName profilePicture credential specialist doctorId  -_id')
+    .select('firstName lastName profilePicture credential specialist doctorId gender languages insurances  -_id')
     .exec(function (err, doctors) {
       if(err) { return handleError(res, err); }
       return res.json(200, doctors);

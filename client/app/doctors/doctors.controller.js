@@ -1,11 +1,50 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
+  .filter('filterDoctors', function () {
+    return function (doctors, search, insurance, gender, language) {
+      var filtered = [];
+      search = search || '';
+      var searchMatch = new RegExp(search, 'i');
+      for (var i = 0; i < doctors.length; i++) {
+        var doctor = doctors[i];
+        var hasGenderMatched = false;
+        var hasSearchMatched = false;
+        var hasLanguageMatched = false;
+        var hasInsuranceMatched = false;
+
+        if(doctor.gender.toLowerCase() === gender.toLowerCase() || gender.toLowerCase() === 'both'){
+          hasGenderMatched = true;
+        }
+        
+        if (searchMatch.test(doctor.firstName) || searchMatch.test(doctor.lastName)) {
+          hasSearchMatched = true;
+        }
+
+        if(_.indexOf(doctor.languages,language) !== -1) {
+          hasLanguageMatched = true;
+        }
+
+        if(_.indexOf(doctor.insurances,insurance) !== -1){
+          hasInsuranceMatched = true;
+        }
+
+        if(hasGenderMatched && hasSearchMatched && hasLanguageMatched && (hasInsuranceMatched || insurance === null)){
+          filtered.push(doctor);
+        }
+      }
+      return filtered;
+    };
+  })
   .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,page,Auth,Doctor,CommonData) {
+    $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
+    $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
     $scope.doctorId = 0;
     $scope.form = {
         specialist: null,
-        gender:"both"
+        gender:"both",
+        language:"English",
+        insurance: null
     };
     $scope.specialists = $rootScope._specialists;
     $scope.form.specialist = _.find($scope.specialists, function(specialist) {
