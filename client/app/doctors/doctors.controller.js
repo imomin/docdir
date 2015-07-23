@@ -29,7 +29,7 @@ angular.module('sugarlandDoctorsApp')
           hasInsuranceMatched = true;
         }
 
-        if(hasGenderMatched && hasSearchMatched && hasLanguageMatched && (hasInsuranceMatched || insurance === null)){
+        if(hasGenderMatched && hasSearchMatched && hasLanguageMatched && (hasInsuranceMatched || insurance === null || typeof insurance === "undefined")){
           filtered.push(doctor);
         }
       }
@@ -38,7 +38,7 @@ angular.module('sugarlandDoctorsApp')
   })
   .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,page,Auth,Doctor,CommonData) {
     $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
-    $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
+    $scope.insurances = ["-Any-","Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
     $scope.doctorId = 0;
     $scope.form = {
         specialist: null,
@@ -58,10 +58,13 @@ angular.module('sugarlandDoctorsApp')
                 return;
             }
             $scope.form.specialist = newValue;
-            $state.go($scope.form.specialist.url);
-            // $state.transitionTo($scope.form.specialist.url, $state.params, {
-            //   reload: false, inherit: false, notify: true
+            $state.transitionTo($scope.form.specialist.url, $state.params, {
+              reload: true, inherit: false, notify: false
+            });
+            // $state.go($scope.form.specialist.url, $state.params, {
+            //   reload: false, inherit: false, notify: false
             // });
+            $scope.loadData();
         }
     );
 
@@ -71,21 +74,28 @@ angular.module('sugarlandDoctorsApp')
       CommonData.listDoctors($scope.form.specialist.url).then( function(data) {
         $scope.doctors = data;
         if($scope.doctors.length > 0){
-          $state.params.doctorId = $scope.doctors[0].doctorId;
-          $state.go($state.current.data.specialist+'.detail', $state.params);
+          $state.params.doctorId = $state.params.doctorId ? $state.params.doctorId : $scope.doctors[0].doctorId;
+          // $state.transitionTo($state.current.data.specialist+'.detail', $state.params, {
+          //     reload: true, inherit: false, notify: false
+          //   });
+          $state.go($state.current.data.specialist+'.detail', $state.params, {
+              reload: false, inherit: false, notify: false
+            });
         }
       }).catch(function(err) {
         debugger;
       });
     }
 
-    $scope.$on("$stateChangeSuccess", function updatePage() {
+    $scope.$on("$stateChangeSuccess", function updatePage(e) {
         //update page title
         if($state.current.data.specialist && $state.params.doctorId){
           Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
             
           });
         }
+
+        e.preventDefault();
 
         $scope.doctorId = $state.params.doctorId;
         $scope.doctor = {

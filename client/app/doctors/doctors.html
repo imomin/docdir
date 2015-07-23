@@ -20,6 +20,11 @@
 			<div class="col-lg-9" style="padding-left:15px;padding-right:15px;">
 				<form class="form-inline">
 				  <ol class="nya-bs-select" data-size="10" ng-model="form.insurance" data-live-search="true">
+				  	<li class="nya-bs-option">
+				        <a>
+				            Any <span class="glyphicon glyphicon-ok check-mark"></span>
+				        </a>
+				    </li>
 				    <li nya-bs-option="insurance in insurances | orderBy:'toString()'">
 				      <a>
 				        {{ insurance }}
@@ -73,7 +78,7 @@
 				<div ui-view="list" class="row" scroll style="overflow: auto;margin-left:0px;margin-right:0px;background-color:#fff">
 					<ul class="list-group">
 						<li ng-repeat="doctor in doctors | filterDoctors:searchByName:form.insurance:form.gender:form.language" class="list-group-item" style="border-top-right-radius:0px;border-top-left-radius:0px;border-bottom-right-radius:0px:border-bottom-left-radius:0px;">
-							<a ui-sref=".detail({ doctorId:doctor.doctorId })" > <!-- ui-sref-opts="{reload: true, notify: true}" -->
+							<a ui-sref=".detail({ doctorId:doctor.doctorId })" ui-sref-opts="{reload: false, notify: true}"> <!-- ui-sref-opts="{reload: true, notify: true}" -->
 								<div class="col-xs-12 col-sm-3">
 		                            <img ng-src="{{doctor.profilePicture}}" alt="{{doctor.firstName}}{{doctor.lastName}}{{doctor.credential}}" class="img-responsive img-circle" />
 		                        </div>

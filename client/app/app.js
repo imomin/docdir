@@ -1,5 +1,5 @@
 'use strict';
-var _$stateProviderRef = null;
+//var _$stateProviderRef = null;
 
 angular.module('sugarlandDoctorsApp', [
   'ngCookies',
@@ -115,23 +115,6 @@ angular.module('sugarlandDoctorsApp', [
   .run(function ($q, $rootScope, $location, $templateCache, CommonData, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier) {
       CommonData.getSpecialists().then( function(data) {
           $rootScope._specialists = data;
-          angular.forEach(data, function(list) {
-            var state = list.url;
-            _$stateProviderRef
-              .state(state, {
-                url: '/'+state,
-                templateUrl: 'app/doctors/doctors.html',
-                controller: 'DoctorsCtrl',
-                data: {
-                 specialist:state
-                }
-              })
-              .state(state + '.detail', {
-               url: '/:doctorId',
-               parent: state,
-               controller: 'DoctorsDetailsCtrl'
-             });
-        });
         }).catch( function(err) {
 
         });
