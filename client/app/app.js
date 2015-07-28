@@ -14,7 +14,6 @@ angular.module('sugarlandDoctorsApp', [
   'ui.bootstrap.datepicker',
   'ui.bootstrap.buttons',
   'angularPayments',
-  'ngMap',
   'ngImgCrop',
   'nya.bootstrap.select',
   'ngAnimate',
