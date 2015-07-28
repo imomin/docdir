@@ -46,6 +46,28 @@ angular.module('sugarlandDoctorsApp')
         language:"English",
         insurance: null
     };
+    var mapOptions = "";
+    var map = "";
+    var marker = "";
+    var initMap = function(){
+    if(document.getElementById('mapPreview')){
+      $scope.latlng = new google.maps.LatLng(29.598387,-95.622404);
+        mapOptions = {zoom: 13,center: $scope.latlng}
+        map = new google.maps.Map(document.getElementById('mapPreview'), mapOptions);
+        marker = new google.maps.Marker({
+              map: map,
+              position: $scope.latlng,
+              draggable: false,
+              animation: google.maps.Animation.DROP,
+              icon: '/assets/images/mapMarker.png',
+              title: 'Sugar Land'
+          });
+    }
+  }
+  $scope.$on('$viewContentLoaded', function(event) {
+     initMap();
+  });
+
     $scope.specialists = $rootScope._specialists;
     $scope.form.specialist = _.find($scope.specialists, function(specialist) {
                                     return specialist.url === $state.current.data.specialist;
@@ -79,8 +101,8 @@ angular.module('sugarlandDoctorsApp')
           //     reload: true, inherit: false, notify: false
           //   });
           $state.go($state.current.data.specialist+'.detail', $state.params, {
-              reload: false, inherit: false, notify: false
-            });
+              reload: false, inherit: false, notify: true
+            });//setting notify to true because $state.go doesn't fire $stateChangeSuccess therefore the doctor deails are not loaded.
         }
       }).catch(function(err) {
         debugger;
@@ -91,14 +113,29 @@ angular.module('sugarlandDoctorsApp')
         //update page title
         if($state.current.data.specialist && $state.params.doctorId){
           Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
+            $scope.doctor = data;
+            if($scope.latlng){
+              $scope.latlng.A = $scope.doctor.addresses[0].address.latitude;
+              $scope.latlng.F = $scope.doctor.addresses[0].address.longitude;
+              map.setCenter($scope.latlng);
+              marker.setPosition($scope.latlng);
+              marker.setTitle($scope.doctor.addresses[0].address.streetAddress +', '+ $scope.doctor.addresses[0].address.city + ' ' + $scope.doctor.addresses[0].address.state +', '+ $scope.doctor.addresses[0].address.postalCode);
+            }
             
+            $scope.slides = [];
+            for (var i = 0; i < $scope.doctor.pictures.length; i++) {
+              $scope.slides.push({
+                'image': $scope.doctor.pictures[i],
+                'text': ''
+              });
+            };
+            
+            page.setTitle('Sugar Land ' + ' ' + $scope.doctor.specialist + ' ' + $scope.doctor.firstName + ' ' +  $scope.doctor.lastName);
           });
         }
 
-        e.preventDefault();
-
         $scope.doctorId = $state.params.doctorId;
-        $scope.doctor = {
+        $scope.doctor2 = {
                           "address":"3425 Highway 6",
                           "address_extended":"Ste 101",
                           "category_ids":[68],
@@ -134,17 +171,11 @@ angular.module('sugarlandDoctorsApp')
                           "likes":23,
                           "views":120
                         }
-          var slides = $scope.slides = [];
-          for (var i=0; i<4; i++) {
-            var newWidth = 600 + slides.length + 1;
-              slides.push({
-                image: 'http://placekitten.com/' + newWidth + '/300',
-                text: ['More','Extra','Lots of','Surplus'][slides.length % 4] + ' ' +
-                  ['Cats', 'Kittys', 'Felines', 'Cutes'][slides.length % 4]
-              });
-          }
 
-        page.setTitle('Sugar Land ' + ' ' + $scope.doctor.category_labels[0][1] + ' ' + $scope.doctor.name );
     });
-      $scope.loadData();
+    $scope.$on('mapInitialized', function(event, map) { 
+      $scope.map = map;
+      debugger;
+    });
+    $scope.loadData();
   });

@@ -351,14 +351,16 @@ angular.module('sugarlandDoctorsApp')
     }
 
   $scope.toggleTimePicker = function(index){
-    if($scope.workDays[index].isOpen){
-      $scope.workDays[index].open = "9:00 AM";
-      $scope.workDays[index].close = "6:00 PM";
-    }
-    else {
-      $scope.workDays[index].open = null;
-      $scope.workDays[index].close = null;
-    }
+    $timeout(function(){
+      if($scope.workDays[index].isOpen){
+        $scope.workDays[index].open = "9:00 AM";
+        $scope.workDays[index].close = "6:00 PM";
+      }
+      else {
+        $scope.workDays[index].open = null;
+        $scope.workDays[index].close = null;
+      }
+    });
   }
 
   $scope.getLocation = function(query) {
