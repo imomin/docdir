@@ -93,9 +93,7 @@
 					</ul>
 				</div>
 			</div>
-<!-- 
-{"doctorId":"dr-Nuresh-momin-2","firstName":"Nuresh","lastName":"Momin","email":"imomin@gmail.com","phone":"8326304986","personalInterest":[],"affiliation":[],"professionalMembership":[],"boardCertification":[],"__v":0,"bio":"I'm a doctor..","credential":"MD","dateOfBirth":"1963-02-06T06:00:00.000Z","gender":"Male","specialist":"Dentist","subscriptionType":"yearly","website":"www.myhealthservicewebsite.com","profilePicture":"/assets/images/553f24fed4186cb8656520e5/f7aedf6b-7468-462a-a19e-00d0b580f91b-iastute.jpg","pictures":[],"addresses":[{"_id":"5574d2580db4a81752526d79","workDays":[{"name":"Sunday","isOpen":false,"open":"9:45 PM","close":"9:45 PM","_id":"55497dabd86e5cbf8a1b9cb7"},{"name":"Monday","isOpen":true,"open":"8:00 AM","close":"5:00 PM","_id":"55497dabd86e5cbf8a1b9cb6"},{"name":"Tuesday","isOpen":true,"open":"9:00 AM","close":"6:00 PM","_id":"55497dabd86e5cbf8a1b9cb5"},{"name":"Wednesday","isOpen":true,"open":"9:00 AM","close":"6:00 PM","_id":"55497dabd86e5cbf8a1b9cb4"},{"name":"Thursday","isOpen":true,"open":"9:00 AM","close":"6:00 PM","_id":"55497dabd86e5cbf8a1b9cb3"},{"name":"Friday","isOpen":true,"open":"9:00 AM","close":"6:00 PM","_id":"55497dabd86e5cbf8a1b9cb2"},{"name":"Saturday","isOpen":false,"open":"9:45 PM","close":"9:45 PM","_id":"55497dabd86e5cbf8a1b9cb1"}],"address":{"streetAddress":"15015 Westheimer Parkway","city":"Houston","state":"Texas","postalCode":"77082","latitude":29.732986204983195,"longitude":-95.65270230265503,"suite":"A","phone":"123-123-1231"}}],"personalInterests":["Flying","Golf"],"affiliations":["Herman Hospital","Methodist Sugar Land","St. Luke"],"professionalMemberships":["American Academy of Family Physicians"],"boardCertifications":["Family Medicine"],"educations":[{"degree":"MD","college":"College of Doctors","yearGraduate":2004,"_id":"554325198d4dbb5874b99eeb"},{"degree":"Residency","college":"Medical Office","yearGraduate":2005,"_id":"554325198d4dbb5874b99eea"}],"languages":["English","Hindi","Urdu","Azerbaijani","Persian"],"insurances":["Blue Cross Blue Shield","Blue Cross","Regence BlueCross BlueShield","Anthem Blue Cross","Highmark Blue Cross Blue Shield","ODS Health Network"]}
- -->
+
 			<div ui-view="detail" class="col-lg-9" scroll style="overflow: auto;padding-left:15px;padding-right:15px;	">
 				<div class="card hovercard">
 	                <div class="cardheader">
@@ -107,7 +105,7 @@
 	                    <ul class="list-justified text-center">
 	                        <li>
 	                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
-	                            <a href="#" onclick="alert('open social login to like.'); return false;"><i class="fa fa-heartbeat fa-3x faa-pulse animated"></i></a>
+	                            <a ng-href="javascript: return false;" ng-click="userLogin();"><i class="fa fa-heartbeat fa-3x faa-pulse animated"></i></a>
 	                            <p class="title">23 Likes</p>
 	                        </li>
 	                        <li>

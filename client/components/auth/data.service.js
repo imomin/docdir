@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .factory('CommonData', function Auth($location, $rootScope, $http, $cookieStore, $q) {
+  .factory('CommonData', function CommonData($location, $rootScope, $http, $cookieStore, $q) {
     return {
       getSpecialists: function(callback) {
           var cb = callback || angular.noop;

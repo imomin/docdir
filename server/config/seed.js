@@ -6,7 +6,7 @@
 'use strict';
 
 // var Thing = require('../api/thing/thing.model');
-// var User = require('../api/user/user.model');
+var User = require('../api/user/user.model');
 var Specialist = require('../api/specialist/specialist.model');
 //http://www.medicare.gov/physiciancompare/staticpages/resources/specialtydefinitions.html
 Specialist.find({}).remove(function(){
@@ -292,23 +292,23 @@ Specialist.find({}).remove(function(){
 //   });
 // });
 
-// User.find({}).remove(function() {
-//   User.create({
-//     provider: 'local',
-//     name: 'Test User',
-//     email: 'test@test.com',
-//     password: 'test'
-//   }, {
-//     provider: 'local',
-//     role: 'admin',
-//     name: 'Admin',
-//     email: 'admin@admin.com',
-//     password: 'admin'
-//   }, function() {
-//       console.log('finished populating users');
-//     }
-//   );
-// });
+User.find({}).remove(function() {
+  User.create({
+    provider: 'local',
+    name: 'Test User',
+    email: 'test@test.com',
+    password: 'test'
+  }, {
+    provider: 'local',
+    role: 'admin',
+    name: 'Admin',
+    email: 'admin@admin.com',
+    password: 'admin'
+  }, function() {
+      console.log('finished populating users');
+    }
+  );
+});
 
 //https://data.medicare.gov/data/physician-compare
 //https://data.medicare.gov/Physician-Compare/National-Downloadable-File-Simplified-View/jcud-62jk

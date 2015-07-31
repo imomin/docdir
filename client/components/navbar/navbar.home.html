@@ -1471,7 +1471,7 @@ ul.dropdown-menu {
 			<nav>
 				<ul class="reset" role="navigation">
 					<li ng-hide="isDoctorLoggedIn()" ng-class="{active: isActive('/doctor/login') || isActive('/doctor/reset') || isActive('/doctor/signup')}"><a href="/doctor/login">For Doctors</a></li>
-					<li ng-hide="isDoctorLoggedIn()" class="menu-item"><a href="contact.html">Login</a></li>
+					<li ng-hide="isDoctorLoggedIn()" class="menu-item"><a href="/login">Login</a></li>
                     <li ng-show="isDoctorLoggedIn()" class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;">
                         Hello {{getCurrentDoctor().firstName}} <b class="caret"></b>
