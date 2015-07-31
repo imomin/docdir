@@ -113,9 +113,11 @@ angular.module('sugarlandDoctorsApp')
         if($state.current.data.specialist && $state.params.doctorId){
           Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
             $scope.doctor = data;
-            if($scope.latlng){
-              $scope.latlng.A = $scope.doctor.addresses[0].address.latitude;
-              $scope.latlng.F = $scope.doctor.addresses[0].address.longitude;
+            if($scope.latlng && $scope.doctor.addresses){
+              //using Object.keys because latlng object has minified property name. Which is different everytime.
+              $scope.latlng[Object.keys($scope.latlng)[0]] = $scope.doctor.addresses[0].address.latitude;
+              $scope.latlng[Object.keys($scope.latlng)[1]] = $scope.doctor.addresses[0].address.longitude;
+
               map.setCenter($scope.latlng);
               marker.setPosition($scope.latlng);
               marker.setTitle($scope.doctor.addresses[0].address.streetAddress +', '+ $scope.doctor.addresses[0].address.city + ' ' + $scope.doctor.addresses[0].address.state +', '+ $scope.doctor.addresses[0].address.postalCode);
