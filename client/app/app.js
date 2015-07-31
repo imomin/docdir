@@ -181,7 +181,7 @@ angular.module('sugarlandDoctorsApp', [
             
 
       $templateCache.put('auto-complete',
-        '<a href="/{{match.model.specialist | lowercase}}/{{match.model.doctorId | lowercase}}">' +
+        '<a href="/{{match.model.specialist | lowercase}}/{{match.model.doctorId}}">' +
             '<div class="typeahead" style="font-weight: lighter;clear:none;width:370px;left:515px;">' +
             '<div class="pull-left"><img ng-src="{{match.model.profilePicture}}" alt="{{match.model.firstName}} {{match.model.lastName}}" width="48" height="48" class=""></div>' +
             '<div class="pull-left margin-small" style="padding-left: 10px;">' +

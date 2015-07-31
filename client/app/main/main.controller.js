@@ -137,7 +137,7 @@ angular.module('sugarlandDoctorsApp')
     }
 
 
-    page.setTitle("home page");
+    page.setTitle("Sugar Land Doctors");
     // $http.get('/api/things').success(function(awesomeThings) {
     //   $scope.awesomeThings = awesomeThings;
     //   socket.syncUpdates('thing', $scope.awesomeThings);
