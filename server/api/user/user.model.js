@@ -65,7 +65,7 @@ UserSchema
   .validate(function(email) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
     return email.length;
-  }, 'Email cannot be blank');
+  }, 'blankEmail');
 
 // Validate empty password
 UserSchema
@@ -73,7 +73,7 @@ UserSchema
   .validate(function(hashedPassword) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
     return hashedPassword.length;
-  }, 'Password cannot be blank');
+  }, 'blankPassword');
 
 // Validate email is not taken
 UserSchema
@@ -88,7 +88,7 @@ UserSchema
       }
       respond(true);
     });
-}, 'The specified email address is already in use.');
+}, 'duplicateEmail');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
@@ -102,7 +102,7 @@ UserSchema
     if (!this.isNew) return next();
 
     if (!validatePresenceOf(this.hashedPassword) && authTypes.indexOf(this.provider) === -1)
-      next(new Error('Invalid password'));
+      next(new Error('InvalidEmailOrPassword'));
     else
       next();
   });

@@ -4,7 +4,7 @@ angular.module('sugarlandDoctorsApp')
   .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
     $scope.user = {};
     $scope.errors = {};
-
+debugger;
     $scope.login = function(form) {
       $scope.submitted = true;
 

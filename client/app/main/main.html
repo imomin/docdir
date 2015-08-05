@@ -62,7 +62,7 @@
           </div>
         </section>
         <section class="row section greyish">
-          <div class="row-content buffer even clear-after" style="padding-top: 0%;">
+          <div class="row-content buffer even clear-after" style="padding-top: 0%; padding-bottom:2%;">
             <div class="row">
               <div class="col-md-10 col-md-offset-1" style="margin-left: 14%;">
                 <ul id="da-thumbs" class="da-thumbs">
@@ -123,56 +123,57 @@
                 </ul>
               </div>
             </div>
-            
-            <div class="section-title">
-                <h3 style="font-weight:100;text-align:center">Some of our doctors in Sugar land.</h3>
-            </div>
-            <carousel interval="99000" disable-animation="true">
-              <slide ng-repeat="slideCollection in groupedSlides" active="slide.active">
-                <div class="carouselPictures">
-                  <a href="#" style="position:relative;text-decoration: none;">
-                      <img ng-src="{{slideCollection.image0.image}}" style="">
-                        <p id="name">
-                          Hello World!<br>
-                          <span>Dentist</span>
-                        </p>
-                  </a>
-                  <a href="#" style="position:relative;">
-                      <img ng-src="{{slideCollection.image1.image}}" style="">
-                        <p id="name">
-                          Hello World!<br>
-                          <span>Dentist</span>
-                        </p>
-                  </a>
-                  <a href="#" style="position:relative;">
-                      <img ng-src="{{slideCollection.image2.image}}" style="">
-                        <p id="name">
-                          Hello World!<br>
-                          <span>Dentist</span>
-                        </p>
-                  </a>
-                  <a href="#" style="position:relative;">
-                      <img ng-src="{{slideCollection.image3.image}}" style="">
-                        <p id="name">
-                          Hello World!<br>
-                          <span>Dentist</span>
-                        </p>
-                  </a>
-                  <a href="#" style="position:relative;">
-                      <img ng-src="{{slideCollection.image4.image}}" style="">
-                        <p id="name">
-                          Hello World!<br>
-                          <span>Dentist</span>
-                        </p>
-                  </a>
-                </div>
-              </slide>
-            </carousel>
           </div> <!-- row-content buffer even clear-after -->
         </section>
-
-        <section class="row section" style="">
-
+        <section class="row section greyish">
+          <div class="row-content buffer even clear-after" style="padding-top:0%;">
+            <div class="row">
+              <div class="section-title">
+                  <h3 style="font-weight:100;text-align:center">Some of our doctors in Sugar land.</h3>
+              </div>
+              <carousel interval="99000" disable-animation="true">
+                <slide ng-repeat="slideCollection in groupedSlides" active="slide.active">
+                  <div class="carouselPictures">
+                    <a href="#" style="position:relative;text-decoration: none;">
+                        <img ng-src="{{slideCollection.image0.image}}" style="">
+                          <p id="name">
+                            Hello World!<br>
+                            <span>Dentist</span>
+                          </p>
+                    </a>
+                    <a href="#" style="position:relative;">
+                        <img ng-src="{{slideCollection.image1.image}}" style="">
+                          <p id="name">
+                            Hello World!<br>
+                            <span>Dentist</span>
+                          </p>
+                    </a>
+                    <a href="#" style="position:relative;">
+                        <img ng-src="{{slideCollection.image2.image}}" style="">
+                          <p id="name">
+                            Hello World!<br>
+                            <span>Dentist</span>
+                          </p>
+                    </a>
+                    <a href="#" style="position:relative;">
+                        <img ng-src="{{slideCollection.image3.image}}" style="">
+                          <p id="name">
+                            Hello World!<br>
+                            <span>Dentist</span>
+                          </p>
+                    </a>
+                    <a href="#" style="position:relative;">
+                        <img ng-src="{{slideCollection.image4.image}}" style="">
+                          <p id="name">
+                            Hello World!<br>
+                            <span>Dentist</span>
+                          </p>
+                    </a>
+                  </div>
+                </slide>
+              </carousel>
+              </div>
+          </div>
         </section>
 
       </div><!-- id-main -->

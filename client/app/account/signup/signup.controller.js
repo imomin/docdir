@@ -14,7 +14,7 @@ angular.module('sugarlandDoctorsApp')
           email: $scope.user.email,
           password: $scope.user.password
         })
-        .then( function() {
+        .then( function(resp) {
           // Account created, redirect to home
           $location.path('/');
         })
@@ -24,7 +24,7 @@ angular.module('sugarlandDoctorsApp')
 
           // Update validity of form fields that match the mongoose errors
           angular.forEach(err.errors, function(error, field) {
-            form[field].$setValidity('mongoose', false);
+            form[field].$setValidity(error.message, false);
             $scope.errors[field] = error.message;
           });
         });

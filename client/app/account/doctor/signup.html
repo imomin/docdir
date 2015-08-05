@@ -22,9 +22,7 @@
                             <div class="col-sm-12">
                                 <select class="form-control" name="specialist" id="specialist" placeholder="Specialist" ng-model="doctor.specialist" required>
                                   <option value="" disabled selected style="display: none;">Select your primary practice</option>
-                                  <option>Dentist</option>
-                                  <option>Optometrist</option>
-                                  <option>ENT</option>
+                                  <option ng-repeat="specialist in specialists">{{specialist.name}}</option>
                                 </select>
                             </div>
                         </div>

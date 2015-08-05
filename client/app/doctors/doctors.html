@@ -94,193 +94,195 @@
 				</div>
 			</div>
 
-			<div ui-view="detail" class="col-lg-9" scroll style="overflow: auto;padding-left:15px;padding-right:15px;	">
-				<div class="card hovercard">
-	                <div class="cardheader">
-	                </div>
-	                <div class="avatar">
-	                    <img alt="{{doctor.firstName}} {{doctor.lastName}} {{doctor.credential}}" ng-src="{{doctor.profilePicture}}">
-	                </div>
-	                <div class="info">
-	                    <ul class="list-justified text-center">
-	                        <li>
-	                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
-	                            <a ng-href="javascript: return false;" ng-click="userLogin();"><i class="fa fa-heartbeat fa-3x faa-pulse animated"></i></a>
-	                            <p class="title">23 Likes</p>
-	                        </li>
-	                        <li>
-	                            <p class="title">{{doctor.firstName}} {{doctor.lastName}}  {{doctor.credential}}</p>
-	                            <p class="desc">{{doctor.specialist}}</p>
-	                        </li>
-	                        <!-- <li>
-	                            <p class="desc">Address</p>
-	                            <p class="desc">City State Zip</p>
-	                            <p class="desc">Phone</p>
-	                        </li> -->
-	                        <li>
-	                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
-	                            <i class="fa fa-eye fa-3x"></i>
-	                            <p class="title">23 Views</p>
-	                        </li>
-	                    </ul>
-	                </div>
-                <!-- <div class="bottom">Address Street Name Suite Number, Sugar Land, TX 77478. Ph. 832-232-3232 Fax. 121-121-1212</div> -->
-            	</div>
-            	
+			<!-- if there is a data to display then show following. -->
+			<div ui-view="detail" class="col-lg-9" scroll style="overflow: auto;padding-left:15px;padding-right:15px;">
+				<div ng-show="hasData">
+					<div class="card hovercard">
+		                <div class="cardheader">
+		                </div>
+		                <div class="avatar">
+		                    <img alt="{{doctor.firstName}} {{doctor.lastName}} {{doctor.credential}}" ng-src="{{doctor.profilePicture}}">
+		                </div>
+		                <div class="info">
+		                    <ul class="list-justified text-center">
+		                        <li>
+		                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
+		                            <a ng-href="javascript: return false;" ng-click="userLogin();"><i class="fa fa-heartbeat fa-3x faa-pulse animated"></i></a>
+		                            <p class="title">23 Likes</p>
+		                        </li>
+		                        <li>
+		                            <p class="title">{{doctor.firstName}} {{doctor.lastName}}  {{doctor.credential}}</p>
+		                            <p class="desc">{{doctor.specialist}}</p>
+		                        </li>
+		                        <li>
+		                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
+		                            <i class="fa fa-eye fa-3x"></i>
+		                            <p class="title">23 Views</p>
+		                        </li>
+		                    </ul>
+		                </div>
+	            	</div>
+	            	
 
-            	<div class="row" style="  margin-left:0px;margin-right:0px;">
-            		<section id="cd-timeline" class="cd-container">
-						<div class="cd-timeline-block">
-							<div class="cd-timeline-img cd-bio">
-								<span class="fa fa-2x fa-user-md" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
+	            	<div class="row" style="  margin-left:0px;margin-right:0px;">
+	            		<section id="cd-timeline" class="cd-container">
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-bio">
+									<span class="fa fa-2x fa-user-md" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
 
-							<div class="cd-timeline-content">
-								<h2>About</h2>
-								<p>{{doctor.bio}}</p>
-							</div> <!-- cd-timeline-content -->
-						</div> <!-- cd-timeline-block -->
-
-						<div class="cd-timeline-block">
-							<div class="cd-timeline-img cd-education">
-								<span class="fa fa-2x fa-graduation-cap" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
-<!-- professionalMemberships -->
-							<div class="cd-timeline-content col-xs-12 col-sm-6 col-md-6 col-lg-6">
-								<h2>Education</h2>
-								<div class="" ng-repeat="education in doctor.educations">
-					        		<div class="col-sm-12">
-					        			<div class="pull-left" style="">{{education.yearGraduate}}</div>
-					        			<div ng-class="{'timelineEducationBar':!$last}"></div>
-					        			<div class="blurCircle pull-left" style=""></div>
-							           	<div class="pull-left" style="padding-bottom: 25px;">
-							           		<div class="pull-left" style="">{{education.degree}}&nbsp;</div>
-							           		<div class="pull-left"> at {{education.college}}</div>
-							           	</div>
-							           	<div class="clear"></div>
-					        		</div>
-					        	</div>
-
-								<h2 ng-show="doctor.boardCertifications.length > 0">Board Certifications</h2>
-								<ul>
-									<li ng-repeat="certification in doctor.boardCertifications">{{certification}}</li>
-								</ul>
-
-								<h2 ng-show="doctor.professionalMemberships.length > 0">Professional Memberships</h2>
-								<ul>
-									<li ng-repeat="professionalMembership in doctor.professionalMemberships">{{professionalMembership}}</li>
-								</ul>
-
-							</div> <!-- cd-timeline-content -->
-						</div> <!-- cd-timeline-block -->
-
-						<div class="cd-timeline-block">
-							<div class="cd-timeline-img cd-hospital">
-								<span class="fa fa-2x fa-hospital-o" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
-
-							<div class="cd-timeline-content col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<h2>Hospital Association</h2>
-								<ul>
-									<li ng-repeat="affiliation in doctor.affiliations | orderBy:'toString()'">{{affiliation}}</li>
-								</ul>
-							</div> <!-- cd-timeline-content -->
-						</div> <!-- cd-timeline-block -->
-
-						<div class="cd-timeline-block">
-							<div class="cd-timeline-img cd-clipboard">
-								<span class="fa fa-2x fa-clipboard" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
-
-							<div class="cd-timeline-content col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<h2>Insurance</h2>
-								<ul>
-									<li ng-repeat="insurance in doctor.insurances | orderBy:'toString()'">{{insurance}}</li>
-								</ul>
-							</div> <!-- cd-timeline-content -->
-						</div> <!-- cd-timeline-block -->
-
-						<div class="cd-timeline-block">
-							<div class="cd-timeline-img cd-language">
-								<span class="fa fa-2x fa-language" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
-
-							<div class="cd-timeline-content  col-xs-12 col-sm-3 col-md-3 col-lg-3">
-								<h2>Languages</h2>
-								<ul>
-									<li ng-repeat="language in doctor.languages | orderBy:'toString()'">{{language}}</li>
-								</ul>
-							</div> <!-- cd-timeline-content -->
-						</div> <!-- cd-timeline-block -->
-
-						<div class="cd-timeline-block">
-							<div class="cd-timeline-img cd-location">
-								<span class="fa fa-2x fa-map-marker" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
-<!-- http://blog.revolunet.com/angular-carousel/ -->
-							<div class="cd-timeline-content">
-								<h2>Location</h2>
-								<div style="float:left;padding-left:15px;"><p>{{doctor.addresses[0].address.streetAddress}}, {{doctor.addresses[0].address.city}} {{doctor.addresses[0].address.state}}, {{doctor.addresses[0].address.postalCode}}</p></div>
-								<div style="float:left;padding-left:20px;"><p><i class="fa fa-phone"></i>&nbsp;{{doctor.addresses[0].address.phone}}</p></div>
-								<div ng-show="{{doctor.addresses[0].address.fax}}" style="float:left;padding-left:20px;"><p>&nbsp;<i class="fa fa-fax"></i>&nbsp;{{doctor.addresses[0].address.fax}}</p></div>
-								<div class="row">
-									<div class="col-lg-12">
-										<div class="col-lg-12">
-											<div class="col-lg-8" style="min-height:300px;" id="mapPreview">
-					            			</div>
-								            <div class="col-lg-4">
-								            	<table class="table">
-								            		<tr>
-								            			<td colspan="2" class="text-center"><strong>Hours of Operation</strong></td>
-								            		</tr>
-								            		<tr ng-repeat="workday in doctor.addresses[0].workDays">
-								            			<td>{{workday.name}}</td>
-								            			<td ng-show="!workday.isOpen">Closed</td>
-								            			<td ng-show="workday.isOpen">{{workday.open}} - {{workday.close}}</td>
-								            		</tr>
-								            	</table>
-								          	</div>
-							        	</div>
-									</div>
+								<div class="cd-timeline-content">
+									<h2>About</h2>
+									<p>{{doctor.bio}}</p>
 								</div> <!-- cd-timeline-content -->
 							</div> <!-- cd-timeline-block -->
 
-						<div ng-show="doctor.pictures" class="cd-timeline-block">
-							<div class="cd-timeline-img cd-camera">
-								<span class="fa fa-2x fa-camera-retro" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-education">
+									<span class="fa fa-2x fa-graduation-cap" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
+	<!-- professionalMemberships -->
+								<div class="cd-timeline-content col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									<h2>Education</h2>
+									<div class="" ng-repeat="education in doctor.educations">
+						        		<div class="col-sm-12">
+						        			<div class="pull-left" style="">{{education.yearGraduate}}</div>
+						        			<div ng-class="{'timelineEducationBar':!$last}"></div>
+						        			<div class="blurCircle pull-left" style=""></div>
+								           	<div class="pull-left" style="padding-bottom: 25px;">
+								           		<div class="pull-left" style="">{{education.degree}}&nbsp;</div>
+								           		<div class="pull-left"> at {{education.college}}</div>
+								           	</div>
+								           	<div class="clear"></div>
+						        		</div>
+						        	</div>
 
-							<div class="cd-timeline-content" style="width:630px;">
-								<h2>Pictures</h2>
-								<div style="height: 305px;width:600px;">
-								    <carousel interval="2000" disable-animation="true">
-								      <slide ng-repeat="slide in slides" active="slide.active">
-								        <img ng-src="{{slide.image}}" style="margin:auto;width:600px;height:300px;">
-								        <div class="carousel-caption">
-								          <h4>Slide {{$index+1}}</h4>
-								          <p>{{slide.text}}</p>
-								        </div>
-								      </slide>
-								    </carousel>
-							  	</div>
-							</div> <!-- cd-timeline-content -->
-						</div> <!-- cd-timeline-block -->
+									<h2 ng-show="doctor.boardCertifications.length > 0">Board Certifications</h2>
+									<ul>
+										<li ng-repeat="certification in doctor.boardCertifications">{{certification}}</li>
+									</ul>
 
-						<div class="cd-timeline-block">
-							<div class="cd-timeline-img cd-interest">
-								<span class="fa fa-2x fa-thumbs-o-up" style="color:#fff;"></span>
-							</div> <!-- cd-timeline-img -->
+									<h2 ng-show="doctor.professionalMemberships.length > 0">Professional Memberships</h2>
+									<ul>
+										<li ng-repeat="professionalMembership in doctor.professionalMemberships">{{professionalMembership}}</li>
+									</ul>
 
-							<div class="cd-timeline-content col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<h2>Personal Interest</h2>
-								<ul>
-									<li ng-repeat="personalInterest in doctor.personalInterests | orderBy:'toString()'">{{personalInterest}}</li>
-								</ul>
-							</div> <!-- cd-timeline-content -->
-						</div> <!-- cd-timeline-block -->
+								</div> <!-- cd-timeline-content -->
+							</div> <!-- cd-timeline-block -->
 
-					</section> <!-- cd-timeline -->
-            	</div>
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-hospital">
+									<span class="fa fa-2x fa-hospital-o" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
+
+								<div class="cd-timeline-content col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<h2>Hospital Association</h2>
+									<ul>
+										<li ng-repeat="affiliation in doctor.affiliations | orderBy:'toString()'">{{affiliation}}</li>
+									</ul>
+								</div> <!-- cd-timeline-content -->
+							</div> <!-- cd-timeline-block -->
+
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-clipboard">
+									<span class="fa fa-2x fa-clipboard" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
+
+								<div class="cd-timeline-content col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<h2>Insurance</h2>
+									<ul>
+										<li ng-repeat="insurance in doctor.insurances | orderBy:'toString()'">{{insurance}}</li>
+									</ul>
+								</div> <!-- cd-timeline-content -->
+							</div> <!-- cd-timeline-block -->
+
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-language">
+									<span class="fa fa-2x fa-language" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
+
+								<div class="cd-timeline-content  col-xs-12 col-sm-3 col-md-3 col-lg-3">
+									<h2>Languages</h2>
+									<ul>
+										<li ng-repeat="language in doctor.languages | orderBy:'toString()'">{{language}}</li>
+									</ul>
+								</div> <!-- cd-timeline-content -->
+							</div> <!-- cd-timeline-block -->
+
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-location">
+									<span class="fa fa-2x fa-map-marker" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
+	<!-- http://blog.revolunet.com/angular-carousel/ -->
+								<div class="cd-timeline-content">
+									<h2>Location</h2>
+									<div style="float:left;padding-left:15px;"><p>{{doctor.addresses[0].address.streetAddress}}, {{doctor.addresses[0].address.city}} {{doctor.addresses[0].address.state}}, {{doctor.addresses[0].address.postalCode}}</p></div>
+									<div style="float:left;padding-left:20px;"><p><i class="fa fa-phone"></i>&nbsp;{{doctor.addresses[0].address.phone}}</p></div>
+									<div ng-show="{{doctor.addresses[0].address.fax}}" style="float:left;padding-left:20px;"><p>&nbsp;<i class="fa fa-fax"></i>&nbsp;{{doctor.addresses[0].address.fax}}</p></div>
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="col-lg-12">
+												<div class="col-lg-8" style="min-height:300px;" id="mapPreview">
+						            			</div>
+									            <div class="col-lg-4">
+									            	<table class="table">
+									            		<tr>
+									            			<td colspan="2" class="text-center"><strong>Hours of Operation</strong></td>
+									            		</tr>
+									            		<tr ng-repeat="workday in doctor.addresses[0].workDays">
+									            			<td>{{workday.name}}</td>
+									            			<td ng-show="!workday.isOpen">Closed</td>
+									            			<td ng-show="workday.isOpen">{{workday.open}} - {{workday.close}}</td>
+									            		</tr>
+									            	</table>
+									          	</div>
+								        	</div>
+										</div>
+									</div> <!-- cd-timeline-content -->
+								</div> <!-- cd-timeline-block -->
+
+							<div ng-show="doctor.pictures" class="cd-timeline-block">
+								<div class="cd-timeline-img cd-camera">
+									<span class="fa fa-2x fa-camera-retro" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
+
+								<div class="cd-timeline-content" style="width:630px;">
+									<h2>Pictures</h2>
+									<div style="height: 305px;width:600px;">
+									    <carousel interval="2000" disable-animation="true">
+									      <slide ng-repeat="slide in slides" active="slide.active">
+									        <img ng-src="{{slide.image}}" style="margin:auto;width:600px;height:300px;">
+									        <div class="carousel-caption">
+									          <h4>Slide {{$index+1}}</h4>
+									          <p>{{slide.text}}</p>
+									        </div>
+									      </slide>
+									    </carousel>
+								  	</div>
+								</div> <!-- cd-timeline-content -->
+							</div> <!-- cd-timeline-block -->
+
+							<div class="cd-timeline-block">
+								<div class="cd-timeline-img cd-interest">
+									<span class="fa fa-2x fa-thumbs-o-up" style="color:#fff;"></span>
+								</div> <!-- cd-timeline-img -->
+
+								<div class="cd-timeline-content col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<h2>Personal Interest</h2>
+									<ul>
+										<li ng-repeat="personalInterest in doctor.personalInterests | orderBy:'toString()'">{{personalInterest}}</li>
+									</ul>
+								</div> <!-- cd-timeline-content -->
+							</div> <!-- cd-timeline-block -->
+
+						</section> <!-- cd-timeline -->
+	            	</div>
+				</div>
+				<div ng-hide="hasData">
+					<div class="card" style="text-align: center;font-size: xx-large;min-height: 250px;">
+						<h2 style="padding-top:70px;font-size: xx-large;line-height: 0rem;font-family: 'Helvetica Neue';font-weight: 100;">No Doctors found for {{form.specialist.name}}</h2>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

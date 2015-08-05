@@ -1,5 +1,5 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-
+<!-- 
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
@@ -59,3 +59,60 @@
   </div>
   <hr>
 </div>
+
+ -->
+
+<section ng-view="login" style="">
+  <div class="container" ng-controller="doctorLoginCtrl">
+      <div class="row">
+        <form name="form" login-error shake-that autocomplete="off" novalidate ng-submit="login(form)" class="form-horizontal">
+          <div class="col-md-4 col-md-offset-4">
+              <div class="entryForm">
+                  <div class="entryFormHeader">
+                      <h3>Login for Visitors <span class="fa fa-lock fa-lg pull-right"></span></h3>
+                  </div>
+                  <div ng-show="errors.other" class="form-group has-error">
+                          <div class="col-sm-12">
+                              <h4 class="help-block has-error error-msg text-center">Invalid Username or Password.</h4>
+                          </div>
+                      </div>
+                  <div class="">
+                      <div class="form-group">
+                          <div class="col-sm-12">
+                              <input type="email" class="form-control" name="email" id="email" placeholder="Email" ng-model="user.email" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-sm-12">
+                              <input type="password" class="form-control" name="password" id="password" placeholder="Password" ng-model="user.password" required>
+                          </div>
+                      </div>
+                      <div class="form-group last">
+                          <div class="col-sm-12">
+                              <button type="submit" class="btn btn-success btn-block large">Sign in</button>
+                          </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <div>
+                      <a class="btn btn-facebook btn-block large" href="" style="color:#fff" ng-click="loginOauth('facebook')">
+                        <i class="fa fa-facebook"></i> Connect with Facebook
+                      </a>
+                      <a class="btn btn-google-plus btn-block large" href="" style="color:#fff" ng-click="loginOauth('google')">
+                        <i class="fa fa-google-plus"></i> Connect with Google+
+                      </a>
+                      <a class="btn btn-twitter btn-block large" href="" style="color:#fff" ng-click="loginOauth('twitter')">
+                        <i class="fa fa-twitter"></i> Connect with Twitter
+                      </a>
+                    </div>
+                    <hr>
+                    <div>
+                        <a style="" href="">Reset Password</a>
+                        <a style="" class="pull-right" href="/signup">Create an Account</a>
+                    </div>
+              </div>
+          </div>
+        </form>
+      </div>
+  </div>
+</section>

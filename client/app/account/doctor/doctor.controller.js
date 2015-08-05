@@ -485,9 +485,10 @@ angular.module('sugarlandDoctorsApp')
   });
 })
 
-  .controller('doctorSignupCtrl', function($scope, Auth, $state, $window) {
+  .controller('doctorSignupCtrl', function($scope, $rootScope, Auth, $state, $window) {
       $scope.doctor = {};
       $scope.errors = {};
+      $scope.specialists = $rootScope._specialists;
 
       $scope.submit = function(form) {
         if(form.$valid) {
@@ -518,7 +519,7 @@ angular.module('sugarlandDoctorsApp')
   .controller('doctorLoginCtrl',function($scope, Auth, $state) {
     $scope.doctor = {};
     $scope.errors = {};
-    $scope.doctor.email = "imomin@gmail.com";
+    
     // method called from shakeThat directive
     $scope.submit = function(form) {
       if(form.$valid) {

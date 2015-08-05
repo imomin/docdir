@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarCtrl', function ($scope, $rootScope, $location, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -13,10 +13,18 @@ angular.module('sugarlandDoctorsApp')
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.getCurrentDoctor = Auth.getCurrentDoctor;
+    $scope.specialists = $rootScope._specialists;
+    $scope.specialist = "";
+
+    $scope.redirect = function(){
+      if($scope.specialist !== ""){
+        $location.path('/'+ $scope.specialist.url);
+      }
+    };
 
     $scope.logout = function() {
       Auth.logout();
-      $location.path('/login');
+      $location.path('/');
     };
 
     $scope.logoutDoctor = function(){
