@@ -147,7 +147,7 @@ angular.module('sugarlandDoctorsApp')
     });
 
     $scope.modal=Modal.confirm.askToLogin(function(message) { // callback when modal is confirmed
-        debugger;
+
         $location.path("/login"); //will redirect to login page, make sure your controller is using $location
       });
 
@@ -157,8 +157,8 @@ angular.module('sugarlandDoctorsApp')
         $scope.modal(name);
       }
       else {
-        debugger;
         Statistic.addLikeCount($scope.doctor._id,Auth.getCurrentUser()._id, function(err, data){
+          //update the doctor's model.
           debugger;
         });
       }

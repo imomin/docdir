@@ -207,6 +207,29 @@ DoctorSchema.methods = {
    */
    createDoctorId: function(firstName,lastName,credential){
       return firstName + '-' + lastName + '-' + credential.toString().replace(" ","").replace(/[^a-z0-9]+/gi,"-");
+   },
+
+   getStatistics: function(id, cb){
+      var Statistic = mongoose.model('Statistic');
+      Statistic.aggregate(
+        { $match: { _doctor:new mongoose.Types.ObjectId(id) } },
+        { $project: {
+            _id: 0,
+            _doctor: 1,
+            views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]},
+            likes: {$cond: [{$eq: ['$type', 'like']}, 1, 0]},
+            phone: {$cond: [{$eq: ['$type', 'phone']}, 1, 0]},
+            website: {$cond: [{$eq: ['$type', 'website']}, 1, 0]}
+        }},
+        { $group: {
+            _id: "$_doctor",
+            views: {$sum: '$views'},
+            likes: {$sum: '$likes'},
+            phone: {$sum: '$phone'},
+            website: {$sum: '$website'}
+        }}, function (err, statistics) {
+            cb(err,statistics);
+        });
    }
 };
 

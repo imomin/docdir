@@ -27,10 +27,16 @@ exports.show = function(req, res) {
 // Get a single doctor by doctorId
 exports.detail = function(req, res) {
   Doctor.findOne({doctorId: req.params.doctorId},'-salt -hashedPassword -stripeSubId -stripeCardId -stripeCustId', 
-    function(err,doctor) { 
+    function(err,doctor) {
       if (err) return next(err);
       if (!doctor) return res.json(404);
-      res.json(doctor);
+      doctor.getStatistics(doctor._id,function(err, data){
+        if (err || !data){
+          doctor.set('stats',{"website":0,"phone":0,"likes":0,"views":0,"_id":doctor._id}, { strict: false });
+        }
+        doctor.set('stats',data[0], { strict: false });
+        res.json(doctor);
+      });
     });
 };
 
@@ -232,10 +238,22 @@ exports.list = function(req, res, next) {
     .where('specialist').equals(new RegExp('^' + req.params.specialist + '$','i'))
     .limit(100)
     .sort('-_id')
-    .select('firstName lastName profilePicture credential specialist doctorId gender languages insurances  -_id')
+    .select('firstName lastName profilePicture credential specialist doctorId gender languages insurances _id')
     .exec(function (err, doctors) {
       if(err) { return handleError(res, err); }
-      return res.json(200, doctors);
+      var recordCount = _.size(doctors);
+      _.forEach(doctors,function(doctor, index){
+        doctor.getStatistics(doctor._id,function(err, data){
+          if (err || !data){
+            doctor.set('stats',{"website":0,"phone":0,"likes":0,"views":0,"_id":doctor._id}, { strict: false });
+          }
+          doctor.set('stats',data[0], { strict: false });
+          if(recordCount -1 === index){
+            return res.json(200, doctors);
+          }
+        });
+      });
+      //return res.json(200, doctors);
     });
 }
 // db.users.find({name: /a/})  //like '%a%
@@ -262,7 +280,6 @@ exports.lookup = function(req, res, next) {
   .select('doctorId firstName lastName profilePicture credential specialist -_id')
   .exec(function (err, doctors) {
     if(err) { return handleError(res, err); }
-    console.log(doctors);
     return res.json(200, doctors);
   });
 }

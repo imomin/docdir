@@ -20,9 +20,11 @@ angular.module('sugarlandDoctorsApp')
             scope.submitted = true;
             // shake that form
             var promise = $animate.addClass(element, 'shake');
-            promise.then(function() {
-              $animate.removeClass(element, 'shake');
-            });
+            if(promise){//radomly I get primise is undefined.
+              promise.then(function() {
+                $animate.removeClass(element, 'shake');
+              });
+            }
           });
         });
       }
