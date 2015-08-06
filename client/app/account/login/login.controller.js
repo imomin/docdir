@@ -3,8 +3,8 @@
 angular.module('sugarlandDoctorsApp')
   .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
     $scope.user = {};
-    $scope.errors = {};
-debugger;
+    $scope.hasError = false;
+
     $scope.login = function(form) {
       $scope.submitted = true;
 
@@ -18,7 +18,9 @@ debugger;
           $location.path('/');
         })
         .catch( function(err) {
-          $scope.errors.other = err.message;
+          $scope.hasError = true;
+          angular.element(form).addClass("shake");
+          $location.path('/login');
         });
       }
     };

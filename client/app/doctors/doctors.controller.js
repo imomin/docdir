@@ -36,7 +36,7 @@ angular.module('sugarlandDoctorsApp')
       return filtered;
     };
   })
-  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,page,Modal,Doctor,CommonData,Statistic) {
+  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,$location,page,Modal,Auth,Doctor,CommonData,Statistic) {
     $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
     $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
     $scope.doctorId = 0;
@@ -144,7 +144,6 @@ angular.module('sugarlandDoctorsApp')
     });
     $scope.$on('mapInitialized', function(event, map) { 
       $scope.map = map;
-      debugger;
     });
 
     $scope.modal=Modal.confirm.askToLogin(function(message) { // callback when modal is confirmed
@@ -153,7 +152,16 @@ angular.module('sugarlandDoctorsApp')
       });
 
     $scope.userLogin = function(){
-      $scope.modal("like");
+      if(_.isEmpty(Auth.getCurrentUser())){
+        var name = $scope.doctor.firstName + ' ' +  $scope.doctor.lastName;
+        $scope.modal(name);
+      }
+      else {
+        debugger;
+        Statistic.addLikeCount($scope.doctor._id,Auth.getCurrentUser()._id, function(err, data){
+          debugger;
+        });
+      }
     }
 
     $scope.loadData();

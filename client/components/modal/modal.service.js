@@ -89,7 +89,7 @@ angular.module('sugarlandDoctorsApp')
               modal: {
                 dismissable: true,
                 title: 'Login',
-                html: '<p>In order to complete the <strong>' + name + '</strong> action you must login.</p>', //set the modal message here, name is the parameter we passed in
+                html: '<h2 style="font-weight: lighter;">You must login to like '+ name +'.</h2>', //set the modal message here, name is the parameter we passed in
                 buttons: [ {//this is where you define you buttons and their appearances
                   classes: 'btn-warning',
                   text: 'Cancel',

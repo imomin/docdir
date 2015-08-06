@@ -1087,6 +1087,13 @@ ul.dropdown-menu {
     padding-top: 5px;
     padding-bottom: 5px;
 }
+header div.row div nav ul li a {
+    font-size: medium;
+    font-weight: lighter;
+}
+header div.row nav ul.reset li.dropdown ul.dropdown-menu {
+    margin-top: -13px;
+}
 </style>
 <script type="text/javascript">
 /*! waitForImages jQuery Plugin 2013-07-20 https://github.com/alexanderdickson/waitForImages */
@@ -1531,8 +1538,8 @@ ul.dropdown-menu {
                         Hello {{getCurrentUser().name}} <b class="caret"></b>
                       </a>
                       <ul class="dropdown-menu" style="text-decoration: none;">
-                          <li><a href=""><span class="fa fa-tachometer"></span> Activity (recently viewed and likes)</a></li>
-                          <li><a href=""><span class="fa fa-lock"></span> Change Password</a></li>
+                          <li><a href="/activity"><span class="fa fa-tachometer"></span> Activity (recently viewed and likes)</a></li>
+                          <li><a href="/user/changepassword"><span class="fa fa-lock"></span> Change Password</a></li>
                           <li class="divider"></li>
                           <li><a ng-click="logout()" href="#"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
                       </ul>

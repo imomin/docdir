@@ -13,6 +13,18 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupCtrl'
       })
+      .state('activity', {
+        url: '/activity',
+        templateUrl: 'app/account/user/user.html',
+        controller: 'UserCtrl',
+        authenticate: true
+      })
+      .state('changeuserpassword', {
+        url: '/user/changepassword',
+        templateUrl: 'app/account/user/changePassword/changePassword.html',
+        controller: 'ChangeUserPasswordCtrl',
+        authenticate: true
+      })
       .state('changepassword', {
         url: '/changepassword',
         templateUrl: 'app/account/settings/changePassword.html',
