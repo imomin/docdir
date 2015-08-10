@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/sugarlanddoctors-dev'
   },
 
-  seedDB: true
+  seedDB: false
 };

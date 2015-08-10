@@ -89,7 +89,14 @@ exports.me = function(req, res, next) {
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
     if (err) return next(err);
     if (!user) return res.json(401);
-    res.json(user);
+    user.getLikedDoctorIdByUserId(userId, function (err, statistic) {
+      if(err || !statistic) {
+         user.set("likes",[], { strict: false });
+        return res.json(200, user); 
+      }
+      user.set("likes",statistic, { strict: false });
+      return res.json(200, user);
+    });
   });
 };
 

@@ -39,6 +39,22 @@ angular.module('sugarlandDoctorsApp')
 
           return deferred.promise;
         },
+      UnlikeDoctor: function(_Id, userId, callback) {
+          var cb = callback || angular.noop;
+          var deferred = $q.defer();
+
+          $http.post('/api/statistics/unlike', {'_doctor':_Id, '_user':userId}).
+          success(function(data) {
+            deferred.resolve(data);
+            return cb(null,data);
+          }).
+          error(function(err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+          return deferred.promise;
+        },
       addPhoneCount: function(_Id, callback) {
           var cb = callback || angular.noop;
           var deferred = $q.defer();

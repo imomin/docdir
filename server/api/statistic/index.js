@@ -11,6 +11,7 @@ router.get('/:id/summary', controller.summary);
 //router.post('/', controller.create);
 router.post('/view', controller.create);
 router.post('/like', controller.create);
+router.post('/unlike', controller.unlike);
 router.post('/phone', controller.create);
 router.post('/website', controller.create);
 router.put('/:id', controller.update);

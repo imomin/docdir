@@ -3,6 +3,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+var _ = require('lodash');
+
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
@@ -143,6 +145,14 @@ UserSchema.methods = {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+  },
+  getLikedDoctorIdByUserId: function(userId,callback){
+    var callback = callback || function() { return true; };
+    var Statistic = mongoose.model('Statistic');
+    Statistic.find({_user:userId,type:'like'}, '_doctor -_id', function (err, statistic) {
+      statistic = _.map(statistic, function(data){return data._doctor});
+      callback(err,statistic);
+    });
   }
 };
 

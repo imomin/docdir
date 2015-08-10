@@ -118,6 +118,7 @@ angular.module('sugarlandDoctorsApp')
         if($state.current.data.specialist && $state.params.doctorId){
           Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
             $scope.doctor = data;
+            $scope.hasLiked = _.indexOf(Auth.getCurrentUser().likes,$scope.doctor._id) !== -1;
             if($scope.latlng && $scope.doctor.addresses){
               //using Object.keys because latlng object has minified property name. Which is different everytime.
               $scope.latlng[Object.keys($scope.latlng)[0]] = $scope.doctor.addresses[0].address.latitude;
@@ -147,20 +148,48 @@ angular.module('sugarlandDoctorsApp')
     });
 
     $scope.modal=Modal.confirm.askToLogin(function(message) { // callback when modal is confirmed
-
+        $rootScope.redirectURL = $location.path();
         $location.path("/login"); //will redirect to login page, make sure your controller is using $location
       });
 
-    $scope.userLogin = function(){
-      if(_.isEmpty(Auth.getCurrentUser())){
+    $scope.likeMe = function(){
+      if(!angular.isDefined(Auth.getCurrentUser()._id)){
         var name = $scope.doctor.firstName + ' ' +  $scope.doctor.lastName;
         $scope.modal(name);
       }
       else {
-        Statistic.addLikeCount($scope.doctor._id,Auth.getCurrentUser()._id, function(err, data){
-          //update the doctor's model.
-          debugger;
-        });
+        /*CHECK THE CONDITION IF USER ALREADY LIKED IF SO THEN GIVE OPTION TO UNLIKE.*/
+        //$scope.hasLiked = _.indexOf(Auth.getCurrentUser().likes,$scope.doctor._id) !== -1;
+        if($scope.hasLiked){
+          Statistic.UnlikeDoctor($scope.doctor._id,Auth.getCurrentUser()._id, function(err, stats){
+            if(angular.isObject(stats)){
+              $scope.doctor.stats = stats[0];
+              _.remove(Auth.getCurrentUser().likes, function(docId) {
+                 return docId === stats[0]._id;
+               });
+              $scope.hasLiked = !$scope.hasLiked;
+              _.each($scope.doctors,function(doctor, index){
+                if(doctor._id === stats[0]._id){
+                    doctor.stats = stats[0];
+                    return false;
+                }
+              });
+            }
+          });
+        }
+        else {
+          Statistic.addLikeCount($scope.doctor._id,Auth.getCurrentUser()._id, function(err, stats){
+            $scope.doctor.stats = stats[0];
+            Auth.getCurrentUser().likes.push(stats[0]._id);
+            $scope.hasLiked = !$scope.hasLiked;
+            _.each($scope.doctors,function(doctor, index){
+              if(doctor._id === stats[0]._id){
+                  doctor.stats = stats[0];
+                  return false;
+              }
+            });
+          });
+        }
       }
     }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
+  .controller('LoginCtrl', function ($rootScope, $scope, Auth, $location, $window) {
     $scope.user = {};
     $scope.hasError = false;
 
@@ -14,8 +14,13 @@ angular.module('sugarlandDoctorsApp')
           password: $scope.user.password
         })
         .then( function() {
+          var redirectURL = '/';
           // Logged in, redirect to home
-          $location.path('/');
+          if($rootScope.redirectURL){
+            redirectURL = $rootScope.redirectURL;
+            $rootScope.redirectURL = null;
+          }
+          $location.path(redirectURL);
         })
         .catch( function(err) {
           $scope.hasError = true;

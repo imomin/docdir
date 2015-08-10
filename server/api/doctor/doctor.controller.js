@@ -242,18 +242,22 @@ exports.list = function(req, res, next) {
     .exec(function (err, doctors) {
       if(err) { return handleError(res, err); }
       var recordCount = _.size(doctors);
+      var statusAdded = 0;
       _.forEach(doctors,function(doctor, index){
         doctor.getStatistics(doctor._id,function(err, data){
           if (err || !data){
             doctor.set('stats',{"website":0,"phone":0,"likes":0,"views":0,"_id":doctor._id}, { strict: false });
           }
           doctor.set('stats',data[0], { strict: false });
-          if(recordCount -1 === index){
+          statusAdded++;
+          if(recordCount === statusAdded){
             return res.json(200, doctors);
           }
         });
       });
-      //return res.json(200, doctors);
+      if(recordCount === 0){
+        return res.json(200, doctors);
+      }
     });
 }
 // db.users.find({name: /a/})  //like '%a%
