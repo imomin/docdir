@@ -106,3 +106,16 @@ exports.me = function(req, res, next) {
 exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
+
+exports.resetPassword = function(req, res, next){
+  User.findOne({'email':req.params.email}, function (err, user) {
+    if (err) return res.json(401, err);
+    if (!user) return res.json(404, {message: 'EmailNotFound.'});
+    user.password = Math.random().toString(36).substring(7);
+    user.save(function(err) {
+      if (err) return validationError(res, err);
+      //SEND EMAIL MESSAGE WITH NEW PASSWORD.
+      res.send(200);
+    });
+  });
+}

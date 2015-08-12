@@ -36,7 +36,7 @@ angular.module('sugarlandDoctorsApp')
       return filtered;
     };
   })
-  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,$location,page,Modal,Auth,Doctor,CommonData,Statistic) {
+  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,$location,$timeout,$window,page,Modal,Auth,Doctor,CommonData,Statistic) {
     $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
     $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
     $scope.doctorId = 0;
@@ -50,6 +50,7 @@ angular.module('sugarlandDoctorsApp')
     var mapOptions = "";
     var map = "";
     var marker = "";
+    $scope.contact = null;
     var initMap = function(){
     if(document.getElementById('mapPreview')){
       $scope.latlng = new google.maps.LatLng(29.598387,-95.622404);
@@ -92,8 +93,13 @@ angular.module('sugarlandDoctorsApp')
     );
 
     $scope.loadData = function(){
-      //http://localhost:9000/api/doctors/dentist/
       $scope.doctors = [];
+      //hack to resolve specialist is undefined.
+      if(angular.isDefined($scope.form.specialist)){
+        $timeout(function(){
+          return true;
+        }, 500);
+      }
       CommonData.listDoctors($scope.form.specialist.url).then( function(data) {
         $scope.doctors = data;
         if($scope.doctors.length > 0){
@@ -118,6 +124,7 @@ angular.module('sugarlandDoctorsApp')
         if($state.current.data.specialist && $state.params.doctorId){
           Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
             $scope.doctor = data;
+            $scope.contact = null;
             $scope.hasLiked = _.indexOf(Auth.getCurrentUser().likes,$scope.doctor._id) !== -1;
             if($scope.latlng && $scope.doctor.addresses){
               //using Object.keys because latlng object has minified property name. Which is different everytime.
@@ -191,6 +198,19 @@ angular.module('sugarlandDoctorsApp')
           });
         }
       }
+    }
+
+    $scope.showContactNumber = function(){
+      Doctor.showContact({'id':$scope.doctor._id}, function(data) {
+        $scope.contact =  data.addresses[0];
+      });
+      Statistic.addPhoneCount($scope.doctor._id);
+    }
+
+    $scope.launchWebsite = function(){
+      Statistic.addWebsiteCount($scope.doctor._id);
+      $window.open('//'+$scope.doctor.website);
+      return true;
     }
 
     $scope.loadData();

@@ -84,7 +84,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="isDoctorLoggedIn() || isLoggedIn()" ng-class="{active: isActive('/doctor/login') || isActive('/doctor/reset') || isActive('/doctor/signup')}"><a href="/doctor/login">For Doctors</a></li>
-        <li ng-hide="isDoctorLoggedIn() || isLoggedIn()" class="menu-item"><a href="/login">Login</a></li>
+        <li ng-hide="isDoctorLoggedIn() || isLoggedIn()" class="menu-item"><a href="/user/login">Login</a></li>
        <!--  <li ng-show="isDoctorLoggedIn()" ng-class="{active: isActive('/signup/doctor/profile') || isActive('/doctor/profile/')}"><a href="/doctor/profile/bio">Profile</a></li>
         <li ng-show="isDoctorLoggedIn()" ng-class="{active: isActive('/signup/doctor/profile') || isActive('/doctor/profile/')}"><a href="" ng-click="logoutDoctor()">Logout</li> -->
         
@@ -99,9 +99,9 @@
             Hello {{getCurrentDoctor().firstName}} <b class="caret"></b>
           </a>
           <ul class="dropdown-menu" style="text-decoration: none;">
-              <li><a href="/dashboard"><span class="fa fa-tachometer"></span> Dashboard</a></li>
+              <li><a href="/doctor/dashboard"><span class="fa fa-tachometer"></span> Dashboard</a></li>
               <li><a href="/doctor/profile/bio"><span class="fa fa-user-md"></span> Profile</a></li>
-              <li><a href="/changepassword"><span class="fa fa-lock"></span> Change Password</a></li>
+              <li><a href="/doctor/changepassword"><span class="fa fa-lock"></span> Change Password</a></li>
               <li><a href="/conference"><span class="fa fa-video-camera"></span> Video Chat (Coming Soon)</a></li>
               <li class="divider"></li>
               <li><a ng-click="logoutDoctor()" href="#"><span class="glyphicon glyphicon-off"></span> Logout</a></li>

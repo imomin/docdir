@@ -116,7 +116,12 @@
 		                        </li>
 		                        <li>
 		                            <p class="title">{{doctor.firstName}} {{doctor.lastName}}  {{doctor.credential}}</p>
-		                            <p class="desc">{{doctor.specialist}}</p>
+		                            <p class="desc">
+		                            	<button ng-hide="contact.phone" ng-click="showContactNumber()" class="btn btn-success">Show Phone Number</button>
+		                            	<span ng-show="contact.phone"><i ng-show="contact.phone" class="fa fa-phone"></i> {{contact.phone}}</span>
+		                            	<br>
+		                            	<a  href="//{{doctor.website}}" ng-click="launchWebsite()" ng-show="doctor.website" target="_blank">{{doctor.website}}</a>
+		                            </p>
 		                        </li>
 		                        <li>
 		                            <div class="tl-icon btn-icon btn-icon-round bg-success"><i class="ti-comment"></i></div>
@@ -217,12 +222,19 @@
 								<div class="cd-timeline-img cd-location">
 									<span class="fa fa-2x fa-map-marker" style="color:#fff;"></span>
 								</div> <!-- cd-timeline-img -->
-	<!-- http://blog.revolunet.com/angular-carousel/ -->
 								<div class="cd-timeline-content">
 									<h2>Location</h2>
 									<div style="float:left;padding-left:15px;"><p>{{doctor.addresses[0].address.streetAddress}}, {{doctor.addresses[0].address.city}} {{doctor.addresses[0].address.state}}, {{doctor.addresses[0].address.postalCode}}</p></div>
-									<div style="float:left;padding-left:20px;"><p><i class="fa fa-phone"></i>&nbsp;{{doctor.addresses[0].address.phone}}</p></div>
-									<div ng-show="{{doctor.addresses[0].address.fax}}" style="float:left;padding-left:20px;"><p>&nbsp;<i class="fa fa-fax"></i>&nbsp;{{doctor.addresses[0].address.fax}}</p></div>
+									<div style="float:left;padding-left:20px;"><p><i ng-show="contact.phone" class="fa fa-phone"></i>
+										<!-- {{doctor.addresses[0].address.phone}} -->
+		                            	<button ng-hide="contact.phone" ng-click="showContactNumber()" class="btn btn-success">Show Phone Number</button>
+		                            	<span ng-show="contact.phone">{{contact.phone}}</span>
+									</p></div>
+									<div ng-show="contact.fax" style="float:left;padding-left:20px;">
+										<p>
+											&nbsp;<i class="fa fa-fax"></i><span ng-show="contact.fax">{{contact.fax}}</span>
+										</p>
+									</div>
 									<div class="row">
 										<div class="col-lg-12">
 											<div class="col-lg-12">

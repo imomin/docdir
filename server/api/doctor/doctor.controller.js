@@ -232,6 +232,27 @@ exports.unsubscribe = function(req, res, next) {
   });
 }
 
+exports.contactInfo = function(req, res, next) {
+  var doctorId = req.params.id;
+  Doctor.findById(req.params.id, 'addresses', function (err, doctor) {
+    if(err) {return handleError(res, err); }
+    if(!doctor) { return res.send(404); }
+    var count = 0;
+    var addressesLength = _.size(doctor.addresses);
+    var contactInfo = {'_id':doctor._id,'addresses':[]};
+    _.forEach(doctor.addresses,function(item, index){
+        contactInfo.addresses.push({'_id':item._id,'phone': item.address.phone, 'fax': item.address.fax});
+        count++;
+        if(count >= addressesLength){
+          return res.json(contactInfo);
+        }
+      });
+      if(!doctor.addresses || addressesLength === 0){
+        return res.json(200, contactInfo);
+      }
+  });
+}
+
 exports.list = function(req, res, next) {
   Doctor
     .find({})
@@ -298,6 +319,19 @@ exports.updateCard = function(req, res, next) {
       // asynchronously called
     }
   );
+}
+
+exports.resetPassword = function(req, res, next){
+  Doctor.findOne({'email':req.params.email}, function (err, doctor) {
+    if (err) return res.json(401, err);
+    if (!doctor) return res.json(404, {message: 'EmailNotFound.'});
+    doctor.password = Math.random().toString(36).substring(7);
+    doctor.save(function(err) {
+      if (err) return validationError(res, err);
+      //SEND EMAIL MESSAGE WITH NEW PASSWORD.
+      res.send(200);
+    });
+  });
 }
 
 function ensureExists(path, mask, cb) {

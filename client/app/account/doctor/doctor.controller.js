@@ -518,6 +518,26 @@ angular.module('sugarlandDoctorsApp')
       };
   })
 
+  .controller('ResetDoctorPasswordCtrl', function($scope,Auth){
+    $scope.errors = {};
+    $scope.hasError = false;
+    $scope.submit = function(form) {
+      $scope.submitted = true;
+      if(form.$valid) {
+        Auth.resetDoctorPassword($scope.doctor.email)
+        .then( function() {
+          $scope.hasError = false;
+          $scope.message = 'An email with a new password is sent.';
+          $scope.user.email = '';
+        })
+        .catch( function(err) {
+          $scope.hasError = true;
+          $scope.message = 'Email not found.';
+        });
+      }
+    };
+  })
+
   .controller('doctorLoginCtrl',function($scope, Auth, $state) {
     $scope.doctor = {};
     $scope.errors = {};

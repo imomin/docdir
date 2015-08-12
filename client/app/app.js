@@ -121,7 +121,8 @@ angular.module('sugarlandDoctorsApp', [
       $rootScope.customErrors = {"duplicateEmail":"The specified email address is already in use.",
         "blankEmail":"Email cannot be blank.",
         "blankPassword":"Password cannot be blank.",
-        "InvalidEmailOrPassword":"Invalid email or password."};
+        "InvalidEmailOrPassword":"Invalid email or password.",
+        "EmailNotFound":"Email not found."};
       bootstrap3ElementModifier.enableValidationStateIcons(true);
       defaultErrorMessageResolver.getErrorMessages().then(function(errorMessages) {
         angular.forEach($rootScope.customErrors, function(value, key){

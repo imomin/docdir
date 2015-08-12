@@ -23,14 +23,15 @@
                                 <select class="form-control" name="specialist" id="specialist" placeholder="Specialist" ng-model="doctor.specialist" required>
                                   <option value="" disabled selected style="display: none;">Select your primary practice</option>
                                   <option ng-repeat="specialist in specialists">{{specialist.name}}</option>
+                                  <option value="other">Other</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+<!--                         <div class="form-group">
                             <div class="col-sm-12">
                                 <input type="input" class="form-control" name="phone" id="phone" placeholder="Phone" ng-model="doctor.phone" required>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                            <div class="col-sm-12">
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Email" ng-model="doctor.email" required mongoose-error>

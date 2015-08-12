@@ -298,5 +298,37 @@ angular.module('sugarlandDoctorsApp')
           return cb(err);
         }).$promise;
       },
+      /**
+       * Reset user password
+       *
+       * @param  {String}   email
+       * @param  {Function} callback    - optional
+       * @return {Promise}
+       */
+      resetUserPassword: function(email, callback) {
+        var cb = callback || angular.noop;
+
+        return User.resetPassword({'id': email}, {}, function(user) {
+          return cb(user);
+        }, function(err) {
+          return cb(err);
+        }).$promise;
+      },
+      /**
+       * Reset user password
+       *
+       * @param  {String}   email
+       * @param  {Function} callback    - optional
+       * @return {Promise}
+       */
+      resetDoctorPassword: function(email, callback) {
+        var cb = callback || angular.noop;
+
+        return Doctor.resetPassword({'id': email}, {}, function(doctor) {
+          return cb(doctor);
+        }, function(err) {
+          return cb(err);
+        }).$promise;
+      }
     };
   });

@@ -4,13 +4,13 @@ angular.module('sugarlandDoctorsApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('login', {
-        url: '/login',
-        templateUrl: 'app/account/login/login.html',
+        url: '/user/login',
+        templateUrl: 'app/account/user/login/login.html',
         controller: 'LoginCtrl'
       })
       .state('signup', {
-        url: '/signup',
-        templateUrl: 'app/account/signup/signup.html',
+        url: '/user/signup',
+        templateUrl: 'app/account/user/signup/signup.html',
         controller: 'SignupCtrl'
       })
       .state('activity', {
@@ -25,9 +25,15 @@ angular.module('sugarlandDoctorsApp')
         controller: 'ChangeUserPasswordCtrl',
         authenticate: true
       })
+      .state('resetPassword', {
+        url: '/user/reset',
+        templateUrl: 'app/account/user/resetPassword/resetPassword.html',
+        controller: 'ResetUserPasswordCtrl',
+        authenticate: true
+      })
       .state('changepassword', {
-        url: '/changepassword',
-        templateUrl: 'app/account/settings/changePassword.html',
+        url: '/doctor/changepassword',
+        templateUrl: 'app/account/doctor/changePassword/changePassword.html',
         controller: 'ChangePasswordCtrl',
         authenticate: true
       })
@@ -38,8 +44,8 @@ angular.module('sugarlandDoctorsApp')
         authenticate: true
       })
       .state('dashboard', {
-        url: '/dashboard',
-        templateUrl: 'app/account/dashboard/dashboard.html',
+        url: '/doctor/dashboard',
+        templateUrl: 'app/account/doctor/dashboard/dashboard.html',
         controller: 'DashboardCtrl',
         authenticate: true
       })

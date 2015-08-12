@@ -1519,13 +1519,13 @@ header div.row nav ul.reset li.dropdown ul.dropdown-menu {
 			<nav>
 				<ul class="reset" role="navigation">
 					<li ng-hide="isDoctorLoggedIn() || isLoggedIn()" ng-class="{active: isActive('/doctor/login') || isActive('/doctor/reset') || isActive('/doctor/signup')}"><a href="/doctor/login">For Doctors</a></li>
-					<li ng-hide="isDoctorLoggedIn() || isLoggedIn()" class="menu-item"><a href="/login">Login</a></li>
+					<li ng-hide="isDoctorLoggedIn() || isLoggedIn()" class="menu-item"><a href="/user/login">Login</a></li>
                     <li ng-show="isDoctorLoggedIn()" class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;">
                         Hello {{getCurrentDoctor().firstName}} <b class="caret"></b>
                       </a>
                       <ul class="dropdown-menu" style="text-decoration: none;">
-                          <li><a href="/dashboard"><span class="fa fa-tachometer"></span> Dashboard</a></li>
+                          <li><a href="/doctor/dashboard"><span class="fa fa-tachometer"></span> Dashboard</a></li>
                           <li><a href="/doctor/profile/bio"><span class="fa fa-user-md"></span> Profile</a></li>
                           <li><a href="/changepassword"><span class="fa fa-lock"></span> Change Password</a></li>
                           <li><a href="/conference"><span class="fa fa-video-camera"></span> Video Chat (Coming Soon)</a></li>

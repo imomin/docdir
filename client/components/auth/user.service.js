@@ -17,6 +17,13 @@ angular.module('sugarlandDoctorsApp')
         params: {
           id:'me'
         }
+      },
+      resetPassword: {
+        method: 'PUT',
+        params: {
+          id:'@email',
+          controller:'resetpassword'
+        }
       }
 	  });
   });

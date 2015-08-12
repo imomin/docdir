@@ -28,10 +28,23 @@ angular.module('sugarlandDoctorsApp')
           controller:'@Id'
         }
       },
+      showContact: {
+        method: 'GET',
+        params: {
+          controller:'contact'
+        }
+      },
       subscribe: {
         method: 'PUT',
         params: {
           controller:'subscribe' //api/doctor/:id/subscribe
+        }
+      },
+      resetPassword: {
+        method: 'PUT',
+        params: {
+          id:'@email',
+          controller:'resetpassword'
         }
       }
 	  });
