@@ -6,6 +6,7 @@ var path = require('path');
 var fs = require('fs');
 var uuid = require('node-uuid');
 var stripe = require('stripe')('sk_test_4ZtRKcjoaZltF5ngEo3J4Pio');
+var mail = require('../../mail');
 
 // Get list of doctors
 exports.index = function(req, res) {
@@ -44,6 +45,10 @@ exports.detail = function(req, res) {
 exports.create = function(req, res) {
   Doctor.create(req.body, function(err, doctor) {
     if(err) { return handleError(res, err); }
+    var mailConfirmationToken =  jwt.sign({user : doctor._id, email : doctor.email}, config.secrets.mailConfirmation); 
+    mail.doctorSignup.sendMail(doctor, mailConfirmationToken, function(err,info){
+      console.log("reset password email sent to " + user.email);
+    });
     return res.json(201, {"_id":doctor._id});
   });
 };

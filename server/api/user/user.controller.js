@@ -4,6 +4,8 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var mail = require('../../mail');
+
 
 var validationError = function(res, err) {
   return res.json(422, err);
@@ -111,11 +113,14 @@ exports.resetPassword = function(req, res, next){
   User.findOne({'email':req.params.email}, function (err, user) {
     if (err) return res.json(401, err);
     if (!user) return res.json(404, {message: 'EmailNotFound.'});
-    user.password = Math.random().toString(36).substring(7);
+    var rndString = Math.random().toString(36).substring(7);
+    user.password = rndString;
     user.save(function(err) {
       if (err) return validationError(res, err);
-      //SEND EMAIL MESSAGE WITH NEW PASSWORD.
-      res.send(200);
+      mail.passwordReset.sendMail(user, rndString, function(err,info){
+        if(err) return res.send(500, err);
+        return res.json(200);
+      });
     });
   });
 }

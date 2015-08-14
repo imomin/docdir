@@ -529,6 +529,7 @@ angular.module('sugarlandDoctorsApp')
           $scope.hasError = false;
           $scope.message = 'An email with a new password is sent.';
           $scope.user.email = '';
+          form.autoValidateFormOptions.resetForm();
         })
         .catch( function(err) {
           $scope.hasError = true;
