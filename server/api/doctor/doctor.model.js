@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
 var DoctorSchema = new Schema({
-  doctorId: { type: String, lowercase: true, required: true, unique: true},
+  doctorId: { type: String, lowercase: true, unique: true},
   firstName: String,
   lastName: String,
   email: { type: String, lowercase: true },
@@ -55,6 +55,8 @@ var DoctorSchema = new Schema({
   stripeCardId: String,
   stripeSubId: String,
   active: Boolean,
+  isEmailConfirmed: {type:Boolean,"default":false},
+  emailConfirmationToken: String,
   statistics: {type:Schema.Types.ObjectId, ref: 'Statistic'}
 });
 
@@ -206,7 +208,10 @@ DoctorSchema.methods = {
    * @api public
    */
    createDoctorId: function(firstName,lastName,credential){
-      return firstName + '-' + lastName + '-' + credential.toString().replace(" ","").replace(/[^a-z0-9]+/gi,"-");
+      if(firstName && lastName && credential){
+        return firstName + '-' + lastName + '-' + credential.toString().replace(" ","").replace(/[^a-z0-9]+/gi,"-");
+      }
+      return firstName + '-' + lastName;
    },
 
    getStatistics: function(id, cb){

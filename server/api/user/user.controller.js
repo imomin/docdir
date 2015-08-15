@@ -117,7 +117,7 @@ exports.resetPassword = function(req, res, next){
     user.password = rndString;
     user.save(function(err) {
       if (err) return validationError(res, err);
-      mail.passwordReset.sendMail(user, rndString, function(err,info){
+      mail.passwordReset.sendMail(user, rndString, 'user', function(err,info){
         if(err) return res.send(500, err);
         return res.json(200);
       });

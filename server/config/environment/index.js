@@ -26,7 +26,8 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'sugarland-doctors-secret'
+    session: 'sugarland-doctors-secret',
+    mailConfirmation: process.env.MAIL_CONFIRMATION || 'sugarland-doctors-mail-confirmation'
   },
 
   // List of user roles

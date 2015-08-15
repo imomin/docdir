@@ -12,6 +12,7 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/me', auth.isDoctorAuthenticated(), controller.me);
 router.get('/lookup', controller.lookup);
+router.get('/confirm/:token', controller.confirm);
 router.get('/:specialist/lookup', controller.lookup);
 router.get('/:specialist', controller.list);
 router.get('/:id/contact', controller.contactInfo);

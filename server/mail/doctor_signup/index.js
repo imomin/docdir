@@ -13,21 +13,21 @@ var generateHTMLMessage = function(doctor,locals){
               '</head>' +
             '<body>' +
             '<p>Welcome, and thank you for creating an account with '+ locals.COMPANY+'!'+
-            '<br>Please click on the button below to confirm your account. Once confirmed, you will have full access to '+ locals.COMPANY+'!.</p>'
-            ' <a href="'+locals.CONFIRMATION_URL+'?'+locals.MAIL_CONFIRMATION_TOKEN+'">Confirm my email address!</a>' +
-            '<body>' +
+            '<br>Please click on the button below to confirm your account. Once confirmed, you will have full access to '+ locals.COMPANY+'!.</p>' +
+            '<br><a href="'+locals.CONFIRMATION_URL+'/'+locals.MAIL_CONFIRMATION_TOKEN+'">Confirm email address</a>' +
+            '</body>' +
             '</html>';
     return html;
 }
 
 var sendMail = function(doctor, mailConfirmationToken, callback){
   var locals = {
-    COMPANY: 'Company Name',
-    CONFIRMATION_URL :  process.env.DOMAIN +'/doctor/confirm/',
+    COMPANY: 'Sugar Land Doctors',
+    CONFIRMATION_URL : process.env.DOMAIN +'/doctor/confirm/',
     MAIL_CONFIRMATION_TOKEN : mailConfirmationToken 
   };
   var html = generateHTMLMessage(doctor,locals);
-  service.sendmail(doctor.firstName + ' ' + doctor.lastName, user.email, 'New Doctor Signup', html, callback);
+  service.sendmail(doctor.firstName + ' ' + doctor.lastName, doctor.email, 'New Doctor Signup', html, callback);
 };
 
 exports.sendMail = sendMail;

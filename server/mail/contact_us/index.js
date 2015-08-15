@@ -18,7 +18,7 @@ var generateHTMLMessage = function(mailContent){
             '<br>Phone: ' + mailContent.phone +
             '<br>Message: ' + mailContent.message +
             '</p>' +
-            '<body>' +
+            '</body>' +
             '</html>';
     return html;
 }

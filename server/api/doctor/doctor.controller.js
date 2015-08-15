@@ -6,6 +6,9 @@ var path = require('path');
 var fs = require('fs');
 var uuid = require('node-uuid');
 var stripe = require('stripe')('sk_test_4ZtRKcjoaZltF5ngEo3J4Pio');
+var config = require('../../config/environment');
+var jwt = require('jsonwebtoken');
+var auth = require('../../auth/auth.service');
 var mail = require('../../mail');
 
 // Get list of doctors
@@ -45,11 +48,15 @@ exports.detail = function(req, res) {
 exports.create = function(req, res) {
   Doctor.create(req.body, function(err, doctor) {
     if(err) { return handleError(res, err); }
-    var mailConfirmationToken =  jwt.sign({user : doctor._id, email : doctor.email}, config.secrets.mailConfirmation); 
-    mail.doctorSignup.sendMail(doctor, mailConfirmationToken, function(err,info){
-      console.log("reset password email sent to " + user.email);
-    });
-    return res.json(201, {"_id":doctor._id});
+    var emailConfirmationToken =  jwt.sign({doctor : doctor._id, email : doctor.email}, config.secrets.mailConfirmation); 
+    doctor.emailConfirmationToken = emailConfirmationToken;
+    doctor.save(function(err) {
+      if (err) { return handleError(res, err); }
+      mail.doctorSignup.sendMail(doctor, doctor.emailConfirmationToken, function(err,info){
+        console.log("Mail confirmation email sent to " + doctor.email);
+        return res.json(201, {"_id":doctor._id});
+      });
+    })
   });
 };
 
@@ -330,11 +337,27 @@ exports.resetPassword = function(req, res, next){
   Doctor.findOne({'email':req.params.email}, function (err, doctor) {
     if (err) return res.json(401, err);
     if (!doctor) return res.json(404, {message: 'EmailNotFound.'});
-    doctor.password = Math.random().toString(36).substring(7);
+    var rndString = Math.random().toString(36).substring(7);
+    doctor.password = rndString;
     doctor.save(function(err) {
       if (err) return validationError(res, err);
-      //SEND EMAIL MESSAGE WITH NEW PASSWORD.
-      res.send(200);
+      mail.passwordReset.sendMail(doctor, rndString, 'doctor', function(err,info){
+        if(err) return res.send(500, err);
+        return res.json(200);
+      });
+    });
+  });
+}
+
+exports.confirm = function(req, res, next){
+  Doctor.findOne({'emailConfirmationToken':req.params.token}, function (err, doctor) {
+    if (err) return res.json(401, err);
+    if (!doctor) return res.json(404, {message: 'InvalidToken.'});
+    doctor.isEmailConfirmed = true;
+    doctor.save(function(err) {
+        if(err) return res.send(500, err);
+        var token = auth.signToken(doctor._id);
+        return res.json({token: token});
     });
   });
 }

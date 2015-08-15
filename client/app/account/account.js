@@ -67,10 +67,15 @@ angular.module('sugarlandDoctorsApp')
         templateUrl: 'app/account/doctor/login.html',
         controller:'doctorLoginCtrl'
       })
+      .state('doctor.confirm', {
+        url: '/confirm/{token}',
+        templateUrl: 'app/account/doctor/confirm.html',
+        controller:'doctorEmailConfirmCtrl'
+      })
       .state('doctor.resetPassword', {
         url: '/reset',
         templateUrl: 'app/account/doctor/passwordReset.html',
-        controller:'doctorLoginCtrl'
+        controller:'ResetDoctorPasswordCtrl'
       })
       .state('doctor.profile', {
         url: '/profile',

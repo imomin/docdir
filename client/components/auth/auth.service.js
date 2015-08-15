@@ -237,6 +237,24 @@ angular.module('sugarlandDoctorsApp')
         return deferred.promise;
       },
 
+      confirmEmail: function(token,callback){
+        var cb = callback || angular.noop;
+        var deferred = $q.defer();
+        $http.get('/api/doctors/confirm/'+token).
+        success(function(data) {
+          $cookieStore.put('tokend', data.token);
+          currentDoctor = Doctor.get();
+          deferred.resolve(data);
+          return cb();
+        }).
+        error(function(err) {
+          this.logoutDoctor();
+          deferred.reject(err);
+          return cb(err);
+        }.bind(this));
+
+        return deferred.promise;
+      },
       /**
        * Delete access token and user info
        *

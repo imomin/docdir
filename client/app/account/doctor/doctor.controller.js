@@ -518,7 +518,7 @@ angular.module('sugarlandDoctorsApp')
       };
   })
 
-  .controller('ResetDoctorPasswordCtrl', function($scope,Auth){
+  .controller('ResetDoctorPasswordCtrl', function($scope, Auth){
     $scope.errors = {};
     $scope.hasError = false;
     $scope.submit = function(form) {
@@ -528,8 +528,8 @@ angular.module('sugarlandDoctorsApp')
         .then( function() {
           $scope.hasError = false;
           $scope.message = 'An email with a new password is sent.';
-          $scope.user.email = '';
-          form.autoValidateFormOptions.resetForm();
+          $scope.doctor.email = '';
+          $scope.form.$setPristine();
         })
         .catch( function(err) {
           $scope.hasError = true;
@@ -562,6 +562,16 @@ angular.module('sugarlandDoctorsApp')
       }
     };
   })
+
+  .controller('doctorEmailConfirmCtrl',function($scope, Auth, $state) {
+        Auth.confirmEmail($state.params.token)
+        .then( function() {
+          $state.go('doctor.profile.bio');
+        })
+        .catch( function(err) {
+          debugger;
+        });
+    })
 
   .controller('photoUploadCtrl',function($scope, Auth, $state, FileUploader) {
       /*************File Upload Example *****************/
