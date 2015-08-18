@@ -1,13 +1,15 @@
 'use strict';
 
 var express = require('express');
+var auth = require('../../auth/auth.service');
 var controller = require('./statistic.controller');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.get('/:id/summary', controller.summary);
+// router.get('/', auth.isDoctorAuthenticated(), controller.index);
+router.get('/:id', controller.show);//auth.isDoctorAuthenticated(),
+router.get('/:id/summary', controller.summary);//, auth.isDoctorAuthenticated()
+router.get('/:id/:period/summaryByPeriod', controller.summaryByPeriod);//, auth.isDoctorAuthenticated()
 //router.post('/', controller.create);
 router.post('/view', controller.create);
 router.post('/like', controller.create);

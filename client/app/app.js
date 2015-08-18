@@ -61,6 +61,16 @@ angular.module('sugarlandDoctorsApp', [
     };
   })
 
+  .factory('beforeUnload', function ($rootScope, $window, $cookies, $cookieStore) {
+      // Events are broadcast outside the Scope Lifecycle
+      angular.forEach($cookies, function(cookie, key){
+        if(key.indexOf('view') !== -1){
+          $cookieStore.remove(key);
+        }
+      });
+      return {};
+  })
+
   .factory('page', function() {
     var title = 'Sugar Land Doctors';
     var metaDescription = 'Find doctors in Sugar Land area.';
@@ -111,12 +121,13 @@ angular.module('sugarlandDoctorsApp', [
     }
   })
 
-  .run(function ($q, $rootScope, $location, $templateCache, CommonData, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier) {
+  .run(function ($q, $rootScope, $location, $window, $templateCache, CommonData, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier,beforeUnload) {
       CommonData.getSpecialists().then( function(data) {
           $rootScope._specialists = data;
         }).catch( function(err) {
 
         });
+
       // angular auto validate settings.
       $rootScope.customErrors = {"duplicateEmail":"The specified email address is already in use.",
         "blankEmail":"Email cannot be blank.",
@@ -218,4 +229,8 @@ angular.module('sugarlandDoctorsApp', [
             easyrtc.disconnect();
         }
     });
+
+    // $rootScope.$on('onBeforeUnload', function (e, confirmation) {
+    //     e.preventDefault();
+    // });
   });
