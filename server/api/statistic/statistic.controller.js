@@ -43,6 +43,32 @@ exports.summaryByPeriod = function(req, res){
   });
 };
 
+exports.getDoctors = function(req, res){
+  Statistic.aggregate(
+    { $match: { type:'view' } },
+    { $project: {
+        _id: 0,
+        _doctor: 1,
+        views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]}
+    }},
+    { $group: {
+        _id: "$_doctor",
+        views: {$sum: '$views'}
+    }}, 
+    {$sort: {views: 1}},
+    {$limit: 12},
+    function (err, doctors) {// THERE HAS TO BE BETTER WAY OF GETTING JOIN DATA.
+      if(err) { return handleError(res, err); }
+      var Doctor = mongoose.model('Doctor');
+      var doctorIds = _.pluck(doctors, '_id');
+      Doctor.find({'_id': { $in:doctorIds}}, 'firstName lastName profilePicture credential specialist doctorId _id', function (err, doctors) {
+          if(err) { return handleError(res, err); }
+          return res.json(doctors);
+      });
+      //callback(err,doctors);
+    });
+}
+
 // Creates a new statistic in the DB.
 exports.create = function(req, res) {
   req.body.type = req.route.path.replace('/',"");

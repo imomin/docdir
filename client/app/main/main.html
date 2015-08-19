@@ -15,8 +15,9 @@
   font-size: 17px;
   left: 0px;
   top: -50px;
-  width: 98%;
   background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(0,0,0, 1) 100%);
+  width: 200px;
+  height: 60px;
 }
 #name > span {
   font-weight: 100;
@@ -124,7 +125,7 @@
             </div>
           </div> <!-- row-content buffer even clear-after -->
         </section>
-        <section class="row section">
+        <section ng-show="slides" class="row section">
           <div class="row-content buffer even clear-after" style="padding-top:0%;">
             <div class="row">
               <div class="section-title">
@@ -133,39 +134,32 @@
               <carousel interval="99000" disable-animation="true">
                 <slide ng-repeat="slideCollection in groupedSlides" active="slide.active">
                   <div class="carouselPictures">
-                    <a href="#" style="position:relative;text-decoration: none;">
-                        <img ng-src="{{slideCollection.image0.image}}" style="">
+                    <a href="/{{slideCollection.doctor0.specialist | lowercase}}/{{slideCollection.doctor0.doctorId}}" style="position:relative;text-decoration: none;width: 200px;height: 200px;">
+                        <img ng-src="{{slideCollection.doctor0.profilePicture}}" style="">
                           <p id="name">
-                            Hello World!<br>
-                            <span>Dentist</span>
+                            {{slideCollection.doctor0.firstName}} {{slideCollection.doctor0.lastName}}<br>
+                            <span>{{slideCollection.doctor0.specialist}}</span>
                           </p>
                     </a>
-                    <a href="#" style="position:relative;">
-                        <img ng-src="{{slideCollection.image1.image}}" style="">
+                    <a ng-show="slideCollection.doctor1" href="/{{slideCollection.doctor1.specialist | lowercase}}/{{slideCollection.doctor1.doctorId}}" style="position:relative;text-decoration: none;width: 200px;height: 200px;">
+                        <img ng-src="{{slideCollection.doctor1.profilePicture}}" style="">
                           <p id="name">
-                            Hello World!<br>
-                            <span>Dentist</span>
+                            {{slideCollection.doctor1.firstName}} {{slideCollection.doctor1.lastName}}<br>
+                            <span>{{slideCollection.doctor1.specialist}}</span>
                           </p>
                     </a>
-                    <a href="#" style="position:relative;">
-                        <img ng-src="{{slideCollection.image2.image}}" style="">
+                    <a ng-show="slideCollection.doctor2" href="/{{slideCollection.doctor2.specialist | lowercase}}/{{slideCollection.doctor2.doctorId}}" style="position:relative;text-decoration: none;width: 200px;height: 200px;">
+                        <img ng-src="{{slideCollection.doctor1.profilePicture}}" style="">
                           <p id="name">
-                            Hello World!<br>
-                            <span>Dentist</span>
+                            {{slideCollection.doctor2.firstName}} {{slideCollection.doctor2.lastName}}<br>
+                            <span>{{slideCollection.doctor1.specialist}}</span>
                           </p>
                     </a>
-                    <a href="#" style="position:relative;">
-                        <img ng-src="{{slideCollection.image3.image}}" style="">
+                    <a ng-show="slideCollection.doctor3" href="/{{slideCollection.doctor3.specialist | lowercase}}/{{slideCollection.doctor3.doctorId}}" style="position:relative;text-decoration: none;width: 200px;height: 200px;">
+                        <img ng-src="{{slideCollection.doctor3.profilePicture}}" style="">
                           <p id="name">
-                            Hello World!<br>
-                            <span>Dentist</span>
-                          </p>
-                    </a>
-                    <a href="#" style="position:relative;">
-                        <img ng-src="{{slideCollection.image4.image}}" style="">
-                          <p id="name">
-                            Hello World!<br>
-                            <span>Dentist</span>
+                            {{slideCollection.doctor3.firstName}} {{slideCollection.doctor3.lastName}}<br>
+                            <span>{{slideCollection.doctor3.specialist}}</span>
                           </p>
                     </a>
                   </div>

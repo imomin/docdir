@@ -7,6 +7,7 @@ var controller = require('./statistic.controller');
 var router = express.Router();
 
 // router.get('/', auth.isDoctorAuthenticated(), controller.index);
+router.get('/doctors', controller.getDoctors);
 router.get('/:id', controller.show);//auth.isDoctorAuthenticated(),
 router.get('/:id/summary', controller.summary);//, auth.isDoctorAuthenticated()
 router.get('/:id/:period/summaryByPeriod', controller.summaryByPeriod);//, auth.isDoctorAuthenticated()

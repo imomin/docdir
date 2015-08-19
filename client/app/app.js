@@ -127,6 +127,8 @@ angular.module('sugarlandDoctorsApp', [
         }).catch( function(err) {
 
         });
+      //using this for caching data.
+      $rootScope.doctorContact = {};
 
       // angular auto validate settings.
       $rootScope.customErrors = {"duplicateEmail":"The specified email address is already in use.",
@@ -229,8 +231,4 @@ angular.module('sugarlandDoctorsApp', [
             easyrtc.disconnect();
         }
     });
-
-    // $rootScope.$on('onBeforeUnload', function (e, confirmation) {
-    //     e.preventDefault();
-    // });
   });

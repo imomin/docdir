@@ -35,6 +35,21 @@ angular.module('sugarlandDoctorsApp')
           }.bind(this));
 
           return deferred.promise;
+        },
+        getRandomDoctors: function(callback){
+          var cb = callback || angular.noop;
+          var deferred = $q.defer();
+          $http.get('/api/statistics/doctors').
+          success(function(data) {
+            deferred.resolve(data);
+            return cb(null,data);
+          }).
+          error(function(err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+          return deferred.promise;
         }
       }
   });

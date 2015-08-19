@@ -46,80 +46,28 @@ angular.module('sugarlandDoctorsApp')
     }
   })
 
-  .controller('MainCtrl', function ($scope, $http, $location, socket ,page) {
+  .controller('MainCtrl', function ($scope, $http, $location, socket, page, CommonData) {
     $scope.awesomeThings = [];
     $scope.enableScroll = function(){
       $('body').css('overflow', 'auto');
     }
-    $scope.randomDoctors = [
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"},
-      {"name":"Dr ABC XYZ","specialist":"Dentist","profilePicture:":"/assets/images/553f24fed4186cb8656520e5/f5bdb164-ec43-4e56-bffe-1f86c1b64a62-Aliyana.png"}
-    ];
+    CommonData.getRandomDoctors(function(err, data){
+        $scope.myInterval = 3000;
+        $scope.slides = data;
+        var many = 4;
+        var i, group = [], items;
 
-    $scope.myInterval = 3000;
-    $scope.slides = [{
-      image: 'http://placekitten.com/221/200',
-      text: 'Kitten.'
-    }, {
-      image: 'http://placekitten.com/241/200',
-      text: 'Kitty!'
-    }, {
-      image: 'http://placekitten.com/223/200',
-      text: 'Cat.'
-    }, {
-      image: 'http://placekitten.com/224/200',
-      text: 'Feline!'
-    }, {
-      image: 'http://placekitten.com/225/200',
-      text: 'Cat.'
-    }, {
-      image: 'http://placekitten.com/226/200',
-      text: 'Feline!'
-    }, {
-      image: 'http://placekitten.com/227/200',
-      text: 'Cat.'
-    }, {
-      image: 'http://placekitten.com/228/200',
-      text: 'Feline!'
-    }, {
-      image: 'http://placekitten.com/229/200',
-      text: 'Cat.'
-    }, {
-      image: 'http://placekitten.com/230/200',
-      text: 'Feline!'
-    }, {
-      image: 'http://placekitten.com/230/200',
-      text: 'puss'
-    }, {
-      image: 'http://placekitten.com/230/200',
-      text: 'lion'
-    }];
-    var many = 4;
-    var i, group = [], items;
-
-    for (i = 0; i < $scope.slides.length; i += many) {
-      items = {};
-      for (var j = 0; j < many; j++) {
-        if($scope.slides[i + j]){
-          items["image"+j] = $scope.slides[i + j];  
+        for (i = 0; i < $scope.slides.length; i += many) {
+          items = {};
+          for (var j = 0; j < many; j++) {
+            if($scope.slides[i + j]){
+              items["doctor"+j] = $scope.slides[i + j];
+            }
+          };
+          group.push(items);
         }
-      };
-      group.push(items);
-    }
-    $scope.groupedSlides = group;
-
+        $scope.groupedSlides = group;
+      });
     $scope.searchDoctor = function(val) {
       return $http.get('/api/doctors/lookup/', {
         params: {

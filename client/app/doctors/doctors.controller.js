@@ -135,7 +135,7 @@ angular.module('sugarlandDoctorsApp')
               marker.setPosition($scope.latlng);
               marker.setTitle($scope.doctor.addresses[0].address.streetAddress +', '+ $scope.doctor.addresses[0].address.city + ' ' + $scope.doctor.addresses[0].address.state +', '+ $scope.doctor.addresses[0].address.postalCode);
             }
-            
+            $scope.contact = _.get($rootScope.doctorContact,$scope.doctor._id);
             $scope.slides = [];
             for (var i = 0; i < $scope.doctor.pictures.length; i++) {
               $scope.slides.push({
@@ -203,6 +203,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.showContactNumber = function(){
       Doctor.showContact({'id':$scope.doctor._id}, function(data) {
         $scope.contact =  data.addresses[0];
+        $rootScope.doctorContact[data._id] = data.addresses[0];
       });
       Statistic.addPhoneCount($scope.doctor._id);
     }
