@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Statistic = require('./statistic.model');
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // Get list of statistics
 exports.index = function(req, res) {
@@ -314,53 +315,67 @@ function get7DaysStats(doctorId, callback){
 
 //7 days, 30 days, 90 days, 180 days, 365 days, all) 
 function getStatsByPeriod(doctorId, period, callback) {
-  var dateFilter = new Date();
-  if(period === 'week'){
-     dateFilter.setDate(dateFilter.getDate()-7);
-  } else if (period === 'month') {
-      dateFilter.setMonth(dateFilter.getMonth()-1);
-  } else if (period === '3months') {
-      dateFilter.setMonth(dateFilter.getMonth()-3);
-  } else if (period === '6months') {
-      dateFilter.setMonth(dateFilter.getMonth()-6);
-  } else if (period === 'year') {
-      dateFilter.setYear(dateFilter.getYear()-1);
-  } else if (period === 'all') {
-      dateFilter = new Date('1/1/2015');
-  }
-  console.log(dateFilter);
+  var startDate = new Date();
+      startDate.setHours(0);
+      startDate.setMinutes(0);
+      startDate.setSeconds(0);
+      startDate.setMilliseconds(0);
+  var endDate = new Date();
+      endDate.setHours(0);
+      endDate.setMinutes(0);
+      endDate.setSeconds(0);
+      endDate.setMilliseconds(0);
+  var days = [];
+  var daysCounter = 0;
 
+  if(period === 'week'){
+     startDate.setDate(startDate.getDate()-7);
+  } else if (period === 'month') {
+      startDate.setMonth(startDate.getMonth()-1);
+  } else if (period === '3months') {
+      startDate.setMonth(startDate.getMonth()-3);
+  } else if (period === '6months') {
+      startDate.setMonth(startDate.getMonth()-6);
+  } else if (period === 'year') {
+      startDate.setYear(startDate.getYear()-1);
+  } else {
+      startDate = new Date('1/1/2015');
+  }
+
+  for (var d = new Date(startDate); d < endDate; d.setDate(d.getDate() + 1)) {
+    days.push({day:daysCounter++,label:moment(d).format("MM/DD/YYYY"),views:0,likes:0,phone:0,website:0})
+  };
+  
   Statistic.aggregate(
-    { $match: { _doctor:new mongoose.Types.ObjectId(doctorId), timestamp: {"$gte": new Date(dateFilter)} } },
+    { $match: { _doctor:new mongoose.Types.ObjectId(doctorId), timestamp: {"$gte": new Date(startDate)} } },
     { $sort : { timestamp : -1 } },
     { $project: {
         _id: 0,
         timestamp: 1,
+        yearMonthDay: { $dateToString: { format: "%m/%d/%Y", date: "$timestamp" } },
         views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]},
         likes: {$cond: [{$eq: ['$type', 'like']}, 1, 0]},
         phone: {$cond: [{$eq: ['$type', 'phone']}, 1, 0]},
         website: {$cond: [{$eq: ['$type', 'website']}, 1, 0]}
     }},
     { $group: {
-        _id : { month: { $month: "$timestamp" }, day: { $dayOfMonth: "$timestamp" }, year: { $year: "$timestamp" } },
+        _id : '$yearMonthDay',
         views: {$sum: '$views'},
         likes: {$sum: '$likes'},
         phone: {$sum: '$phone'},
         website: {$sum: '$website'}
     }}, function (err, statistics) {
-        callback(err,statistics);
+        var endOfArray = days.length;
+        _.forEach(days,function(dayData, index){
+            var dateExists = _.findWhere(statistics,{"_id":dayData.label});
+            if(dateExists){
+              dayData.views = dateExists.views ? dateExists.views : 0;
+              dayData.likes = dateExists.likes ? dateExists.likes : 0;
+              dayData.phone = dateExists.phone ? dateExists.phone : 0;
+              dayData.website =  dateExists.website ? dateExists.website : 0;
+            }
+            endOfArray--;
+          });
+        if(endOfArray ===0) callback(err,days);
     });
-
-/*
-        year: { $year: "$timestamp" },
-        month: { $month: "$timestamp" },
-        day: { $dayOfMonth: "$timestamp" },
-        hour: { $hour: "$timestamp" },
-        minutes: { $minute: "$timestamp" },
-        seconds: { $second: "$timestamp" },
-        milliseconds: { $millisecond: "$timestamp" },
-        dayOfYear: { $dayOfYear: "$timestamp" },
-        dayOfWeek: { $dayOfWeek: "$timestamp" },
-        week: { $week: "$timestamp" },
-*/
 }
