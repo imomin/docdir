@@ -326,7 +326,7 @@ function getStatsByPeriod(doctorId, period, callback) {
       endDate.setSeconds(0);
       endDate.setMilliseconds(0);
   var days = [];
-  var daysCounter = 0;
+  var daysCounter = 1;
 
   if(period === 'week'){
      startDate.setDate(startDate.getDate()-7);
