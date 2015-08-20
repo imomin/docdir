@@ -11,6 +11,10 @@ router.get('/doctors', controller.getDoctors);
 router.get('/:id', controller.show);//auth.isDoctorAuthenticated(),
 router.get('/:id/summary', controller.summary);//, auth.isDoctorAuthenticated()
 router.get('/:id/:period/summaryByPeriod', controller.summaryByPeriod);//, auth.isDoctorAuthenticated()
+router.get('/:id/viewbyhours', controller.viewByHours);//, auth.isDoctorAuthenticated()
+router.get('/:id/viewbymonths', controller.viewByMonths);//, auth.isDoctorAuthenticated()
+router.get('/:id/viewbydays', controller.viewByDays);//, auth.isDoctorAuthenticated()
+
 //router.post('/', controller.create);
 router.post('/view', controller.create);
 router.post('/like', controller.create);

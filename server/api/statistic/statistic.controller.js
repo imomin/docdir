@@ -30,13 +30,145 @@ exports.summary = function(req, res) {
   });
 };
 
+exports.viewByHours = function(req, res){
+    Statistic.aggregate(
+      { $match: { _doctor:new mongoose.Types.ObjectId(req.params.id)}},
+      { $project: {
+          _id: 0,
+          timestamp: 1,
+          views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]},
+          likes: {$cond: [{$eq: ['$type', 'like']}, 1, 0]},
+          phone: {$cond: [{$eq: ['$type', 'phone']}, 1, 0]},
+          website: {$cond: [{$eq: ['$type', 'website']}, 1, 0]}
+      }},
+      { $group: {
+          _id: { hour: { $hour: "$timestamp" } },
+          views: {$sum: '$views'},
+          likes: {$sum: '$likes'},
+          phone: {$sum: '$phone'},
+          website: {$sum: '$website'}
+      }}, function (err, statistics) {
+          if(err) { return handleError(res, err); }
+          if(!statistics) { return res.send(404); }
+          var hoursOfTheDay = [{hour:0,label:"12AM",views:0,likes:0,phone:0,website:0},
+                              {hour:1,label:"1AM",views:0,likes:0,phone:0,website:0},
+                              {hour:2,label:"2AM",views:0,likes:0,phone:0,website:0},
+                              {hour:3,label:"3AM",views:0,likes:0,phone:0,website:0},
+                              {hour:4,label:"4AM",views:0,likes:0,phone:0,website:0},
+                              {hour:5,label:"5AM",views:0,likes:0,phone:0,website:0},
+                              {hour:6,label:"6AM",views:0,likes:0,phone:0,website:0},
+                              {hour:7,label:"7AM",views:0,likes:0,phone:0,website:0},
+                              {hour:8,label:"8AM",views:0,likes:0,phone:0,website:0},
+                              {hour:9,label:"9AM",views:0,likes:0,phone:0,website:0},
+                              {hour:10,label:"10AM",views:0,likes:0,phone:0,website:0},
+                              {hour:11,label:"11AM",views:0,likes:0,phone:0,website:0},
+                              {hour:12,label:"12AM",views:0,likes:0,phone:0,website:0},
+                              {hour:13,label:"1PM",views:0,likes:0,phone:0,website:0},
+                              {hour:14,label:"2PM",views:0,likes:0,phone:0,website:0},
+                              {hour:15,label:"3PM",views:0,likes:0,phone:0,website:0},
+                              {hour:16,label:"4PM",views:0,likes:0,phone:0,website:0},
+                              {hour:17,label:"5PM",views:0,likes:0,phone:0,website:0},
+                              {hour:18,label:"6PM",views:0,likes:0,phone:0,website:0},
+                              {hour:19,label:"7PM",views:0,likes:0,phone:0,website:0},
+                              {hour:20,label:"8PM",views:0,likes:0,phone:0,website:0},
+                              {hour:21,label:"9PM",views:0,likes:0,phone:0,website:0},
+                              {hour:22,label:"10PM",views:0,likes:0,phone:0,website:0},
+                              {hour:23,label:"11PM",views:0,likes:0,phone:0,website:0}];
+            _.forEach(hoursOfTheDay,function(hourData, index){
+              var viewCount = _.findWhere(statistics,{"_id":{"hour":hourData.hour}});
+              hourData.views =  viewCount ? viewCount.views : 0;
+              hourData.likes =  viewCount ? viewCount.likes : 0;
+              hourData.phone =  viewCount ? viewCount.phone : 0;
+              hourData.website =  viewCount ? viewCount.website : 0;
+            });
+          return res.json(hoursOfTheDay);
+      });
+};
+
+exports.viewByMonths = function(req, res){
+    Statistic.aggregate(
+      { $match: { _doctor:new mongoose.Types.ObjectId(req.params.id)}},
+      { $project: {
+          _id: 0,
+          timestamp: 1,
+          views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]},
+          likes: {$cond: [{$eq: ['$type', 'like']}, 1, 0]},
+          phone: {$cond: [{$eq: ['$type', 'phone']}, 1, 0]},
+          website: {$cond: [{$eq: ['$type', 'website']}, 1, 0]}
+      }},
+      { $group: {
+          _id: { month: { $month: "$timestamp" } },
+          views: {$sum: '$views'},
+          likes: {$sum: '$likes'},
+          phone: {$sum: '$phone'},
+          website: {$sum: '$website'}
+      }}, function (err, statistics) {
+          if(err) { return handleError(res, err); }
+          if(!statistics) { return res.send(404); }
+          var monthOfYear = [{month:0,label:"Jan",views:0,likes:0,phone:0,website:0},
+                              {month:1,label:"Feb",views:0,likes:0,phone:0,website:0},
+                              {month:2,label:"Mar",views:0,likes:0,phone:0,website:0},
+                              {month:3,label:"Apr",views:0,likes:0,phone:0,website:0},
+                              {month:4,label:"May",views:0,likes:0,phone:0,website:0},
+                              {month:5,label:"Jun",views:0,likes:0,phone:0,website:0},
+                              {month:6,label:"Jul",views:0,likes:0,phone:0,website:0},
+                              {month:7,label:"Aug",views:0,likes:0,phone:0,website:0},
+                              {month:8,label:"Sep",views:0,likes:0,phone:0,website:0},
+                              {month:9,label:"Oct",views:0,likes:0,phone:0,website:0},
+                              {month:10,label:"Nov",views:0,likes:0,phone:0,website:0},
+                              {month:11,label:"Dec",views:0,likes:0,phone:0,website:0},];
+          _.forEach(monthOfYear,function(monthData, index){
+            var viewCount = _.findWhere(statistics,{"_id":{"month":monthData.month}});
+            monthData.views =  viewCount ? viewCount.views : 0;
+            monthData.likes =  viewCount ? viewCount.likes : 0;
+            monthData.phone =  viewCount ? viewCount.phone : 0;
+            monthData.website =  viewCount ? viewCount.website : 0;
+          });
+          return res.json(monthOfYear);
+      });
+};
+
+exports.viewByDays = function(req, res){
+    Statistic.aggregate(
+      { $match: { _doctor:new mongoose.Types.ObjectId(req.params.id)}},
+      { $project: {
+        _id: 0,
+        timestamp: 1,
+        views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]},
+        likes: {$cond: [{$eq: ['$type', 'like']}, 1, 0]},
+        phone: {$cond: [{$eq: ['$type', 'phone']}, 1, 0]},
+        website: {$cond: [{$eq: ['$type', 'website']}, 1, 0]}
+    }},
+    { $group: {
+        _id: { dayOfWeek: { $dayOfWeek: "$timestamp" } },
+        views: {$sum: '$views'},
+        likes: {$sum: '$likes'},
+        phone: {$sum: '$phone'},
+        website: {$sum: '$website'}
+    }}, function (err, statistics) {
+          if(err) { return handleError(res, err); }
+          if(!statistics) { return res.send(404); }
+          console.log(statistics);
+          var daysOfWeek = [{day:0,label:"Mon",views:0,likes:0,phone:0,website:0},
+                              {day:1,label:"Tue",views:0,likes:0,phone:0,website:0},
+                              {day:2,label:"Wed",views:0,likes:0,phone:0,website:0},
+                              {day:3,label:"Thu",views:0,likes:0,phone:0,website:0},
+                              {day:4,label:"Fri",views:0,likes:0,phone:0,website:0},
+                              {day:5,label:"Sat",views:0,likes:0,phone:0,website:0},
+                              {day:6,label:"Sun",views:0,likes:0,phone:0,website:0}];
+          _.forEach(daysOfWeek,function(dayData, index){
+            var viewCount = _.findWhere(statistics,{"_id":{"dayOfWeek":dayData.day}});
+            dayData.views =  viewCount ? viewCount.views : 0;
+            dayData.likes =  viewCount ? viewCount.likes : 0;
+            dayData.phone =  viewCount ? viewCount.phone : 0;
+            dayData.website =  viewCount ? viewCount.website : 0;
+          });
+          return res.json(daysOfWeek);
+      });
+};
+
 exports.summaryByPeriod = function(req, res){
-  // getStatsByPeriod(req.params.id, req.params.period, function(err,statistics){
-  //   if(err) { return handleError(res, err); }
-  //   if(!statistics) { return res.send(404); }
-  //   return res.json(statistics);
-  // });
-  getStatsByTimeOfTheDay(req.params.id, function(err,statistics){
+  getStatsByPeriod(req.params.id, req.params.period, function(err,statistics){
     if(err) { return handleError(res, err); }
     if(!statistics) { return res.send(404); }
     return res.json(statistics);
@@ -175,22 +307,6 @@ function get7DaysStats(doctorId, callback){
         likes: {$sum: '$likes'},
         phone: {$sum: '$phone'},
         website: {$sum: '$website'}
-    }}, function (err, statistics) {
-        callback(err,statistics);
-    });
-}
-
-function getStatsByTimeOfTheDay(doctorId, callback) {
-  Statistic.aggregate(
-    { $match: { _doctor:new mongoose.Types.ObjectId(doctorId),type:'view' }},
-    { $project: {
-        _id: 0,
-        timestamp: 1,
-        views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]}
-    }},
-    { $group: {
-        _id : { hour: { $hour: "$timestamp" } },
-        views: {$sum: '$views'}
     }}, function (err, statistics) {
         callback(err,statistics);
     });
