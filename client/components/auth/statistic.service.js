@@ -104,6 +104,70 @@ angular.module('sugarlandDoctorsApp')
           }.bind(this));
 
           return deferred.promise;
+      },
+      getCountsByPeriod: function(_Id, period,  callback){
+          var cb = callback || angular.noop;
+          var deferred = $q.defer();
+
+          $http.get('/api/statistics/'+_Id+ '/'+ period +'/summarybyperiod', {}).
+          success(function(data) {
+            //$cookieStore.put('specialists', data);
+            deferred.resolve(data);
+            return cb(null,data);
+          }).
+          error(function(err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+          return deferred.promise;
+      },
+      getCountsByHours: function(_Id, callback){
+          var cb = callback || angular.noop;
+          var deferred = $q.defer();
+
+          $http.get('/api/statistics/'+_Id+'/viewbyhours', {}).
+          success(function(data) {
+            deferred.resolve(data);
+            return cb(null,data);
+          }).
+          error(function(err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+          return deferred.promise;
+      },
+      getCountsByDays: function(_Id, callback){
+          var cb = callback || angular.noop;
+          var deferred = $q.defer();
+
+          $http.get('/api/statistics/'+_Id+'/viewbydays', {}).
+          success(function(data) {
+            deferred.resolve(data);
+            return cb(null,data);
+          }).
+          error(function(err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+          return deferred.promise;
+      },
+      getCountsByMonths: function(_Id, callback){
+          var cb = callback || angular.noop;
+          var deferred = $q.defer();
+
+          $http.get('/api/statistics/'+_Id+'/viewbymonths', {}).
+          success(function(data) {
+            deferred.resolve(data);
+            return cb(null,data);
+          }).
+          error(function(err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+          return deferred.promise;
       }
     }
   });

@@ -51,43 +51,28 @@
             </div>
         </div>
         <div class="row">
-            1) Time line (7 week, 1 month, 3 months, 6 months, 1 year, max) <br>
-            <br>
+            <h3 style="text-align: center;font-weight: lighter;">Profile View Activity.</h3>
+            <div class="btn-group" style="padding-right:20px;">
+                <label class="btn btn-default" ng-model="chartData.period" btn-radio="'week'">7 Days</label>
+                <label class="btn btn-default" ng-model="chartData.period" btn-radio="'month'">Month</label>
+                <label class="btn btn-default" ng-model="chartData.period" btn-radio="'3months'">3 Months</label>
+                <label class="btn btn-default" ng-model="chartData.period" btn-radio="'6months'">6 Months</label>
+            </div>
+            
             <div
-            line-chart
-            line-data='[
-                { y: "2006", a: 100, b: 90 },
-                { y: "2007", a: 75,  b: 65 },
-                { y: "2008", a: 50,  b: 40 },
-                { y: "2009", a: 75,  b: 65 },
-                { y: "2010", a: 50,  b: 40 },
-                { y: "2011", a: 75,  b: 65 },
-                { y: "2012", a: 100, b: 90 }
-            ]'
-            line-xkey='y'
-            line-ykeys='["a", "b"]'
-            line-labels='["Serie A", "Serie B"]'
-            line-colors='["#1FB5AD", "rgb(230, 122, 119)"]'>
+                line-chart
+                line-data='viewCountsChartData'
+                line-xkey='y'
+                line-ykeys='["views"]'
+                line-labels='["Views",]'
+                line-colors='["#e74c3c"]'>
             </div>
 
             <h3 style="text-align: center;font-weight: lighter;">Most active Months.</h3>
             <div class="row text-center" style="margin-left: auto;margin-right: auto;width:100%;">
                 <div style="margin-left: auto;margin-right: auto;width: 50%;"
                     bar-chart 
-                    bar-data='[
-                        { y: "Jan", views: 100},
-                        { y: "Feb", views: 75},
-                        { y: "Mar", views: 50},
-                        { y: "Apr", views: 75},
-                        { y: "May", views: 50},
-                        { y: "Jun", views: 75},
-                        { y: "Jul", views: 100},
-                        { y: "Aug", views: 100},
-                        { y: "Sep", views: 100},
-                        { y: "Oct", views: 100},
-                        { y: "Nov", views: 100},
-                        { y: "Dec", views: 100}
-                    ]'
+                    bar-data='monthCountsChartData'
                     bar-x='y'
                     bar-y='["views"]'
                     bar-labels='["Percent"]'
@@ -97,45 +82,14 @@
             <h3 style="text-align: center;font-weight: lighter;">Most active days.</h3>
             <div class="row text-center" style="margin-left: auto;margin-right: auto;width: 80%;">
                 <ul style="text-align:center;">
-                    <li class="gauge" easy-pie="{scaleColor: false,trackColor: 'rgba(208, 208, 208, 0.25)',barColor: 'rgb(158, 18, 158)',lineWidth: 3,lineCap: 'butt',size: 95,animate:3000}" data-percent="83"><span>83%</span>Sun</li>
-                  <li class="gauge" easy-pie="{scaleColor: false,trackColor: 'rgba(208, 208, 208, 0.25)',barColor: 'rgba(49, 18, 158, 0.98)',lineWidth: 3,lineCap: 'butt',size: 95,animate:3000}" data-percent="75"><span>26</span>Mon</li>
-                  <li class="gauge" easy-pie="{scaleColor: false,trackColor: 'rgba(208, 208, 208, 0.25)',barColor: '#2980b9',lineWidth: 3,lineCap: 'butt',size: 95,animate:3000}" data-percent="15"><span>15</span>Tue</li>
-                  <li class="gauge" easy-pie="{scaleColor: false,trackColor: 'rgba(208, 208, 208, 0.25)',barColor: 'rgb(15, 162, 53)',lineWidth: 3,lineCap: 'butt',size: 95,animate:3000}" data-percent="83"><span>50</span>Web</li>
-                  <li class="gauge" easy-pie="{scaleColor: false,trackColor: 'rgba(208, 208, 208, 0.25)',barColor: 'rgb(158, 24, 24)',lineWidth: 3,lineCap: 'butt',size: 95,animate:3000}" data-percent="83"><span>50</span>Thu</li>
-                  <li class="gauge" easy-pie="{scaleColor: false,trackColor: 'rgba(208, 208, 208, 0.25)',barColor: '#e74c3c',lineWidth: 3,lineCap: 'butt',size: 95,animate:3000}" data-percent="83"><span>50</span>Fri</li>
-                  <li class="gauge" easy-pie="{scaleColor: false,trackColor: 'rgba(208, 208, 208, 0.25)',barColor: '#f1c40f',lineWidth: 3,lineCap: 'butt',size: 95,animate:3000}" data-percent="83"><span>50</span>Sat</li>
+                    <li ng-repeat="data in dayCountsChartData" class="gauge" easy-pie="{{data.options}}" data-percent="{{data.percent}}"><span>{{data.percent}}%</span>{{data.label}}</li>
                 </ul>
             </div>
             <h3 style="text-align: center;font-weight: lighter;">Most active hours.</h3>
             <div class="row text-center" style="margin-left: auto;margin-right: auto;width:100%;">
                 <div style="margin-left: auto;margin-right: auto;width: 50%;"
                     bar-chart 
-                    bar-data='[
-                        { y: "12:00 AM", views: 0},
-                        { y: "1:00 AM", views: 1},
-                        { y: "2:00 AM", views: 3},
-                        { y: "3:00 AM", views: 0},
-                        { y: "4:00 AM", views: 0},
-                        { y: "5:00 AM", views: 0},
-                        { y: "6:00 AM", views: 10},
-                        { y: "7:00 AM", views: 20},
-                        { y: "8:00 AM", views: 30},
-                        { y: "9:00 AM", views: 40},
-                        { y: "10:00 AM", views: 50},
-                        { y: "11:00 AM", views: 60},
-                        { y: "12:00 PM", views: 70},
-                        { y: "1:00 PM", views: 80},
-                        { y: "2:00 PM", views: 90},
-                        { y: "3:00 PM", views: 100},
-                        { y: "4:00 PM", views: 60},
-                        { y: "5:00 PM", views: 50},
-                        { y: "6:00 PM", views: 40},
-                        { y: "7:00 PM", views: 30},
-                        { y: "8:00 PM", views: 20},
-                        { y: "9:00 PM", views: 10},
-                        { y: "10:00 PM", views: 10},
-                        { y: "11:00 PM", views: 10},
-                    ]'
+                    bar-data='hourCountsChartData'
                     bar-x='y'
                     bar-y='["views"]'
                     bar-labels='["Percent"]'

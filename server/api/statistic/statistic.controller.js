@@ -343,7 +343,7 @@ function getStatsByPeriod(doctorId, period, callback) {
   }
 
   for (var d = new Date(startDate); d < endDate; d.setDate(d.getDate() + 1)) {
-    days.push({day:daysCounter++,label:moment(d).format("MM/DD/YYYY"),views:0,likes:0,phone:0,website:0})
+    days.push({day:daysCounter++,label:moment(d).format("YYYY-MM-DD"),views:0,likes:0,phone:0,website:0})
   };
   
   Statistic.aggregate(
@@ -352,7 +352,7 @@ function getStatsByPeriod(doctorId, period, callback) {
     { $project: {
         _id: 0,
         timestamp: 1,
-        yearMonthDay: { $dateToString: { format: "%m/%d/%Y", date: "$timestamp" } },
+        yearMonthDay: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
         views: {$cond: [{$eq: ['$type', 'view']}, 1, 0]},
         likes: {$cond: [{$eq: ['$type', 'like']}, 1, 0]},
         phone: {$cond: [{$eq: ['$type', 'phone']}, 1, 0]},
