@@ -10,6 +10,7 @@
     <base href="/">
     <title ng-bind="page.title()"></title>
     <meta name="description" content="{{page.metaDescription()}}">
+    <meta name="keyword" content="{{page.metaKeywords()}}">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
@@ -19,6 +20,7 @@
       <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
       <link rel="stylesheet" href="bower_components/ngImgCrop/compile/minified/ng-img-crop.css" />
       <link rel="stylesheet" href="bower_components/ez-timepicker/dist/ez-timepicker.min.css" />
+      <link rel="stylesheet" href="bower_components/morris.js/morris.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -66,9 +68,13 @@
       <script src="bower_components/angular-animate/angular-animate.js"></script>
       <script src="bower_components/angular-auto-validate/dist/jcs-auto-validate.js"></script>
       <script src="bower_components/ngImgCrop/compile/minified/ng-img-crop.js"></script>
-      <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+      <script src="bower_components/angular-file-upload/angular-file-upload.min.js"></script>
       <script src="bower_components/angular-payments/lib/angular-payments.js"></script>
       <script src="bower_components/ez-timepicker/dist/ez-timepicker.min.js"></script>
+      <script src="bower_components/raphael/raphael.js"></script>
+      <script src="bower_components/mocha/mocha.js"></script>
+      <script src="bower_components/morris.js/morris.js"></script>
+      <script src="bower_components/angular-morris-chart/src/angular-morris-chart.min.js"></script>
       <!-- endbower -->
       <script src="socket.io/socket.io.js"></script>
       <!-- endbuild -->
@@ -76,6 +82,7 @@
       <script type="text/javascript" src="assets/javascripts/easyrtc.js"></script>
       <script type="text/javascript" src="assets/javascripts/jquery.hoverdir.modernizr.custom.97074.js"></script>
       <script type="text/javascript" src="assets/javascripts/jquery.hoverdir.js"></script>
+      <script type="text/javascript" src="assets/javascripts/jquery.easypiechart.min.js"></script>
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->

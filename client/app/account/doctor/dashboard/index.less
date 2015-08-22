@@ -7,3 +7,31 @@
 .dashboard .hero-widget var { display: block; height: 64px; font-size: 64px; line-height: 64px; font-style: normal; }
 .dashboard .hero-widget label { font-size: 17px; font-weight: lighter;}
 .dashboard .hero-widget .options { margin-top: 10px; }
+
+.dashboard svg {
+	box-shadow: 0px 0px 0px #444;
+	border-radius: 0px;
+	-webkit-transform:translateX(calc(0vw));
+}
+.dashboard li.gauge{
+  display: inline-block;
+  width: 95px;
+  height: 95px;
+  margin: 0 10px;
+  vertical-align: top;
+  position: relative;
+ .box-sizing(border-box);
+  padding-top: 22px;
+
+  span{
+    display: block;
+    font-size: 2em;
+    font-weight: lighter;
+  }
+
+  canvas{
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}

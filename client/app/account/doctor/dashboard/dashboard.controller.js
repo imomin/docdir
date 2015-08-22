@@ -1,6 +1,15 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
+	.directive('easyPie', function(){
+		return {
+			restrict: 'AE',
+			link: function(scope,element,attrs) {
+				new EasyPieChart($(element)[0], scope.$eval(attrs.easyPie));
+			}
+		};
+	})
+	
 	.controller('DashboardCtrl', function ($scope, Auth, Statistic) {
 		$scope.stats = {views:0,likes:0,phone:0,website:0};
 		Statistic.getStatistics(Auth.getCurrentDoctor()._id, function(err,data){

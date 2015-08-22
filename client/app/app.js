@@ -19,7 +19,8 @@ angular.module('sugarlandDoctorsApp', [
   'ngAnimate',
   'jcs-autoValidate',
   'angularFileUpload',
-  'ez.timepicker'
+  'ez.timepicker',
+  'angular.morris-chart'
 ])
 
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
