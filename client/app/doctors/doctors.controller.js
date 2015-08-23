@@ -156,7 +156,7 @@ angular.module('sugarlandDoctorsApp')
 
     $scope.modal=Modal.confirm.askToLogin(function(message) { // callback when modal is confirmed
         $rootScope.redirectURL = $location.path();
-        $location.path("/login"); //will redirect to login page, make sure your controller is using $location
+        $location.path("/user/login"); //will redirect to login page, make sure your controller is using $location
       });
 
     $scope.likeMe = function(){

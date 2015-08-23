@@ -8,8 +8,7 @@ exports.setup = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      User.findOne({
-        'google.id': profile.id
+      User.findOne({ $or :[{'google.id': profile.id},{email:profile.emails[0].value}]
       }, function(err, user) {
         if (!user) {
           user = new User({

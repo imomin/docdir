@@ -9,9 +9,6 @@ exports.setup = function (User, config) {
       profileFields: ['email','displayName']
     },
     function(accessToken, refreshToken, profile, done) {
-      if(!profile.emails){
-        return done("Facebook profile is missing email.", null);
-      }
       User.findOne({
         'facebook.id': profile.id
       },
