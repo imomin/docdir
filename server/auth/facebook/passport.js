@@ -5,9 +5,13 @@ exports.setup = function (User, config) {
   passport.use(new FacebookStrategy({
       clientID: config.facebook.clientID,
       clientSecret: config.facebook.clientSecret,
-      callbackURL: config.facebook.callbackURL
+      callbackURL: config.facebook.callbackURL,
+      profileFields: ['email','displayName']
     },
     function(accessToken, refreshToken, profile, done) {
+      if(!profile.emails){
+        return done("Facebook profile is missing email.", null);
+      }
       User.findOne({
         'facebook.id': profile.id
       },
@@ -20,7 +24,6 @@ exports.setup = function (User, config) {
             name: profile.displayName,
             email: profile.emails[0].value,
             role: 'user',
-            username: profile.username,
             provider: 'facebook',
             facebook: profile._json
           });
