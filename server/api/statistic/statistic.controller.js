@@ -218,7 +218,6 @@ exports.create = function(req, res) {
 
 // Delete like from the DB.
 exports.unlike = function(req, res) {
-  console.log(req.body);
   Statistic.findOne({_doctor:req.body._doctor,_user:req.body._user}, function(err, statistic) {
     if(err) { return handleError(res, err); }
     console.log(statistic);

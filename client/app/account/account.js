@@ -14,9 +14,9 @@ angular.module('sugarlandDoctorsApp')
         controller: 'SignupCtrl'
       })
       .state('activity', {
-        url: '/activity',
-        templateUrl: 'app/account/user/user.html',
-        controller: 'UserCtrl',
+        url: '/user/activity',
+        templateUrl: 'app/account/user/activity/activity.html',
+        controller: 'UserActivityCtrl',
         authenticate: true
       })
       .state('changeuserpassword', {

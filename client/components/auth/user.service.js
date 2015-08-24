@@ -24,6 +24,13 @@ angular.module('sugarlandDoctorsApp')
           id:'@email',
           controller:'resetpassword'
         }
+      },
+      mylikes: {
+        method: 'GET',
+        isArray:true,
+        params: {
+          id:'mylikes'
+        }
       }
 	  });
   });

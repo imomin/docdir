@@ -153,6 +153,18 @@ UserSchema.methods = {
       statistic = _.map(statistic, function(data){return data._doctor});
       callback(err,statistic);
     });
+  },
+  getLikedDoctorInfoByUserId: function(userId,callback){
+    var callback = callback || function() { return true; };
+    var Statistic = mongoose.model('Statistic');
+    Statistic.find({_user:userId,type:'like'})
+    .populate({
+      path:'_doctor',
+      select: 'doctorId firstName lastName profilePicture credential specialist -_id'
+    })
+    .exec(function (err, docs) {
+      callback(err,docs);
+    });
   }
 };
 

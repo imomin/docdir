@@ -1,0 +1,25 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="liked-doctors  clearfix">
+    <div class="container">
+        <div class="row">
+            <div ng-repeat="doctor in doctors" class="col-lg-3 col-md-3 col-sm-6  text-center doc-item" style="padding-top: 25px;">
+                <div class="common-doctor animated fadeInUp clearfix ae-animation-fadeInUp">
+                    <ul class="list-inline social-lists animate">
+                        <li> 
+                          <a href="{{doctor._doctor.specialist |lowercase}}/{{doctor._doctor.doctorId}}">View Profile</a>
+                        </li>
+                    </ul>
+                    <figure>
+                            <img ng-src="{{doctor._doctor.profilePicture}}" class="doc-img animate attachment-gallery-post-single wp-post-image" alt="doctor-2">
+                    </figure>
+                    <div class="text-content">
+                        <h5>{{doctor._doctor.firstName}} {{doctor._doctor.lastName}}</h5>
+                        <h5><small>{{doctor._doctor.specialist}}</small></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="visible-sm clearfix margin-gap"></div>
+        </div>
+    </div>
+</div>
+<!-- <button class="btn btn-default">View Profile</button> -->

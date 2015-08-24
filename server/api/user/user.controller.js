@@ -124,3 +124,16 @@ exports.resetPassword = function(req, res, next){
     });
   });
 }
+
+exports.myLikes = function(req, res, next) {
+    var userId = req.user._id;
+    User.findOne({
+      _id: userId
+    }, '-_id', function(err, user) { // don't ever give out the password or salt
+      if (err) return next(err);
+      if (!user) return res.json(401);
+      user.getLikedDoctorInfoByUserId(userId, function (err, user) {
+        return res.json(200, user);
+      });
+    });
+}
