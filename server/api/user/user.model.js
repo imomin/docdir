@@ -147,15 +147,15 @@ UserSchema.methods = {
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
   },
   getLikedDoctorIdByUserId: function(userId,callback){
-    var callback = callback || function() { return true; };
+    var cb = callback || function() { return true; };
     var Statistic = mongoose.model('Statistic');
     Statistic.find({_user:userId,type:'like'}, '_doctor -_id', function (err, statistic) {
       statistic = _.map(statistic, function(data){return data._doctor});
-      callback(err,statistic);
+      cb(err,statistic);
     });
   },
   getLikedDoctorInfoByUserId: function(userId,callback){
-    var callback = callback || function() { return true; };
+    var cb = callback || function() { return true; };
     var Statistic = mongoose.model('Statistic');
     Statistic.find({_user:userId,type:'like'})
     .populate({
@@ -163,7 +163,7 @@ UserSchema.methods = {
       select: 'doctorId firstName lastName profilePicture credential specialist -_id'
     })
     .exec(function (err, docs) {
-      callback(err,docs);
+      cb(err,docs);
     });
   }
 };

@@ -11,6 +11,10 @@ var jwt = require('jsonwebtoken');
 var auth = require('../../auth/auth.service');
 var mail = require('../../mail');
 
+var validationError = function(res, err) {
+  return res.json(422, err);
+};
+
 // Get list of doctors
 exports.index = function(req, res) {
   Doctor.find({}, '-salt -hashedPassword', function (err, doctors) {
@@ -32,7 +36,7 @@ exports.show = function(req, res) {
 exports.detail = function(req, res) {
   Doctor.findOne({doctorId: req.params.doctorId},'-salt -hashedPassword -stripeSubId -stripeCardId -stripeCustId', 
     function(err,doctor) {
-      if (err) return next(err);
+      if(err) {return handleError(res, err); }
       if (!doctor) return res.json(404);
       doctor.getStatistics(doctor._id,function(err, data){
         if (err || !data){
@@ -162,12 +166,14 @@ exports.uploadFile = function (req, res, next) {
     });
 };
 
-exports.subscribe = function(req, res, next) {Doctor.findById(doctorId, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
+exports.subscribe = function(req, res, next) {
+  var doctorId = req.params.id;
+  Doctor.findById(doctorId, {upsert: true}, function (err, doctor) {/*'-salt -hashedPassword',*/
     if (err) { return handleError(res, err); }
     if(!doctor) { return res.send(404); }
-    var doctor = req.body;
-    var token = doctor.token;//"tok_160OLAIfr2dTjlGD3C0tlYmT";
-    var doctorId = doctor._id;//req.params.id;
+    var doctorObj = req.body;
+    var token = doctorObj.token;//"tok_160OLAIfr2dTjlGD3C0tlYmT";
+    var doctorId = doctorObj._id;//req.params.id;
     var subscriptionPlan = req.body.subscriptionType === "Yearly" ? "SugarlandDocYearly" : "sugarlandDocMonthly";
   
     var updatedData = _.merge(doctor, req.body);
@@ -299,7 +305,7 @@ exports.list = function(req, res, next) {
 // db.users.find({ $or: [{"firstName": /^Im/},{"lastName":/^Im/}]}) // firstName LIKE Im% OR lastName LIKE Im%
 // db.users.find({ $or: [{"firstName": /^Im/},{"lastName":/^Im/}],"specialist":"Dentist"}) // (firstName LIKE Im% OR lastName LIKE Im%) AND Specialist = "Dentist"
 exports.lookup = function(req, res, next) {
-  var query = req.query.val ? escape(req.query.val) : null;
+  var query = req.query.val ? _.escape(req.query.val) : null;
   var specialist = req.params.specialist ? req.params.specialist : null;
   if(!query){
     return res.json(200, {});
@@ -323,14 +329,15 @@ exports.lookup = function(req, res, next) {
 
 exports.updateCard = function(req, res, next) {
 
-  stripe.customers.updateCard(
-    doctor.stripeCustId,
-    doctor.stripeCardId,
-    { name: "FirstName LastName" },
-    function(err, card) {
-      // asynchronously called
-    }
-  );
+  // stripe.customers.updateCard(
+  //   doctor.stripeCustId,
+  //   doctor.stripeCardId,
+  //   { name: "FirstName LastName" },
+  //   function(err, card) {
+  //     // asynchronously called
+      return res.json(200);
+  //   }
+  // );
 }
 
 exports.resetPassword = function(req, res, next){
@@ -363,13 +370,13 @@ exports.confirm = function(req, res, next){
 }
 
 function ensureExists(path, mask, cb) {
-    if (typeof mask == 'function') { // allow the `mask` parameter to be optional
+    if (typeof mask === 'function') { // allow the `mask` parameter to be optional
         cb = mask;
         mask = parseInt('0777',8);
     }
     fs.mkdir(path, mask, function(err) {
         if (err) {
-            if (err.code == 'EEXIST') cb(null); // ignore the error if the folder already exists
+            if (err.code === 'EEXIST') cb(null); // ignore the error if the folder already exists
             else cb(err); // something else went wrong
         } else cb(null); // successfully created folder
     });

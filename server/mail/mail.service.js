@@ -2,6 +2,7 @@
 
 var config = require('../config/environment');
 var nodemailer = require("nodemailer");
+var _ = require('lodash');
 
 var transporter = nodemailer.createTransport(config.mail);
 

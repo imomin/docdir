@@ -342,8 +342,8 @@ function getStatsByPeriod(doctorId, period, callback) {
   }
 
   for (var d = new Date(startDate); d < endDate; d.setDate(d.getDate() + 1)) {
-    days.push({day:daysCounter++,label:moment(d).format("YYYY-MM-DD"),views:0,likes:0,phone:0,website:0})
-  };
+    days.push({day:daysCounter++,label:moment(d).format("YYYY-MM-DD"),views:0,likes:0,phone:0,website:0});
+  }
   
   Statistic.aggregate(
     { $match: { _doctor:new mongoose.Types.ObjectId(doctorId), timestamp: {"$gte": new Date(startDate)} } },

@@ -14,7 +14,7 @@ var generateHTMLMessage = function(person,locals){
             '<body>' +
             'Your password is reset to ' + locals.PWDRESETTOKEN +
             '<br>Login in with new password and we recommend you to change the password after login.' +
-            ' <a href="'+locals.PWDRESET_URL+'">'+locals.PWDRESET_URL+'</a>'
+            ' <a href="'+locals.PWDRESET_URL+'">'+locals.PWDRESET_URL+'</a>' +
             '</body>' +
             '</html>';
     return html;
