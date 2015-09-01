@@ -66,22 +66,11 @@
 
 <div class="container conference ">
 	<div ui-view style="" ng-init="init()">
-        <div style="">
-          <div id="" class="" style="z-index:99">
-            <button type="button" style="display:none;" id="connectButton" ng-click="init()" class="btn btn-success large">Connect</button>
-            <button type="button" style="display:none;" id="disconnectButton" ng-click="disconnect()" class="btn btn-success large">Disconnect</button>
+        <div class="row">
+          <div id="" class="pull-right" style="z-index:99;">
+            <button ng-hide="isEndUser" type="button" style="display:block;" id="connectButton" ng-click="connect()" class="btn btn-success large">Connect</button>
+            <button ng-hide="isEndUser" type="button" style="display:none;" id="disconnectButton" ng-click="disconnect()" class="btn btn-success large">Disconnect</button>
             <button type="button" style="display:none;" id="redialButton" ng-click="callPeer()" class="btn btn-success large">Retry</button>
-            <!-- <button id="connectButton" ng-click="connect()">log In</button> -->
-            <!--  <button id="connectButton" ng-click="activateCamera()">Turn on Camera</button> -->
-            <!-- <button id="connectButton" ng-click="disconnect()">Log off</button> -->
-            <!-- <button id="connectButton" ng-click="toggleVideoStream()">Toggle Video Stream</button>
-            <button id="connectButton" ng-click="toggleAudioStream()">Toggle Audio Stream</button>
-            <button id="connectButton" ng-click="hangupCall()">Hangup</button> -->
-            <!-- <br><span>{{callStatus}}</span> -->
-            <!-- <br><strong>Connected users:</strong>
-            <div id="">
-                <ul><li ng-repeat="user in users"><button ng-click="callPeer(user.id);">{{user.name}}</button></li></ul>
-            </div> -->
           </div>
         </div>
         <div class="row">
@@ -107,14 +96,6 @@
                         <path class="on" transform="scale(0.6), translate(17,16)" d="M40 8H15.64l8 8H28v4.36l1.13 1.13L36 16v12.36l7.97 7.97L44 36V12c0-2.21-1.79-4-4-4zM4.55 2L2 4.55l4.01 4.01C4.81 9.24 4 10.52 4 12v24c0 2.21 1.79 4 4 4h29.45l4 4L44 41.46 4.55 2zM12 16h1.45L28 30.55V32H12V16z" fill="white"/>
                         <path class="off" transform="scale(0.6), translate(17,16)" d="M40 8H8c-2.21 0-4 1.79-4 4v24c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm-4 24l-8-6.4V32H12V16h16v6.4l8-6.4v16z" fill="white"/>
                       </svg>
-
-                      <!-- <svg id="fullscreen" ng-click="fullscreen()" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="-10 -10 68 68">
-                        <circle cx="24" cy="24" r="34">
-                          <title>Enter fullscreen</title>
-                        </circle>
-                        <path class="on" transform="scale(0.8), translate(7,6)" d="M10 32h6v6h4V28H10v4zm6-16h-6v4h10V10h-4v6zm12 22h4v-6h6v-4H28v10zm4-22v-6h-4v10h10v-4h-6z" fill="white"/>
-                        <path class="off" transform="scale(0.8), translate(7,6)"  d="M14 28h-4v10h10v-4h-6v-6zm-4-8h4v-6h6v-4H10v10zm24 14h-6v4h10V28h-4v6zm-6-24v4h6v6h4V10H28z" fill="white"/>
-                      </svg> -->
 
                       <svg id="hangup" ng-show="isConnected" ng-click="hangupCall()" class="" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="-10 -10 68 68">
                         <circle cx="24" cy="24" r="34">
@@ -184,6 +165,27 @@
                                 <div class="form-group last">
                                     <div class="col-sm-12 text-center">
                                         <button type="button" id="callNotificationBtn" class="btn btn-default">OK</button>
+                                    </div>
+                                </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="errorMessage" style="display:none;z-index:999;position:absolute;width: 100%;">
+                      <div class="form-horizontal" novalidate style="">
+                       <div class="col-md-4 col-md-offset-4">
+                          <div class="entryForm">
+                              <div class="entryFormHeader">
+                                    <h3>Video Conference <span class="fa fa-video-camera fa-lg pull-right"></span></h3>
+                              </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <h4 class="text-center" style="font-weight:lighter">{{message}}</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group last">
+                                    <div class="col-sm-12 text-center">
+                                        <button type="button" id="doctorNotAvailableBtn" class="btn btn-default">OK</button>
                                     </div>
                                 </div>
                           </div>

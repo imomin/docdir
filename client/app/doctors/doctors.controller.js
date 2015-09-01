@@ -51,6 +51,26 @@ angular.module('sugarlandDoctorsApp')
     var map = "";
     var marker = "";
     $scope.contact = null;
+    $scope.videoConference=Modal.confirm.startConference(function(message) { // callback when modal is confirmed
+        $location.path("/user/login"); //will redirect to login page, make sure your controller is using $location
+      });
+
+    $scope.isLive = function(_id){
+      var session = _.find($rootScope.conferenceSession, '_doctor',_id);
+      return !!session;
+    }
+
+    $scope.startVideoConference = function(_id, name){
+      var session = _.find($rootScope.conferenceSession, '_doctor',_id);
+      if(session && !angular.isDefined(Auth.getCurrentUser()._id)) {
+        $rootScope.redirectURL = $location.path();
+        $scope.videoConference(name);
+      }
+      else {
+        $state.go('conference', {conf: session.webRTCSessionId});
+      }
+    }
+
     var initMap = function(){
     if(document.getElementById('mapPreview')){
       $scope.latlng = new google.maps.LatLng(29.598387,-95.622404);
@@ -165,8 +185,6 @@ angular.module('sugarlandDoctorsApp')
         $scope.modal(name);
       }
       else {
-        /*CHECK THE CONDITION IF USER ALREADY LIKED IF SO THEN GIVE OPTION TO UNLIKE.*/
-        //$scope.hasLiked = _.indexOf(Auth.getCurrentUser().likes,$scope.doctor._id) !== -1;
         if($scope.hasLiked){
           Statistic.UnlikeDoctor($scope.doctor._id,Auth.getCurrentUser()._id, function(err, stats){
             if(angular.isObject(stats)){

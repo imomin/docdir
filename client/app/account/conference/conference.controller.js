@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sugarlandDoctorsApp')
-	.controller('ConferenceCtrl', function ($rootScope, $scope, $state, $timeout, $location, Modal, Doctor, Auth) {
+	.controller('ConferenceCtrl', function ($rootScope, $scope, $state, $timeout, $location, $http, Modal, Doctor, Auth, socket) {
 		$scope.userId = null;
 		$scope.users = [];
 		$scope.enableVideo = true;
@@ -10,54 +10,61 @@ angular.module('sugarlandDoctorsApp')
 		$scope.isCameraConnected = false;
 		$scope.isConnected = false;
 		$scope.peerId = null;
+		$scope.isEndUser = false;
+
+	    var addConference = function(webRTCSessionId) {
+			if(!$scope.isEndUser){
+				$http.post('/api/conferences', { _doctor:Auth.getCurrentDoctor()._id, webRTCSessionId:webRTCSessionId })
+		      	.success(function(data, status){
+		      		$scope.myConference = data;
+		      	});
+			}
+	    };
+
+	    var removeConference = function(conference) {
+			if(!$scope.isEndUser){
+				$http.delete('/api/conferences/' + conference._id);
+			}
+	    };
 
 		$scope.init = function(){
-			$timeout(function(){
-				easyrtc.enableDataChannels(true);
-				easyrtc.dontAddCloseButtons();
-				easyrtc.easyApp("SugarlandDoctors", "selfVideo", ["callerVideo"],
-			         connectSuccessful,
-			         connectFailed
-			     );
-			},100);
-
 			if($state.params.conf){
 				$scope.peerId = $state.params.conf;
+				$scope.isEndUser = true;
 			}
+			$timeout(function(){
+				var username;
+				if($scope.isEndUser){
+					username = Auth.getCurrentUser().name;
+					username = easyrtc.cleanId(username);
+					easyrtc.setUsername(username);
+					$scope.connect()
+				}
+				else {
+					var doctor = Auth.getCurrentDoctor()
+					username = doctor.firstName + ' ' + doctor.lastName;
+					username = easyrtc.cleanId(username);
+				}
+			},100);
 		}
 
 		$scope.connect = function(){
-			var username = prompt("Enter your username?");
-			if (username != null) {
-				username = easyrtc.cleanId(username);
-				if (!easyrtc.setUsername(username) ){
-	       			console.error("bad user name");
-	   			}
-	   			easyrtc.enableDataChannels(true);
-				easyrtc.setRoomOccupantListener(function(roomName, list, selfInfo) {
-					$scope.$apply(function(){
-						$scope.users = [];
-						for( var i in list ){
-							$scope.users.push({
-					            id: i,
-					            name: list[i].username,
-					            status: list[i].presence
-					        });
-						}
-					});
-				});
-				easyrtc.connect("doctors",
-	                  connectSuccessful,
-	                  connectFailed);
-				$scope.activateCamera();
-			}
+			easyrtc.enableDataChannels(true);
+			easyrtc.dontAddCloseButtons();
+			easyrtc.easyApp("SugarlandDoctors", "selfVideo", ["callerVideo"],
+		         connectSuccessful,
+		         connectFailed
+		     );
 		}
 		var connectSuccessful = function(easyRtcId, roomOwner) {
 			$scope.userId = easyRtcId;
 			var callerPending = null;
 			$scope.isCameraConnected = true;
-			console.log(easyRtcId);
-			angular.element($("#connectButton"))[0].style.display = "none";
+			addConference(easyRtcId);
+			$timeout(function(){
+				angular.element($("#connectButton"))[0].style.display = "none";
+				angular.element($("#disconnectButton"))[0].style.display = "block";
+			},0);
 			//prompt user to join the call
 			easyrtc.setAcceptChecker(function(easyrtcid, callback) {
 			    callerPending = easyrtcid;
@@ -120,7 +127,6 @@ angular.module('sugarlandDoctorsApp')
 			    	$scope.notification = " The conference call has ended.";
 			    	angular.element($("#callNotification"))[0].style.display = "block";
 			    	angular.element($("#callNotificationBtn"))[0].onclick = function(){
-			    		debugger;
 			    		$('#callNotification')[0].style.display='none';
 			    		$scope.disconnect(true);
 			    	};
@@ -134,6 +140,7 @@ angular.module('sugarlandDoctorsApp')
 		var connectFailed = function(errorCode, errorText){
 			//show connect button.
 			angular.element($("#connectButton"))[0].style.display = "block";
+			angular.element($("#disconnectButton"))[0].style.display = "none";
 			$scope.disconnect(false);
 			
 			//alert(errorCode,errorText);
@@ -146,13 +153,21 @@ angular.module('sugarlandDoctorsApp')
   			easyrtc.closeLocalMediaStream();
   			easyrtc.setRoomOccupantListener( function(){});
   			$scope.users = [];
+  			removeConference($scope.myConference);
   			$scope.isConnected = false;
   			$scope.isCameraConnected = false;
   			angular.element($("#disconnectButton"))[0].style.display = "none";
+  			angular.element($("#connectButton"))[0].style.display = "block";
   			if(redirect){
   				$timeout(function(){
   					$location.path('/');
   				},100);
+  			}
+  			else {
+  				$timeout(function(){
+  					//hack until, I figure how to disconnect so that when it recorrect it fires success callback.
+  					window.location.reload();
+  				},0);
   			}
 		}
 
@@ -178,7 +193,6 @@ angular.module('sugarlandDoctorsApp')
 		}
 		$scope.toggleAudioStream = function(stream){
 			$scope.enableAudio = !$scope.enableAudio;
-			alert($scope.enableAudio);
 			easyrtc.enableMicrophone($scope.enableAudio);
 			easyrtc.enableAudio($scope.enableAudio);
 		}
@@ -199,8 +213,18 @@ angular.module('sugarlandDoctorsApp')
 			          angular.element($("#callConfirmWaiting"))[0].style.display = "none";
 			       },
 			       function(errorCode, errMessage) {//failed
-					$scope.message = "Call to  " + easyrtc.idToName($scope.peerId) + " failed: " + errMessage;
-			        angular.element($("#callConfirmWaiting"))[0].style.display = "none";
+			       	$timeout(function(){
+						$scope.notification = "Call failed, peer is no longer online.";
+				        angular.element($("#callConfirmWaiting"))[0].style.display = "none";
+				        angular.element($("#callNotification"))[0].style.display = "block";
+				        angular.element($("#callNotificationBtn"))[0].onclick = function(){
+					    		$('#callNotification')[0].style.display='none';
+					    		$scope.notification = "";
+					    		if($scope.peerId){
+									angular.element($("#redialButton"))[0].style.display = "block";
+								}
+					    	};
+			       	},0);
 			       },
 			       function(wasAccepted, easyrtcid) {//accepted/rejected
 			           if( wasAccepted ){
@@ -223,7 +247,6 @@ angular.module('sugarlandDoctorsApp')
 			       }
 			    );
 			}
-			
 		}
 
 		$scope.hangupCall = function(peerEasyRtcId){
@@ -245,5 +268,10 @@ angular.module('sugarlandDoctorsApp')
 		$scope.fullscreen = function(){
 
 		}
+
+	    $scope.$on('$destroy', function () {
+	      socket.unsyncUpdates('conference');
+	    });
+
 	});
 

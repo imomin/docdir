@@ -140,6 +140,37 @@ angular.module('sugarlandDoctorsApp')
               cb.apply(event, args); //this is where all callback is actually called
             });
           }
+        },
+        startConference: function(cb) { //my new modal
+          cb = cb || angular.noop;
+          return function() {
+            var args = Array.prototype.slice.call(arguments),
+                name = args.shift(),
+                theModal;
+            theModal = openModal({ //openModal is a function the modal service defines.  It is just a wrapper for $Modal
+              modal: {
+                dismissable: true,
+                title: 'Video Conference with ' + name,
+                html: '<h2 style="font-weight: lighter;">You must login to start video conference with '+ name +'.</h2>', //set the modal message here, name is the parameter we passed in
+                buttons: [ {//this is where you define you buttons and their appearances
+                  classes: 'btn-warning',
+                  text: 'Cancel',
+                  click: function(event) {
+                    theModal.dismiss(event);
+                  }
+                },{
+                  classes: 'btn-primary',
+                  text: 'Login',
+                  click: function(event) {
+                    theModal.close(event);
+                  }
+                },]
+              }
+            }, 'modal-primary');
+            theModal.result.then(function(event) {
+              cb.apply(event, args); //this is where all callback is actually called
+            });
+          }
         }
       }
     }

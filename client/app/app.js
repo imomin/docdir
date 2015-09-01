@@ -122,7 +122,7 @@ angular.module('sugarlandDoctorsApp', [
     }
   })
 
-  .run(function ($q, $rootScope, $location, $window, $templateCache, CommonData, Auth, validator, defaultErrorMessageResolver,bootstrap3ElementModifier,beforeUnload) {
+  .run(function ($q, $rootScope, $location, $window, $templateCache, $http, CommonData, Auth, socket, validator, defaultErrorMessageResolver,bootstrap3ElementModifier,beforeUnload) {
       CommonData.getSpecialists().then( function(data) {
           $rootScope._specialists = data;
         }).catch( function(err) {
@@ -130,6 +130,12 @@ angular.module('sugarlandDoctorsApp', [
         });
       //using this for caching data.
       $rootScope.doctorContact = {};
+      $rootScope.conferenceSession = [];
+      $http.get('/api/conferences').success(function(activeSessions) {
+        $rootScope.conferenceSession = activeSessions;
+        socket.syncUpdates('conference', $rootScope.conferenceSession);
+      });
+
 
       // angular auto validate settings.
       $rootScope.customErrors = {"duplicateEmail":"The specified email address is already in use.",

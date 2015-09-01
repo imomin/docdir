@@ -78,7 +78,7 @@
 				<div ui-view="list" class="row" scroll style="overflow: auto;margin-left:0px;margin-right:0px;background-color:#fff">
 					<ul class="list-group">
 						<li ng-repeat="doctor in doctors | filterDoctors:searchByName:form.insurance:form.gender:form.language" class="list-group-item" style="border-top-right-radius:0px;border-top-left-radius:0px;border-bottom-right-radius:0px:border-bottom-left-radius:0px;">
-							<a ui-sref=".detail({ doctorId:doctor.doctorId })" ui-sref-opts="{reload: false, notify: true}"> <!-- ui-sref-opts="{reload: true, notify: true}" -->
+							<a style="text-decoration: none !important;" ui-sref=".detail({ doctorId:doctor.doctorId })" ui-sref-opts="{reload: false, notify: true}"> <!-- ui-sref-opts="{reload: true, notify: true}" -->
 								<div class="col-xs-12 col-sm-3">
 		                            <img ng-src="{{doctor.profilePicture}}" alt="{{doctor.firstName}}{{doctor.lastName}}{{doctor.credential}}" class="img-responsive img-circle" />
 		                        </div>
@@ -87,6 +87,7 @@
 		                            <span>{{doctor.specialist}}</span><br>
 		                            <span> <i class="fa fa-heart" style="color:red;"></i> {{doctor.stats.likes}} likes</span>
 		                            <span> <i class="fa fa-eye" style="color:#000;"></i> {{doctor.stats.views}} views</span>
+		                            <a ng-show="isLive(doctor._id)" ng-href="javascript: return false;" ng-click="startVideoConference(doctor._id, doctor.firstName + ' ' + doctor.lastName);"><i class="fa fa-video-camera"></i></a>
 		                        </div>
 		                        <div class="clearfix"></div>
 	                    	</a>
