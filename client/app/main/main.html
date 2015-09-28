@@ -43,7 +43,7 @@
                     <!-- ADD TAB/DROPDOWN HERE FOR DOCTOR, IMAGING, EMERGENCY CARE AND THERAPY -->
                     <div class="form-group">
                       <span class="pre-input" ><i class="fa fa-search" style="color:##898989;"></i></span>
-                      <input style="padding-left: 40px;" class="plain" type="text" name="name" placeholder="Type the name of the doctor."  ng-model="doctor" typeahead="doctor as doctor.firstName + ' ' + doctor.lastName for doctor in searchDoctor($viewValue)" typeahead-loading="loadingLocations" disable-valid-styling="true" typeahead-template-url="auto-complete" typeahead-on-select="onDoctorSelected($item, $model, $label)"
+                      <input style="padding-left: 40px;" class="plain" type="text" name="name" autocomplete="off" placeholder="Type the name of the doctor."  ng-model="doctor" typeahead="doctor as doctor.firstName + ' ' + doctor.lastName for doctor in searchDoctor($viewValue)" typeahead-loading="loadingLocations" disable-valid-styling="true" typeahead-template-url="auto-complete" typeahead-on-select="onDoctorSelected($item, $model, $label)"
                       typeahead-append-to-body="true" aria-expanded="false" has-result ng-blur="enableScroll();">
                       <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
                     </div>

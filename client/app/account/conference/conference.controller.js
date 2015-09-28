@@ -22,7 +22,7 @@ angular.module('sugarlandDoctorsApp')
 	    };
 
 	    var removeConference = function(conference) {
-			if(!$scope.isEndUser){
+			if(!$scope.isEndUser && conference){
 				$http.delete('/api/conferences/' + conference._id);
 			}
 	    };

@@ -90,7 +90,7 @@ header {
 }
 
 .no-parallax header.transparent.light #brand a,
-.no-parallax header.transparent.light nav > ul > li > a {
+.no-parallax header.transparent.light .homeNav > ul > li > a {
     color: #333 !important;
 }
 
@@ -110,7 +110,7 @@ header.transparent {
 }
 
 header.transparent.light #brand a,
-header.transparent.light nav > ul > li > a,
+header.transparent.light .homeNav > ul > li > a,
 .caption {
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
@@ -120,7 +120,7 @@ header.fixed-header {
     top: 0;
     left: 0;
     z-index: 9998;
-    background-color: rgba(255, 255, 255, 0.97);
+    background-color: rgba(255, 255, 255, 0.97) !important;
     -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
@@ -147,7 +147,7 @@ header.fixed-header button.btn.btn-default.dropdown-toggle {
 }
 
 #brand a,
-nav a {
+.homeNav a {
     text-decoration: none;
 }
 
@@ -158,7 +158,7 @@ nav a {
   	font-weight: 100;
 }
 
-nav {
+.homeNav {
     position: relative;
     display: inline-block;
     float: right;
@@ -166,7 +166,7 @@ nav {
 }
 
 #brand a,
-nav a {
+.homeNav a {
     color: #333;
 }
 
@@ -199,27 +199,28 @@ only screen and (min-resolution: 144dpi) {
 }
 
 header.transparent.light #brand a,
-header.transparent.light nav > ul > li > a {
+header.transparent.light .homeNav > ul > li > a {
     color: #fff;
 }
 
 header.fixed-header.transparent.light #brand a,
-header.fixed-header.transparent.light nav > ul > li > a {
+header.fixed-header.transparent.light .homeNav > ul > li > a {
     color: #333;
     text-shadow: none;
 }
 
-header.fixed-header.transparent.light nav > ul > li:hover > a {
+header.fixed-header.transparent.light .homeNav > ul > li:hover > a {
     border-bottom: 2px solid #333;
 }
 
-nav > ul,
-nav > ul > li {
+.homeNav > ul,
+.homeNav > ul > li {
     float: left;
     clear: none;
+    list-style: none;
 }
 
-nav > ul > li {
+.homeNav > ul > li {
     padding: 0 0.778em;
     /*text-transform: uppercase;*/
     font-weight: 200;
@@ -228,39 +229,39 @@ nav > ul > li {
     cursor: pointer;
 }
 
-nav > ul > li:last-child {
+.homeNav > ul > li:last-child {
     padding: 0 0 0 0.778em;
 }
 
-nav > ul > li > a {
+.homeNav > ul > li > a {
     line-height: 3rem;
 }
 
-nav > ul > li:hover > a {
+.homeNav > ul > li:hover > a {
     border-bottom: 2px solid #333;
 }
 
-header.transparent.light nav > ul > li:hover > a {
+header.transparent.light .homeNav > ul > li:hover > a {
     border-bottom: 2px solid #fff;
 }
 
-nav li {
+.homeNav li {
     position: relative;
     white-space: nowrap;
 }
 
-nav > ul li:hover > ul.sub-menu {
+.homeNav > ul li:hover > ul.sub-menu {
     display: block;
  /* show the submenu */;
 }
 
-nav .sub-arrow {
+.homeNav .sub-arrow {
     padding-left: 0.500em;
     vertical-align: middle;
     font-size: 0.714em;
 }
 
-nav ul.sub-menu {
+.homeNav ul.sub-menu {
     position: absolute;
     left: 0;
     z-index: 9999;
@@ -275,7 +276,7 @@ nav ul.sub-menu {
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 }
 
-nav ul.sub-menu ul.sub-menu {
+.homeNav ul.sub-menu ul.sub-menu {
     top: 0px;
     left: 100%;
  /* level 3+ */
@@ -283,23 +284,23 @@ nav ul.sub-menu ul.sub-menu {
     padding-top: 0;
 }
 
-nav ul.sub-menu > li > a {
+.homeNav ul.sub-menu > li > a {
     display: block;
     padding: 0.5rem 1rem;
     background-color: #F6F6F6;
     font-size: 0.786em;
 }
 
-nav ul.sub-menu > li > a:hover {
+.homeNav ul.sub-menu > li > a:hover {
     background-color: #FD685B;
     color: #fff;
 }
 
-nav ul.sub-menu > li:first-child > a {
+.homeNav ul.sub-menu > li:first-child > a {
     border-radius: 2px 2px 0 0;
 }
 
-nav ul.sub-menu > li:last-child > a {
+.homeNav ul.sub-menu > li:last-child > a {
     border-radius: 0 0 2px 2px;
 }
 
@@ -1087,11 +1088,11 @@ ul.dropdown-menu {
     padding-top: 5px;
     padding-bottom: 5px;
 }
-header div.row div nav ul li a {
+header div.row div .homeNav ul li a {
     font-size: medium;
     font-weight: lighter;
 }
-header div.row nav ul.reset li.dropdown ul.dropdown-menu {
+header div.row .homeNav ul.reset li.dropdown ul.dropdown-menu {
     margin-top: -13px;
 }
 </style>
@@ -1516,7 +1517,7 @@ header div.row nav ul.reset li.dropdown ul.dropdown-menu {
                 </h1>
 			</div><!-- brand -->
 			<a id="menu-toggle" href="#"><i class="fa fa-bars fa-lg"></i></a>
-			<nav>
+			<div class="homeNav">
 				<ul class="reset" role="navigation">
 					<li ng-hide="isDoctorLoggedIn() || isLoggedIn()" ng-class="{active: isActive('/doctor/login') || isActive('/doctor/reset') || isActive('/doctor/signup')}"><a href="/doctor/login">For Doctors</a></li>
 					<li ng-hide="isDoctorLoggedIn() || isLoggedIn()" class="menu-item"><a href="/user/login">Login</a></li>
@@ -1546,7 +1547,7 @@ header div.row nav ul.reset li.dropdown ul.dropdown-menu {
                     </li>
                     <li class="menu-item"><a href="/contactus">Contact Us</a></li>
 				</ul>
-			</nav>
+			</div>
 		</div><!-- row-content -->	
 	</div><!-- row -->	
 </header>
