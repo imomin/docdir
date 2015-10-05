@@ -100,6 +100,7 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
           '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
           '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
+          '<%= yeoman.client %>/assets/javascripts/**/*.js',
           '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         options: {
@@ -161,7 +162,6 @@ module.exports = function (grunt) {
             '.tmp',
             '<%= yeoman.dist %>/*',
             '!<%= yeoman.dist %>/.git*',
-            '!<%= yeoman.dist %>/.openshift',
             '!<%= yeoman.dist %>/Procfile'
           ]
         }]
@@ -238,7 +238,8 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/public/bower_components/morris.js/morris.js',
             '<%= yeoman.dist %>/public/{,*/}*.css',
             '<%= yeoman.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/public/assets/fonts/*'
+            '<%= yeoman.dist %>/public/assets/fonts/*',
+            '<%= yeoman.dist %>/public/assets/javascripts/*.js'
           ]
         }
       }
@@ -266,7 +267,8 @@ module.exports = function (grunt) {
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>/public',
-          '<%= yeoman.dist %>/public/assets/images'
+          '<%= yeoman.dist %>/public/assets/images',
+          '<%= yeoman.dist %>/public/assets/javascripts'
         ],
         // This is so we update image references in our ng-templates
         patterns: {
@@ -288,7 +290,6 @@ module.exports = function (grunt) {
         }]
       }
     },
-
     svgmin: {
       dist: {
         files: [{
@@ -360,6 +361,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'bower_components/**/*',
+            'assets/javascripts/*.js',
             'assets/images/{,*/}*.{webp}',
             'assets/fonts/**/*',
             'index.html'
