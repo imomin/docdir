@@ -487,10 +487,10 @@ angular.module('sugarlandDoctorsApp')
   });
 })
 
-  .controller('doctorSignupCtrl', function($scope, $rootScope, Auth, $state, $window) {
+  .controller('doctorSignupCtrl', function($scope, $rootScope, Auth, $state, $window, specialistItems) {
       $scope.doctor = {};
       $scope.errors = {};
-      $scope.specialists = $rootScope._specialists;
+      $scope.specialists = specialistItems.get(); //$rootScope._specialists;
 
       $scope.submit = function(form) {
         if(form.$valid) {
