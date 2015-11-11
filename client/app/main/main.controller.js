@@ -87,11 +87,6 @@ angular.module('sugarlandDoctorsApp')
 
     page.setTitle("Sugar Land Doctors");
 
-    $scope.init = function(){
-      //$(".button-collapse").sideNav({closeOnClick: true});
-    }
-    $scope.init();
-
     // $http.get('/api/things').success(function(awesomeThings) {
     //   $scope.awesomeThings = awesomeThings;
     //   socket.syncUpdates('thing', $scope.awesomeThings);

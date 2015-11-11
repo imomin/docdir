@@ -1,4 +1,4 @@
-<!-- /*<style type="text/css">
+<style type="text/css">
 /* Styles go here */
 md-sidenav {
   overflow: visible;
@@ -91,13 +91,13 @@ md-sidenav {
   padding-bottom: 12px;
 }
 </style>
-<div layout="column" ng-controller="MainMobileCtrl">
+<div layout="column" ng-controller="MobileMainCtrl">
     <md-toolbar layout="row">
       <div class="md-toolbar-tools">
         <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
           <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
         </md-button>
-        <h1>Sugar Land Doctors</h1>
+        <h1>{{mobileHeader.title()}}</h1>
       </div>
     </md-toolbar>
     <div layout="row" flex>
@@ -123,9 +123,9 @@ md-sidenav {
           </md-content>
         </md-sidenav>
         <div layout="column" flex id="content">
-            <md-content layout="column" flex class="md-padding">
+            <md-content layout="column" flex class="">
                   <ui-view name="content"></ui-view>
             </md-content>
         </div>
     </div>
-</div>*/ -->
+</div>
