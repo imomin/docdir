@@ -90,7 +90,88 @@ md-sidenav {
   padding-top: 12px;
   padding-bottom: 12px;
 }
+/*detail page*/
+.md-button.md-fab i {
+   margin-top: 6px;
+}
+#details md-card md-card-content {
+	padding:0px 0px 0px 7px;
+}
+#details md-card md-card-content h3 {
+	margin-top: 4px;
+	margin-bottom: 2px;
+}
+#details md-card md-card-content p {
+	margin-top: 10px;
+}
+
+#details md-content md-card md-card-content h3 {
+  color: #9B9B9B;
+}
+
+@mixin transition($argument) {
+    -webkit-transition: $argument;
+    -moz-transition: $argument;
+    -o-transition: $argument;
+    transition: $argument;
+}
+
+#details .carousel-wrapper img {
+  max-width: 100%;
+}
+
+#details .section-wrapper {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 20px
+}
+
+#details .carousel {
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative; /* Position set so for absolutely positioned children */
+}
+
+#details .carousel-wrapper {
+  font-size: 0; /* Remove inline-block white space */
+  position: relative; /* Position set so that we can animate the left property */
+  left: 0;
+  @include transition(left 1s ease);
+}
+
+#details .carousel-wrapper > * {
+  display: inline-block;
+  font-size: 16px; /* Reset the font-size*/
+  box-sizing: border-box;
+}
+
+#details .carousel-wrapper img {
+   display: block;
+}
+
+#details .carousel-controls > * {
+  position:absolute;
+  width: 20px;
+  height: 100%;
+  background: rgba(255,255,255,0.3);
+  z-index: 50;
+  cursor: pointer;
+}
+
+#details .carousel-controls span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -5px;
+  font-size: 20px;
+}
+
+#details .carousel-controls-right {
+  right: 0;
+}
+
 </style>
+
 <div layout="column" ng-controller="MobileMainCtrl">
     <md-toolbar layout="row">
       <div class="md-toolbar-tools">
