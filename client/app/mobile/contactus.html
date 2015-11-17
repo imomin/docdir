@@ -1,1 +1,33 @@
-Call us.
+
+<div id="mobileContactForm" ng-controller="MobileContactUsCtrl" layout="column" ng-cloak>
+  <br/>
+  <form name="contactForm" autocomplete="off" novalidate ng-submit="submit(contactForm)">
+	  <md-content layout-padding class="autoScroll">
+	    <md-input-container class="md-block form-group">
+	      <md-icon class="fa fa-user" style="color:#E41B59;"></md-icon>
+	      <input id="name" ng-model="user.name" type="text" ng-required="true" placeholder="Name" disable-validation-message="">
+	    </md-input-container>
+
+	    <md-input-container class="md-block form-group">
+	      <md-icon class="fa fa-phone" style="color:#1B68E4;"></md-icon>
+	      <input ng-model="user.phone" type="text" placeholder="Phone Number" disable-validation-message="">
+	    </md-input-container>
+	    
+	    <md-input-container class="md-block form-group">
+	      <!-- Use floating placeholder instead of label -->
+	      <md-icon class="fa fa-envelope" style="color:#2AB34A;"></md-icon>
+	      <input id="email" ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true" disable-validation-message="">
+	    </md-input-container>
+	    
+	    <md-input-container class="md-block form-group">
+	      <md-icon class="fa fa-comments" style="color:#E4971B;"></md-icon>
+	      <textarea id="message" ng-model="user.message" type="text" placeholder="Message" md-maxlength="250" rows="5" ng-required="true" disable-validation-message="">
+	      </textarea>
+	    </md-input-container>
+
+	  </md-content>
+	   <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+	      <md-button class="md-raised md-primary">Send</md-button>
+	  </section>
+  </form>
+</div>

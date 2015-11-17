@@ -96,11 +96,6 @@ angular.module('sugarlandDoctorsApp')
             type: 'link',
             state: 'main.home',
             icon: 'fa fa-group'
-          },{
-            name: 'Login',
-            type: 'link',
-            state: 'main.login',
-            icon: 'fa fa-group'
           }, {
             name: 'Contact Us',
             state: 'main.contactus',
@@ -108,6 +103,13 @@ angular.module('sugarlandDoctorsApp')
             icon: 'fa fa-map-marker'
           }]
         });
+
+        /*{
+            name: 'Login',
+            type: 'link',
+            state: 'main.login',
+            icon: 'fa fa-group'
+          },*/
         
        	angular.forEach(specialistItems.get(),function(obj,index){
        		obj.type = 'link';
@@ -315,4 +317,114 @@ angular.module('sugarlandDoctorsApp')
         $scope.currentSlide = $scope.currentSlide - 1;
       }
     };
+  })
+  .controller('MobileContactUsCtrl', function($scope, $http, $mdDialog) {
+    $scope.submit = function(form){
+      if(form.$valid) {
+        $http.post('/contactus',{
+          "name":$scope.user.name,
+          "email":$scope.user.email,
+          "message":$scope.user.message,
+          "phone":$scope.user.phone
+        }).
+            success(function(data) {
+              $scope.message = "Your message is sent. Someone will get in touch with you soon.";
+              $scope.showAlert($scope.message);
+            }).
+            error(function(err) {
+              $scope.message = "Error sending your message. Please try calling at <a href='tel:+18326304986'>832-630-4986.</a>";
+              $scope.showAlert($scope.message);
+            });
+      }
+    }
+
+    $scope.showAlert = function(message) {
+    // Appending dialog to document.body to cover sidenav in docs app
+    // Modal dialogs should fully cover application
+    // to prevent interaction outside of dialog
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(false)
+          .title('Contact Us')
+          .content(message)
+          .ariaLabel('Contact Us')
+          .ok('OK')
+      ).then(function(val){
+         window.location.reload();
+      });
+    };
+  })
+
+  .controller('mobileHomeCtrl', function($http, $timeout, $q, $log){
+    var self = this;
+    // list of `state` value/display objects
+    //self.states        = loadAll();
+    self.selectedItem  = null;
+    self.searchText    = null;
+    self.querySearch   = querySearch;
+    // ******************************
+    // Internal methods
+    // ******************************
+    /**
+     * Search for states... use $timeout to simulate
+     * remote dataservice call.
+     */
+    function querySearch (query) {
+      return $http.get('/api/doctors/lookup/', {
+        params: {
+          val: query
+        }
+      }).then(function(response){
+        return response.data.map(function(item){
+          return item;
+        });
+      });
+    }
+    /**
+     * Build `states` list of key/value pairs
+     */
+    function loadAll() {
+      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
+              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
+              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
+              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
+              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
+              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
+              Wisconsin, Wyoming';
+      return allStates.split(/, +/g).map( function (state) {
+        return {
+          value: state.toLowerCase(),
+          display: state
+        };
+      });
+    }
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) {
+      var lowercaseQuery = angular.lowercase(query);
+      return function filterFn(state) {
+        return (state.value.indexOf(lowercaseQuery) === 0);
+      };
+    }
+
+    
+    var searchDoctor = function(val) {
+      debugger;
+      return $http.get('/api/doctors/lookup/', {
+        params: {
+          val: val
+        }
+      }).then(function(response){
+        debugger;
+        return response.data.map(function(item){
+          return item;
+        });
+      });
+    };
+
+    var onDoctorSelected = function($item, $model, $label){
+      $location.path('/'+ $model.specialist.toLowerCase() + '/' + 1);
+    }
   });

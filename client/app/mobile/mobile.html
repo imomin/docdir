@@ -72,8 +72,8 @@ md-sidenav {
 }
 
 .menu-toggle-list {
-  background: #E4FBFF;
-  color: #02ADFF;
+  background: #0277bd;
+  color: #fff;
   max-height: 1300px;
   overflow: hidden;
   position: relative;
@@ -114,6 +114,18 @@ md-sidenav {
     -moz-transition: $argument;
     -o-transition: $argument;
     transition: $argument;
+}
+
+#details {
+  font-weight: 300;
+}
+
+#details ul {
+  list-style: none;
+}
+
+#details ul li {
+  padding: 0px 0 5px 0;
 }
 
 #details .carousel-wrapper img {
@@ -169,7 +181,12 @@ md-sidenav {
 #details .carousel-controls-right {
   right: 0;
 }
-
+#mobileContactForm .fa {
+  font-size: 1.5em; !important
+}
+#mobileHome md-input-container {
+  padding-bottom: 0px !important;
+}
 </style>
 
 <div layout="column" ng-controller="MobileMainCtrl">

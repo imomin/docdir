@@ -1,1 +1,21 @@
-At home
+<div id="mobileHome" ng-controller="mobileHomeCtrl as ctrl" layout="column" ng-cloak>
+  <br/>
+	<md-content class="md-padding">
+		<div class="form-group">
+			<form ng-submit="$event.preventDefault()" novalidate="novalidate" name="searchForm">
+			  <md-autocomplete flex
+	            md-input-name="autocompleteField"
+	            md-no-cache="ctrl.noCache"
+	            md-selected-item="ctrl.selectedItem"
+	            md-search-text="ctrl.searchText"
+	            md-items="item in ctrl.querySearch(ctrl.searchText)"
+	            md-item-text="item.display"
+	            md-floating-label="Favorite state">
+	          <md-item-template>
+	            <span md-highlight-text="ctrl.searchText">{{item.firstName}} {{item.lastName}}</span>
+	          </md-item-template>
+	        </md-autocomplete><!-- md-input-minlength="2" -->
+			</form>
+		</div>
+	</md-content>
+</div>
