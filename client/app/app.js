@@ -54,7 +54,7 @@ angular.module('sugarlandDoctorsApp', [
     if(isMobileRequest){
       //$mdThemingProvider.theme('default');
       $('link[href$="app.css"]').remove();
-      
+      $urlRouterProvider.when("/", "/home");
       var link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = "bower_components/font-awesome/css/font-awesome.css";

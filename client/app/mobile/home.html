@@ -1,20 +1,29 @@
 <div id="mobileHome" ng-controller="mobileHomeCtrl as ctrl" layout="column" ng-cloak>
   <br/>
 	<md-content class="md-padding">
+		<h3 style="text-align: center;font-weight: 400;" layout-align="center">List of doctors in Sugar Land area.</h3>
 		<div class="form-group">
 			<form ng-submit="$event.preventDefault()" novalidate="novalidate" name="searchForm">
 			  <md-autocomplete flex
 	            md-input-name="autocompleteField"
 	            md-no-cache="ctrl.noCache"
 	            md-selected-item="ctrl.selectedItem"
+	            md-selected-item-change="ctrl.selectedItemChange(item)"
 	            md-search-text="ctrl.searchText"
 	            md-items="item in ctrl.querySearch(ctrl.searchText)"
-	            md-item-text="item.display"
-	            md-floating-label="Favorite state">
+	            md-item-text="item.firstName"
+	            md-floating-label="Search Doctors"
+	            md-menu-class="autocomplete-custom-template">
 	          <md-item-template>
-	            <span md-highlight-text="ctrl.searchText">{{item.firstName}} {{item.lastName}}</span>
+				<md-list-item class="md-2-line">
+			        <img ng-src="{{item.profilePicture}}" class="md-avatar" alt="Dr. {item.firstName}} {{item.lastName}}">
+			        <div class="md-list-item-text">
+			          <h3> Dr. {{item.firstName}} {{item.lastName}} {{item.credential}}</h3>
+			          <p>{{item.specialist}}</p>
+			        </div>
+			     </md-list-item>
 	          </md-item-template>
-	        </md-autocomplete><!-- md-input-minlength="2" -->
+	        </md-autocomplete>
 			</form>
 		</div>
 	</md-content>

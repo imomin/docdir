@@ -95,12 +95,12 @@ angular.module('sugarlandDoctorsApp')
             name: 'Home',
             type: 'link',
             state: 'main.home',
-            icon: 'fa fa-group'
+            icon: 'fa fa-home'
           }, {
             name: 'Contact Us',
             state: 'main.contactus',
             type: 'link',
-            icon: 'fa fa-map-marker'
+            icon: 'fa fa-envelope-o'
           }]
         });
 
@@ -302,13 +302,15 @@ angular.module('sugarlandDoctorsApp')
           });
       }
   })
-  .controller('MobileDetailCtrl',function($scope, $state, $mdSidenav, menu, Doctor){
+  .controller('MobileDetailCtrl',function($scope, $state, $mdSidenav, menu, Doctor, page, Statistic){
     $scope.slideCount = 0;
     Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
       $scope.doctorInfo = data;
       $scope.slideData = $scope.doctorInfo.pictures;
       $scope.slideCount = $scope.slideData.length;
       $scope.currentSlide = 1;
+      page.setTitle('Dr. ' + $scope.doctorInfo.firstName + ' ' + $scope.doctorInfo.lastName +' '+ $scope.doctorInfo.credential + ' | ' + $scope.doctorInfo.specialist);
+      Statistic.addViewCount(data._id);
     });
     $scope.updateCurrent = function(dir) {
       if (dir && $scope.currentSlide < $scope.slideCount) {
@@ -356,21 +358,16 @@ angular.module('sugarlandDoctorsApp')
     };
   })
 
-  .controller('mobileHomeCtrl', function($http, $timeout, $q, $log){
+  .controller('mobileHomeCtrl', function($http, $location){
     var self = this;
-    // list of `state` value/display objects
-    //self.states        = loadAll();
     self.selectedItem  = null;
     self.searchText    = null;
     self.querySearch   = querySearch;
-    // ******************************
-    // Internal methods
-    // ******************************
-    /**
-     * Search for states... use $timeout to simulate
-     * remote dataservice call.
-     */
+    self.selectedItemChange = selectedItemChange;
     function querySearch (query) {
+      if(query.length < 3){
+        return
+      }
       return $http.get('/api/doctors/lookup/', {
         params: {
           val: query
@@ -381,50 +378,10 @@ angular.module('sugarlandDoctorsApp')
         });
       });
     }
-    /**
-     * Build `states` list of key/value pairs
-     */
-    function loadAll() {
-      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
-              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
-              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
-              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
-              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
-              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
-              Wisconsin, Wyoming';
-      return allStates.split(/, +/g).map( function (state) {
-        return {
-          value: state.toLowerCase(),
-          display: state
-        };
-      });
-    }
-    /**
-     * Create filter function for a query string
-     */
-    function createFilterFor(query) {
-      var lowercaseQuery = angular.lowercase(query);
-      return function filterFn(state) {
-        return (state.value.indexOf(lowercaseQuery) === 0);
-      };
-    }
-
-    
-    var searchDoctor = function(val) {
-      debugger;
-      return $http.get('/api/doctors/lookup/', {
-        params: {
-          val: val
-        }
-      }).then(function(response){
-        debugger;
-        return response.data.map(function(item){
-          return item;
-        });
-      });
-    };
-
-    var onDoctorSelected = function($item, $model, $label){
-      $location.path('/'+ $model.specialist.toLowerCase() + '/' + 1);
+    function selectedItemChange(doctor){
+      if(!doctor){
+        return;
+      }
+      $location.path('/'+ doctor.specialist.toLowerCase() + '/' + doctor.doctorId);
     }
   });
