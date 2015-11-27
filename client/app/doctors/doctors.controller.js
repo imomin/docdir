@@ -36,20 +36,22 @@ angular.module('sugarlandDoctorsApp')
       return filtered;
     };
   })
-  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,$location,$timeout,$window,page,Modal,Auth,Doctor,CommonData,Statistic,specialistItems) {
-    $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
-    $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
+  .controller('DoctorsCtrl', function ($rootScope,$scope,$state,$stateParams,$location,$timeout,$window,page,Modal,Auth,Doctor,CommonData,Statistic,preloadDataset,$compile) {
+    $scope.languages = preloadDataset.getLanguages();
+    $scope.insurances = preloadDataset.getInsurances();
     $scope.doctorId = 0;
     $scope.hasData = true;
+    $scope.showMapMarkers = ($scope.hasData && (!$state.params.doctorId || $state.params.doctorId === ""));
+    $scope.mapMarkers = [];
     $scope.form = {
-        specialist: null,
+        specialist: {'url':$state.current.data.specialist},
         gender:"both",
         language:"English",
         insurance: null
     };
     var mapOptions = "";
     var map = "";
-    var marker = "";
+
     $scope.contact = null;
     $scope.videoConference=Modal.confirm.startConference(function(message) { // callback when modal is confirmed
         $location.path("/user/login"); //will redirect to login page, make sure your controller is using $location
@@ -72,69 +74,133 @@ angular.module('sugarlandDoctorsApp')
     }
 
     var initMap = function(){
-    if(document.getElementById('mapPreview')){
-      $scope.latlng = new google.maps.LatLng(29.598387,-95.622404);
-        mapOptions = {zoom: 13,center: $scope.latlng}
-        map = new google.maps.Map(document.getElementById('mapPreview'), mapOptions);
-        marker = new google.maps.Marker({
-              map: map,
-              position: $scope.latlng,
-              draggable: false,
-              animation: google.maps.Animation.DROP,
-              icon: '/assets/images/mapMarker.png',
-              title: 'Sugar Land'
-          });
-    }
-  }
-  $scope.$on('$viewContentLoaded', function(event) {
-     initMap();
-  });
+      if(document.getElementById('mapPreviewMarkers')){
+        var styleArray = [
+          {
+            featureType: "road",
+            elementType: "geometry",
+            stylers: [
+              { hue: "#ff5500" },
+              { saturation: 50 }
+            ]
+          },{
+            featureType: "landscape",
+            elementType: "geometry",
+            stylers: [
+              { hue:"#00ff33",
+                visibility: "on" }
+            ]
+          },{
+            featureType: "water",
+            elementType: "geometry",
+            stylers: [
+              { hue:"#0088ff",
+                visibility: "on" }
+            ]
+          }
+        ];
 
-    $scope.specialists = specialistItems.get(); //$rootScope._specialists;
-    $scope.form.specialist = _.find($scope.specialists, function(specialist) {
-                                    return specialist.url === $state.current.data.specialist;
-                                  });
-    $scope.$watch(
-        "form.specialist",
-        function( newValue, oldValue ) {
-            // Ignore initial setup.
-            if ( newValue === oldValue ||  $state.current.parent === newValue.url) {
-                return;
-            }
-            $scope.form.specialist = newValue;
-            $state.transitionTo($scope.form.specialist.url, $state.params, {
-              reload: true, inherit: false, notify: false
-            });
-            // $state.go($scope.form.specialist.url, $state.params, {
-            //   reload: false, inherit: false, notify: false
-            // });
-            $scope.loadData();
+        var styledMap = new google.maps.StyledMapType(styleArray, {name: "Map"});
+        var mapOptions = {
+              center:new google.maps.LatLng(29.598387,-95.622404),
+              zoom:12,
+              mapTypeControl:true,
+              mapTypeControlOptions: {
+                mapTypeIds: ['map_style', google.maps.MapTypeId.SATELLITE]
+              }
+            };
+
+        map = new google.maps.Map(document.getElementById('mapPreviewMarkers'), mapOptions);
+        map.mapTypes.set('map_style', styledMap);
+        map.setMapTypeId('map_style');
+      }
+    }
+    
+    $scope.addMarkerWithTimeout = function() {
+        for (var i = 0; i < $scope.mapMarkers.length; i++) {
+          $scope.mapMarkers[i].setMap(null);
         }
-    );
+        $scope.mapMarkers = [];
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0; i < $scope.doctors.length; i++) {
+            var marker = new google.maps.Marker({
+                              position: {'lat':$scope.doctors[i].latitude,'lng':$scope.doctors[i].longitude},
+                              map: map,
+                              animation: google.maps.Animation.DROP,
+                              icon: '/assets/images/mapMarker.png'
+                            });
+            var infoWindow = new google.maps.InfoWindow({
+              maxWidth: 250
+            });
+
+            (function (marker, data, $scope) {
+                var content = '<div id="mapMarkerInfo'+data.doctorId+'"> '+
+                                  '<div class="" style="float:left;"> '+
+                                              '<img src="'+data.profilePicture+'" alt="'+data.firstName+' '+data.lastName+' '+data.credential+'" class="img-responsive img-circle" style="width:50px;height:50px;"/> '+
+                                          '</div> '+
+                                          '<div class="" style="padding-left: 65px;"> '+
+                                              '<span class="name">'+data.firstName +' '+ data.lastName +' '+ data.credential +' </span><br/> '+
+                                              '<span> <i class="fa fa-heart" style="color:red;"></i> '+data.stats.likes +' likes</span> '+
+                                              '<span> <i class="fa fa-eye" style="color:#000;"></i> '+data.stats.views +' views</span> '+
+                                              '<br><a style="text-decoration: none !important;" ui-sref=".detail({ doctorId:\''+data.doctorId+'\'})" ui-sref-opts="{reload: false, notify: true}">Profile</a>'+
+                                          '</div> '+
+                                          '<div class="clearfix"></div> '+
+                                '</div>';
+
+                google.maps.event.addListener(marker, "click", function (e) {
+                  infoWindow.setContent(content);
+                  infoWindow.open(map, marker);
+                  $scope.$apply(function(){
+                     $compile(document.getElementById("mapMarkerInfo"+data.doctorId))($scope);
+                  });
+                });
+                bounds.extend(marker.getPosition());
+              })(marker, $scope.doctors[i],$scope);
+            $scope.mapMarkers.push(marker);
+        }
+        setTimeout(function() {
+          google.maps.event.trigger(map, "resize");
+          map.fitBounds(bounds);
+      }, 100);
+    }
+
+    $scope.$on('$viewContentLoaded', function(event) {
+       initMap();
+    });
+
+    $scope.specialists = preloadDataset.getSpecialists();
+    $scope.form.specialist = _.find($scope.specialists, function(specialist) {
+                                return specialist.url === $state.current.data.specialist;
+                              });
+      
+      //$scope.form.specialist = $scope.form.specialist ? $scope.form.specialist : {'url':$state.current.data.specialist};
+      $scope.$watch(
+          "form.specialist",
+          function( newValue, oldValue ) {
+              // Ignore initial setup.
+              if ( newValue === oldValue || !newValue ||  $state.current.parent === newValue.url) {
+                  return;
+              }
+
+              $scope.form.specialist = newValue;
+              $state.transitionTo($scope.form.specialist.url, $state.params, {
+                reload: true, inherit: false, notify: false
+              });
+              // $state.go($scope.form.specialist.url, $state.params, {
+              //   reload: false, inherit: false, notify: false
+              // });
+              $scope.loadData();
+          }
+      );
 
     $scope.loadData = function(){
       $scope.doctors = [];
-      //hack to resolve specialist is undefined.
-      if(angular.isDefined($scope.form.specialist)){
-        $timeout(function(){
-          return true;
-        }, 500);
-      }
       CommonData.listDoctors($scope.form.specialist.url).then( function(data) {
         $scope.doctors = data;
-        if($scope.doctors.length > 0){
-          $scope.hasData = true;
-          $state.params.doctorId = $state.params.doctorId ? $state.params.doctorId : $scope.doctors[0].doctorId;
-          // $state.transitionTo($state.current.data.specialist+'.detail', $state.params, {
-          //     reload: true, inherit: false, notify: false
-          //   });
-          $state.go($state.current.data.specialist+'.detail', $state.params, {
-              reload: false, inherit: false, notify: true
-            });//setting notify to true because $state.go doesn't fire $stateChangeSuccess therefore the doctor deails are not loaded.
-        }
-        else {
-          $scope.hasData = false;
-        }
+        $scope.hasData = $scope.doctors.length > 0 ? true : false;
+        $scope.showMapMarkers = ($scope.hasData && (!$state.params.doctorId || $state.params.doctorId === ""));
+        $scope.addMarkerWithTimeout();
       }).catch(function(err) {
         debugger;
       });
@@ -145,6 +211,7 @@ angular.module('sugarlandDoctorsApp')
           Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
             $scope.doctor = data;
             $scope.contact = null;
+            $scope.showMapMarkers = ($scope.hasData && (!$state.params.doctorId || $state.params.doctorId === ""));
             $scope.hasLiked = _.indexOf(Auth.getCurrentUser().likes,$scope.doctor._id) !== -1;
             if($scope.latlng && $scope.doctor.addresses){
               //using Object.keys because latlng object has minified property name. Which is different everytime.
