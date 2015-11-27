@@ -101,7 +101,7 @@ angular.module('sugarlandDoctorsApp')
     }
 ])
 
-  .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, $q, Auth, $location, $animate, $timeout, FileUploader) {
+  .controller('doctorProfileCtrl', function ($rootScope, $scope, $state, $q, Auth, $location, $animate, $timeout, FileUploader,preloadDataset) {
     $scope.doctor = Auth.getCurrentDoctor();
     $scope.forms = {};
     $scope.errors = {};
@@ -116,8 +116,8 @@ angular.module('sugarlandDoctorsApp')
     $scope.subscriptionOptions = {"monthly":"$25 per month.","yearly":"$255 per year. You save 15%."};
     $scope.doctor.languages = $scope.doctor.languages && $scope.doctor.languages.length > 0 ? $scope.doctor.languages : ["English"];
     $scope.doctor.insurances = $scope.doctor.insurances && $scope.doctor.insurances.length > 0 ? $scope.doctor.insurances : []; 
-    $scope.languages = ["Gujurati","Marathi","Lahnda","Afrikaans", "Arabic", "Azerbaijani", "Catalan", "German", "English", "Spanish", "Persian", "Armenian", "Albanian", "Bulgarian", "Bengali", "Bosnian", "French", "Burmese", "Bokmål", "Dutch", "Portuguese", "Czech", "Greek", "Croatian", "Haitian Creole", "Swahili", "Uyghur", "Chinese", "Danish", "Faroese", "Estonian", "Finnish", "Galician", "Guarani", "Georgian", "Ossetian", "Hebrew", "Hindi", "Hungarian", "Irish", "Indonesian", "Icelandic", "Italian", "Javanese", "Kannada", "Punjabi", "Sanskrit", "Sardinian", "Sundanese", "Tamil", "Telugu", "Urdu", "Japanese", "Kazakh", "Korean", "Luxembourgish", "Limburgish", "Lao", "Lithuanian", "Latvian", "Sinhala", "Malagasy", "Malay", "Maltese", "Nepali", "Nynorsk", "Norwegian", "Polish", "Sindhi", "Romanian", "Russian", "Slovak", "Slovenian", "Somali", "Serbian", "Swedish", "Tajik", "Thai", "Turkish", "Ukrainian", "Uzbek", "Vietnamese", "Welsh"];
-    $scope.insurances = ["Aetna", "Blue Cross Blue Shield", "Cigna", "Coventry Health Care", "Humana", "MultiPlan", "UnitedHealthcare", "ODS Health Network", "Medicare", "Great West Healthcare", "Blue Cross", "Met-Life", "Ameritas", "Guardian", "UnitedHealthcare Dental", "DenteMax", "Delta Dental", "United Concordia", "Medicaid", "Principal Financial", "UniCare", "WellPoint", "Scott and White Health Plan", "Health Net", "USA H and W Network", "Evercare", "LA Care Health Plan", "AmeriGroup", "Kaiser Permanente", "HealthNet", "WellCare", "Railroad Medicare", "Regence BlueCross BlueShield ", "Molina", "PacifiCare", "Superior Health Plan", "Centene", "Sierra", "ValueOptions", "Anthem Blue Cross", "Beech Street Corporation", "Private Healthcare Systems", "TriCare", "Highmark Blue Cross Blue Shield", "Anthem", "Boston Medical Center Health Net Plan", "Presbyterian Healthcare Services", "Health First Health Plans", "Medical Universe", "Preferred Provider Organization of Midwest", "Magellan", "Medica Health Plans"];
+    $scope.languages =  preloadDataset.getLanguages(); 
+    $scope.insurances = preloadDataset.getInsurances();
     $scope.doctor.pictures = $scope.doctor.pictures && $scope.doctor.pictures.length > 0 ? $scope.doctor.pictures : [];
     $scope.addresses = [];
     $scope.address = {};
@@ -487,10 +487,10 @@ angular.module('sugarlandDoctorsApp')
   });
 })
 
-  .controller('doctorSignupCtrl', function($scope, $rootScope, Auth, $state, $window, specialistItems) {
+  .controller('doctorSignupCtrl', function($scope, $rootScope, Auth, $state, $window, preloadDataset) {
       $scope.doctor = {};
       $scope.errors = {};
-      $scope.specialists = specialistItems.get(); //$rootScope._specialists;
+      $scope.specialists = preloadDataset.getSpecialists(); //$rootScope._specialists;
 
       $scope.submit = function(form) {
         if(form.$valid) {

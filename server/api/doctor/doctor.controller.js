@@ -270,19 +270,22 @@ exports.contactInfo = function(req, res, next) {
       }
   });
 }
-
+//.address.latitude
 exports.list = function(req, res, next) {
   Doctor
     .find({})
     .where('specialist').equals(new RegExp('^' + req.params.specialist + '$','i'))
     .limit(100)
     .sort('-_id')
-    .select('firstName lastName profilePicture credential specialist doctorId gender languages insurances _id')
+    .select('firstName lastName profilePicture credential specialist doctorId gender languages insurances addresses _id')
     .exec(function (err, doctors) {
       if(err) { return handleError(res, err); }
       var recordCount = _.size(doctors);
       var statusAdded = 0;
       _.forEach(doctors,function(doctor, index){
+        doctor.set('latitude',doctor.addresses[0].address.latitude, { strict: false });
+        doctor.set('longitude',doctor.addresses[0].address.longitude, { strict: false });
+        doctor.addresses = undefined;
         doctor.getStatistics(doctor._id,function(err, data){
           if (err || !data){
             doctor.set('stats',{"website":0,"phone":0,"likes":0,"views":0,"_id":doctor._id}, { strict: false });

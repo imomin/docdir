@@ -85,7 +85,7 @@ angular.module('sugarlandDoctorsApp')
         }
       };
     }])
-    .factory('menu',function ($location,specialistItems) {
+    .factory('menu',function ($location,preloadDataset) {
 
         var sections =  [];
         sections.push({
@@ -111,7 +111,7 @@ angular.module('sugarlandDoctorsApp')
             icon: 'fa fa-group'
           },*/
         
-       	angular.forEach(specialistItems.get(),function(obj,index){
+       	angular.forEach(preloadDataset.getSpecialists(),function(obj,index){
        		obj.type = 'link';
           obj.state = 'main.'+obj.url;
        		sections.push(obj);
