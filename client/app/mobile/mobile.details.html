@@ -20,11 +20,17 @@
 			<a href="tel:+{{doctorInfo.phone}}" class="md-button md-mini md-fab" aria-label="Phone">
 				<i class="fa fa-2x fa-phone"></i>
 			</a>
-			<a href="http://{{doctorInfo.website}}" target="_blank" class="md-button md-mini md-fab" aria-label="Website">
+			<a ng-show="doctorInfo.website" href="//{{doctorInfo.website}}" target="_blank" class="md-button md-mini md-fab" aria-label="Website">
 				<i class="fa fa-2x fa-link"></i>
 			</a>
-			<a href="https://maps.google.com/maps?q=loc:{{doctorInfo.addresses[0].address.latitude}},{{doctorInfo.addresses[0].address.longitude}}&z=16" target="_blank" class="md-button md-mini md-fab" aria-label="Map">
-				<i class="fa fa-2x fa-location-arrow"></i>
+			<a ng-show="doctorInfo.facebook" href="{{doctorInfo.facebook}}" target="_blank" class="md-button md-mini md-fab" aria-label="Facebook">
+				<i class="fa fa-2x fa-facebook"></i>
+			</a>
+			<a ng-show="doctorInfo.googleplus" href="{{doctorInfo.googleplus}}" target="_blank" class="md-button md-mini md-fab" aria-label="Google Plus">
+				<i class="fa fa-2x fa-google-plus"></i>
+			</a>
+			<a ng-show="doctorInfo.twitter" href="{{doctorInfo.twitter}}" target="_blank" class="md-button md-mini md-fab" aria-label="Website">
+				<i class="fa fa-2x fa-twitter"></i>
 			</a>
 	      </p>
 	    </md-content>
@@ -133,6 +139,18 @@
 	            			<td ng-show="workday.isOpen">{{workday.open}} - {{workday.close}}</td>
 	            		</tr>
 	            	</table>
+				</p>
+			</md-card-content>
+		</md-card>
+		<md-card>
+			<md-card-content>
+				<h3>
+					<md-button class="md-fab md-mini md-primary" aria-label="Hours of Operation">
+			          <i class="fa fa-2x fa-map-marker"></i>
+			        </md-button>
+					<span></span> Map</h3>
+				<p>
+					<div gutter="5" id="mobileMap" style="min-height:300px;width:98%;"></div>
 				</p>
 			</md-card-content>
 		</md-card>

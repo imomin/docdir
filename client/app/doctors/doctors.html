@@ -98,7 +98,7 @@
 
 			<!-- if there is a data to display then show following. -->
 			<div ng-cloak ui-view="detail" class="col-lg-9" scroll style="overflow: auto;padding-left:15px;padding-right:15px;">
-				<div ng-show="showMapMarkers" style="position: relative;height: 100%;width100%">
+				<div ng-show="showMapMarkers" style="position: relative;height: 90%;width100%">
 					<div id="mapPreviewMarkers" style="width:100%;height:90%;"></div>
 				</div>
 				<div ng-if="hasData && !showMapMarkers"><!-- ng-show="hasData" -->
@@ -124,7 +124,23 @@
 		                            	<button ng-hide="contact.phone" ng-click="showContactNumber()" class="btn btn-success">Show Phone Number</button>
 		                            	<span ng-show="contact.phone"><i ng-show="contact.phone" class="fa fa-phone"></i> {{contact.phone}}</span>
 		                            	<br>
-		                            	<a  href="//{{doctor.website}}" ng-click="launchWebsite()" ng-show="doctor.website" target="_blank">{{doctor.website}}</a>
+		                            	<div style="padding-top:10px;">
+	                            			<div ng-show="doctor.website"  style="box-shadow: 0 0 0 4px rgb(91, 191, 163), inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.08);background-color: rgb(238,238,238);border-radius: 50%;height: 50px;width: 50px;display:inline-block;margin-left: 15px;">
+	                            				<a  href="{{doctor.website}}" ng-click="launchWebsite()" target="_blank"><i style="margin-top:25%;" class="fa fa-2x fa-link"></i></a>
+	                            			</div>
+
+	                            			<div ng-show="doctor.facebook"  style="box-shadow: 0 0 0 4px rgb(91, 191, 163), inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.08);background-color: rgb(238,238,238);border-radius: 50%;height: 50px;width: 50px;display:inline-block;margin-left: 15px;">
+	                            				<a  href="{{doctor.facebook}}" target="_blank"><i style="margin-top:25%;" class="fa fa-2x fa-facebook"></i></a>
+	                            			</div>
+
+	                            			<div ng-show="doctor.googleplus"  style="box-shadow: 0 0 0 4px rgb(91, 191, 163), inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.08);background-color: rgb(238,238,238);border-radius: 50%;height: 50px;width: 50px;display:inline-block;margin-left: 15px;">
+	                            				<a  href="{{doctor.googleplus}}" target="_blank"><i style="margin-top:25%;" class="fa fa-2x fa-google-plus"></i></a>
+	                            			</div>
+
+	                            			<div ng-show="doctor.twitter"  style="box-shadow: 0 0 0 4px rgb(91, 191, 163), inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.08);background-color: rgb(238,238,238);border-radius: 50%;height: 50px;width: 50px;display:inline-block;margin-left: 15px;">
+	                            				<a  href="{{doctor.twitter}}" target="_blank"><i style="margin-top:25%;" class="fa fa-2x fa-twitter"></i></a>
+	                            			</div>
+		                            	</div>
 		                            </p>
 		                        </li>
 		                        <li>
@@ -261,7 +277,7 @@
 									</div> <!-- cd-timeline-content -->
 								</div> <!-- cd-timeline-block -->
 
-							<div ng-show="doctor.pictures" class="cd-timeline-block">
+							<div ng-show="doctor.pictures.length>0" class="cd-timeline-block">
 								<div class="cd-timeline-img cd-camera">
 									<span class="fa fa-2x fa-camera-retro" style="color:#fff;"></span>
 								</div> <!-- cd-timeline-img -->

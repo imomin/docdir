@@ -43,39 +43,7 @@ angular.module('sugarlandDoctorsApp')
     $scope.hasData = true;
     $scope.showMapMarkers = ($scope.hasData && (!$state.params.doctorId || $state.params.doctorId === ""));
     $scope.mapMarkers = [];
-    $scope.form = {
-        specialist: {'url':$state.current.data.specialist},
-        gender:"both",
-        language:"English",
-        insurance: null
-    };
-    var mapOptions = "";
-    var map = "";
-
-    $scope.contact = null;
-    $scope.videoConference=Modal.confirm.startConference(function(message) { // callback when modal is confirmed
-        $location.path("/user/login"); //will redirect to login page, make sure your controller is using $location
-      });
-
-    $scope.isLive = function(_id){
-      var session = _.find($rootScope.conferenceSession, '_doctor',_id);
-      return !!session;
-    }
-
-    $scope.startVideoConference = function(_id, name){
-      var session = _.find($rootScope.conferenceSession, '_doctor',_id);
-      if(session && !angular.isDefined(Auth.getCurrentUser()._id)) {
-        $rootScope.redirectURL = $location.path();
-        $scope.videoConference(name);
-      }
-      else {
-        $state.go('conference', {conf: session.webRTCSessionId});
-      }
-    }
-
-    var initMap = function(){
-      if(document.getElementById('mapPreviewMarkers')){
-        var styleArray = [
+    var styleArray = [
           {
             featureType: "road",
             elementType: "geometry",
@@ -99,24 +67,53 @@ angular.module('sugarlandDoctorsApp')
             ]
           }
         ];
+    var styledMap = new google.maps.StyledMapType(styleArray, {name: "Map"});
+    $scope.form = {
+        specialist: {'url':$state.current.data.specialist},
+        gender:"both",
+        language:"English",
+        insurance: null
+    };
+    var mapOptions = "";
+    var map = "";
+    var mapOffice = "";
 
-        var styledMap = new google.maps.StyledMapType(styleArray, {name: "Map"});
-        var mapOptions = {
+    $scope.contact = null;
+    $scope.videoConference=Modal.confirm.startConference(function(message) { // callback when modal is confirmed
+        $location.path("/user/login"); //will redirect to login page, make sure your controller is using $location
+      });
+
+    $scope.isLive = function(_id){
+      var session = _.find($rootScope.conferenceSession, '_doctor',_id);
+      return !!session;
+    }
+
+    $scope.startVideoConference = function(_id, name){
+      var session = _.find($rootScope.conferenceSession, '_doctor',_id);
+      if(session && !angular.isDefined(Auth.getCurrentUser()._id)) {
+        $rootScope.redirectURL = $location.path();
+        $scope.videoConference(name);
+      }
+      else {
+        $state.go('conference', {conf: session.webRTCSessionId});
+      }
+    }
+
+    var initMap = function(){
+     if(document.getElementById('mapPreviewMarkers')){
+        map = new google.maps.Map(document.getElementById('mapPreviewMarkers'), {
               center:new google.maps.LatLng(29.598387,-95.622404),
               zoom:12,
               mapTypeControl:true,
               mapTypeControlOptions: {
                 mapTypeIds: ['map_style', google.maps.MapTypeId.SATELLITE]
-              }
-            };
-
-        map = new google.maps.Map(document.getElementById('mapPreviewMarkers'), mapOptions);
+              }});
         map.mapTypes.set('map_style', styledMap);
         map.setMapTypeId('map_style');
       }
     }
     
-    $scope.addMarkerWithTimeout = function() {
+    $scope.addAllMarkers = function() {
         for (var i = 0; i < $scope.mapMarkers.length; i++) {
           $scope.mapMarkers[i].setMap(null);
         }
@@ -200,7 +197,9 @@ angular.module('sugarlandDoctorsApp')
         $scope.doctors = data;
         $scope.hasData = $scope.doctors.length > 0 ? true : false;
         $scope.showMapMarkers = ($scope.hasData && (!$state.params.doctorId || $state.params.doctorId === ""));
-        $scope.addMarkerWithTimeout();
+        //if($scope.showMapMarkers){
+          $scope.addAllMarkers();
+        //}
       }).catch(function(err) {
         debugger;
       });
@@ -213,14 +212,26 @@ angular.module('sugarlandDoctorsApp')
             $scope.contact = null;
             $scope.showMapMarkers = ($scope.hasData && (!$state.params.doctorId || $state.params.doctorId === ""));
             $scope.hasLiked = _.indexOf(Auth.getCurrentUser().likes,$scope.doctor._id) !== -1;
-            if($scope.latlng && $scope.doctor.addresses){
-              //using Object.keys because latlng object has minified property name. Which is different everytime.
-              $scope.latlng[Object.keys($scope.latlng)[0]] = $scope.doctor.addresses[0].address.latitude;
-              $scope.latlng[Object.keys($scope.latlng)[1]] = $scope.doctor.addresses[0].address.longitude;
-
-              map.setCenter($scope.latlng);
-              marker.setPosition($scope.latlng);
-              marker.setTitle($scope.doctor.addresses[0].address.streetAddress +', '+ $scope.doctor.addresses[0].address.city + ' ' + $scope.doctor.addresses[0].address.state +', '+ $scope.doctor.addresses[0].address.postalCode);
+            if($scope.doctor.addresses){
+                setTimeout(function() {
+                  var latlng = new google.maps.LatLng($scope.doctor.addresses[0].address.latitude, $scope.doctor.addresses[0].address.longitude);
+                mapOffice = new google.maps.Map(document.getElementById('mapPreview'), {
+                                center:latlng,
+                                zoom:15,
+                                mapTypeControl:true,
+                                mapTypeControlOptions: {
+                                  mapTypeIds: ['map_style', google.maps.MapTypeId.SATELLITE]
+                                }});
+                mapOffice.mapTypes.set('map_style', styledMap);
+                mapOffice.setMapTypeId('map_style');
+                var marker = new google.maps.Marker({
+                            position: latlng,
+                            map: mapOffice,
+                            animation: google.maps.Animation.DROP,
+                            icon: '/assets/images/mapMarker.png'
+                          });
+              }, 100);
+                //}
             }
             $scope.contact = _.get($rootScope.doctorContact,$scope.doctor._id);
             $scope.slides = [];
@@ -239,6 +250,7 @@ angular.module('sugarlandDoctorsApp')
     });
     $scope.$on('mapInitialized', function(event, map) { 
       $scope.map = map;
+      debugger;
     });
 
     $scope.modal=Modal.confirm.askToLogin(function(message) { // callback when modal is confirmed

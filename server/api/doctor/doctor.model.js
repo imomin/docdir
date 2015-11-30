@@ -27,6 +27,9 @@ var DoctorSchema = new Schema({
   boardCertifications: {type:[String],"default":[]},
   professionalMemberships: {type:[String],"default":[]},
   website: String,
+  facebook: String,
+  googleplus: String,
+  twitter: String,
   affiliations: {type:[String],"default":[]},
   personalInterests: {type:[String],"default":[]},
   addresses: [{

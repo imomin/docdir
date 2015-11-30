@@ -302,7 +302,7 @@ angular.module('sugarlandDoctorsApp')
           });
       }
   })
-  .controller('MobileDetailCtrl',function($scope, $state, $mdSidenav, menu, Doctor, page, Statistic){
+  .controller('MobileDetailCtrl',function($scope, $state, $mdSidenav, $window, menu, Doctor, page, Statistic){
     $scope.slideCount = 0;
     Doctor.details({id:$state.current.data.specialist,controller:$state.params.doctorId},function(data){
       $scope.doctorInfo = data;
@@ -311,6 +311,59 @@ angular.module('sugarlandDoctorsApp')
       $scope.currentSlide = 1;
       page.setTitle('Dr. ' + $scope.doctorInfo.firstName + ' ' + $scope.doctorInfo.lastName +' '+ $scope.doctorInfo.credential + ' | ' + $scope.doctorInfo.specialist);
       Statistic.addViewCount(data._id);
+      //Map
+      if($scope.doctorInfo.addresses){
+          var mapLink = 'https://maps.google.com/maps?q=loc:'+ $scope.doctorInfo.addresses[0].address.latitude +','+ $scope.doctorInfo.addresses[0].address.longitude +'&z=16';
+          setTimeout(function() {
+            var styleArray = [
+                {
+                  featureType: "road",
+                  elementType: "geometry",
+                  stylers: [
+                    { hue: "#ff5500" },
+                    { saturation: 50 }
+                  ]
+                },{
+                  featureType: "landscape",
+                  elementType: "geometry",
+                  stylers: [
+                    { hue:"#00ff33",
+                      visibility: "on" }
+                  ]
+                },{
+                  featureType: "water",
+                  elementType: "geometry",
+                  stylers: [
+                    { hue:"#0088ff",
+                      visibility: "on" }
+                  ]
+                }
+              ];
+          var styledMap = new google.maps.StyledMapType(styleArray, {name: "Map"});
+          var latlng = new google.maps.LatLng($scope.doctorInfo.addresses[0].address.latitude, $scope.doctorInfo.addresses[0].address.longitude);
+          var mobileMapOffice = new google.maps.Map(document.getElementById('mobileMap'), {
+                        center:latlng,
+                        zoom:15,
+                        mapTypeControl:true,
+                        mapTypeControlOptions: {
+                          mapTypeIds: ['map_style', google.maps.MapTypeId.SATELLITE]
+                        }});
+        mobileMapOffice.mapTypes.set('map_style', styledMap);
+        mobileMapOffice.setMapTypeId('map_style');
+        var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: mobileMapOffice,
+                    animation: google.maps.Animation.DROP,
+                    icon: '/assets/images/mapMarker.png'
+                  });
+          // marker.addListener('click', function() {
+          //   $window.open(mapLink);
+          // });
+          mobileMapOffice.addListener('click', function(e) {
+            console.log(mapLink);
+          });
+      }, 100);
+      }
     });
     $scope.updateCurrent = function(dir) {
       if (dir && $scope.currentSlide < $scope.slideCount) {
