@@ -179,32 +179,25 @@
             <div class="widget column three">
               <h4>Menu</h4>
               <ul class="plain">
-                <li><a href="home-01.html">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/contactus">Contact Us</a></li>
               </ul>
             </div>
-            <div class="widget column three">
-              <h4>Specialist</h4>
+
+            <div class="widget column three" ng-repeat="rows in specialistInColumns">
+              <h4><span ng-show="$index == 0">Specialist</span>&nbsp;</h4>
               <ul class="plain">
-                <li><a href="#">Dentist</a></li>
-                <li><a href="#">ENT</a></li>
-                <li><a href="#">Optometrist</a></li>
-                <li><a href="#">Dentist</a></li>
-                <li><a href="#">ENT</a></li>
-                <li><a href="#">Optometrist</a></li>
+                <li ng-repeat="item in rows"><a href="/{{item.url}}">{{item.name}}</a></li>
               </ul>
             </div>                
-            <div class="widget column three">
-              <h4>Column</h4>
-              <p></p>
-            </div>        
-            <div class="widget meta-social column three">
+            
+            <!-- <div class="widget meta-social column three">
               <h4>Follow Us</h4>
               <ul class="inline">
                 <li><a href="#" class="twitter-share border-box"><i class="fa fa-twitter fa-lg"></i></a></li>
                 <li><a href="#" class="facebook-share border-box"><i class="fa fa-facebook fa-lg"></i></a></li>
               </ul>
-            </div>                            
+            </div>   -->                          
           </section><!-- top-footer -->
           <section id="bottom-footer">
             <p class="keep-left">&copy; 2015 Doctors. All Rights Reserved.</p>

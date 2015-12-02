@@ -318,16 +318,33 @@ exports.lookup = function(req, res, next) {
   if(specialist){
     findQuery.specialist = new RegExp('^' + specialist + '$','i');
   }
-
+  
   Doctor
   .find(findQuery)
   .limit(10)
   .sort('-_id')
-  .select('doctorId firstName lastName profilePicture credential specialist -_id')
+  .select('doctorId firstName lastName profilePicture credential specialist _id')
   .exec(function (err, doctors) {
     if(err) { return handleError(res, err); }
-    return res.json(200, doctors);
-  });
+    var recordCount = _.size(doctors);
+    var statusAdded = 0;
+    _.forEach(doctors,function(doctor, index){
+      doctor.getStatistics(doctor._id,function(err, data){
+          if (err || !data){
+            doctor.set('stats',{"website":0,"phone":0,"likes":0,"views":0,"_id":doctor._id}, { strict: false });
+          }
+          doctor.set('stats',data[0], { strict: false });
+          doctor._id = undefined;
+          statusAdded++;
+          if(recordCount === statusAdded){
+            return res.json(200, doctors);
+          }
+        });
+      });
+      if(recordCount === 0){
+        return res.json(200, doctors);
+      }
+    });
 }
 
 exports.updateCard = function(req, res, next) {

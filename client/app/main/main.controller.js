@@ -46,7 +46,7 @@ angular.module('sugarlandDoctorsApp')
     }
   })
 
-  .controller('MainCtrl', function ($scope, $http, $location, socket, page, CommonData) {
+  .controller('MainCtrl', function ($scope, $http, $location, socket, page, CommonData, preloadDataset) {
     $scope.awesomeThings = [];
     $scope.enableScroll = function(){
       $('body').css('overflow', 'auto');
@@ -86,6 +86,18 @@ angular.module('sugarlandDoctorsApp')
 
 
     page.setTitle("Sugar Land Doctors");
+
+    function splitDataInColumns(input, cols) {
+      var arr = [];
+      for(var i = 0; i < input.length; i++) {
+        var colIdx = i % cols;
+        arr[colIdx] = arr[colIdx] || [];
+        arr[colIdx].push(input[i]);
+      }
+      return arr;
+    }
+
+    $scope.specialistInColumns = splitDataInColumns(preloadDataset.getSpecialists(), 3);
 
     // $http.get('/api/things').success(function(awesomeThings) {
     //   $scope.awesomeThings = awesomeThings;

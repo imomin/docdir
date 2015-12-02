@@ -252,12 +252,12 @@ angular.module('sugarlandDoctorsApp', [
 
       $templateCache.put('auto-complete',
         '<a href="/{{match.model.specialist | lowercase}}/{{match.model.doctorId}}">' +
-            '<div class="typeahead" style="font-weight: lighter;clear:none;width:370px;left:515px;">' +
-            '<div class="pull-left"><img ng-src="{{match.model.profilePicture}}" alt="{{match.model.firstName}} {{match.model.lastName}}" width="48" height="48" class=""></div>' +
+            '<div class="typeahead" style="clear:none;width:370px;left:515px;">' +
+            '<div class="pull-left"><img ng-src="{{match.model.profilePicture}}" alt="{{match.model.firstName}} {{match.model.lastName}}" width="48" height="48" class="img-circle"></div>' +
             '<div class="pull-left margin-small" style="padding-left: 10px;">' +
             '<div class="text-left">{{match.model.firstName}} {{match.model.lastName}} {{match.model.credential}}</div>' +
             '<div class="text-left">{{match.model.specialist}}</div>' +
-            '<div class="text-left"> <i class="fa fa-heart" style="color:red;"></i> 23 likes <i class="fa fa-eye"></i> 89 viwes</div>' +
+            '<div class="text-left"> <i class="fa fa-heart" style="color:red;"></i> {{match.model.stats.likes}} likes <i class="fa fa-eye"></i> {{match.model.stats.views}} viwes</div>' +
             '</div>' +
             '<div class="clearfix"></div>' +
             '</div>' +
