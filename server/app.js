@@ -41,7 +41,6 @@ server.listen(config.port, config.ip, function () {
   console.log("In production mode:");
   console.log("Make sure to add <script src=\"socket.io/socket.io.js\"></script>");
   console.log("Make sure to update module.exports.DOMAIN");
-  console.log("Make sure to rename public folder to client.");
 });
 
 // Expose app
